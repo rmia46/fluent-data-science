@@ -1,6 +1,8 @@
 # Fluent Data Science: Datathon Curriculum
 
-This repository contains the comprehensive curriculum designed for competitive data science and datathon participation. It covers the end-to-end pipeline from mathematical foundations to production-grade model ensembling and optimization.
+**Built in a few hours using Gemini AI guidance to sprint-train for a University Datathon.**
+
+This repository contains a comprehensive curriculum designed for competitive data science. We cover the topics from mathematical foundations to production-grade model ensembling. Note that some advanced topics may be missing due to time constraints and a pure focus on the specific needs of a datathon contest.
 
 ## Curriculum Structure
 
