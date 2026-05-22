@@ -29,6 +29,8 @@ const styleHTML = `
     .page-container h3 { @apply text-lg font-semibold text-dark mb-3 mt-8; }
     .page-container p { @apply mb-6 text-gray-700 leading-relaxed text-sm; }
     .card-standard { @apply bg-white border-2 border-gray-200 shadow-md p-6; }
+    .btn-primary { @apply bg-[#2e7d32] text-white px-8 py-3 font-bold hover:bg-[#1b5e20] transition shadow-lg inline-block text-center; }
+    .btn-secondary { @apply bg-[#1b5e20] text-white px-8 py-3 font-bold hover:bg-[#2e7d32] transition shadow-lg inline-block text-center; }
     .hidden { display: none; }
 </style>
 `;

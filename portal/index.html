@@ -18,67 +18,94 @@
         </div>
 
         <section class="bg-white border-2 border-gray-200 p-8 shadow-md">
-            <h2 class="text-xl font-bold text-dark mb-6 border-b-2 border-primary pb-2">Operational Blueprint: How to Learn</h2>
+            <h2 class="text-xl font-bold text-dark mb-8 border-b-2 border-primary pb-2 uppercase tracking-widest">How to Learn</h2>
             
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="space-y-6">
-                    <h3 class="font-bold text-primary flex items-center">
-                        <span class="mr-2">📚</span> The Learning Workflow
-                    </h3>
-                    <p class="text-sm leading-relaxed text-gray-700">
-                        Our materials are <strong>architectural guides</strong>, not an encyclopedia. Each module provides:
-                    </p>
-                    <ul class="text-xs space-y-3 text-gray-600 list-disc ml-4">
-                        <li><strong>PDF Materials:</strong> High-level conceptual introductions. Note: These do not contain in-depth details.</li>
-                        <li><strong>AI-First Study:</strong> Use Gemini, ChatGPT, or documentation to study the concepts mentioned in the PDFs deeply.</li>
-                        <li><strong>Theory Notebooks:</strong> Reference code and solved logic.</li>
-                        <li><strong>Practice Notebooks:</strong> Your hands-on lab on Google Colab/Kaggle.</li>
-                    </ul>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="font-bold text-primary flex items-center mb-3">
+                            <span class="mr-2">📚</span> The Learning Workflow
+                        </h3>
+                        <p class="text-sm leading-relaxed text-gray-700 mb-4">
+                            Our materials are <strong>architectural guides</strong>, not an encyclopedia. Each module provides:
+                        </p>
+                        <ul class="text-xs space-y-3 text-gray-600 list-disc ml-4">
+                            <li><strong>PDF Materials:</strong> High-level conceptual introductions.</li>
+                            <li><strong>AI-First Study:</strong> Use Gemini/ChatGPT for deep dives.</li>
+                            <li><strong>Theory Notebooks:</strong> Reference code and solved logic.</li>
+                            <li><strong>Practice Notebooks:</strong> Hands-on labs (Colab/Kaggle).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-gray-100">
+                        <h3 class="font-bold text-primary flex items-center mb-2">
+                            <span class="mr-2">🕒</span> Time Commitment
+                        </h3>
+                        <p class="text-sm leading-relaxed text-gray-700 font-bold">
+                            9-10 Hours Per Module.
+                        </p>
+                        <p class="text-[11px] text-gray-500 italic">
+                            This is a marathon. Take structured breaks to maintain rigor.
+                        </p>
+                    </div>
                 </div>
 
-                <div class="space-y-6">
-                    <h3 class="font-bold text-primary flex items-center">
-                        <span class="mr-2">💡</span> The Rigorous Practice Rule
-                    </h3>
-                    <p class="text-sm leading-relaxed text-gray-700">
-                        Default notebooks are never enough for mastery.
-                    </p>
-                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 text-[11px] text-yellow-900 italic">
-                        "Create a new notebook, prompt an AI to generate a custom problem sheet for today's topic, and solve it until the logic is muscle memory."
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="font-bold text-primary flex items-center mb-3">
+                            <span class="mr-2">💡</span> The Rigorous Practice Rule
+                        </h3>
+                        <p class="text-sm leading-relaxed text-gray-700 mb-4">
+                            Default notebooks are never enough for mastery.
+                        </p>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 text-[11px] text-yellow-900 italic leading-relaxed">
+                            "Create a new notebook, prompt an AI to generate a custom problem sheet for today's topic, and solve it until the logic is muscle memory."
+                        </div>
                     </div>
-                    <h3 class="font-bold text-primary flex items-center pt-2">
-                        <span class="mr-2">🕒</span> Time Commitment
-                    </h3>
-                    <p class="text-sm leading-relaxed text-gray-700 font-bold">
-                        9-10 Hours Per Module.
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        This is a marathon, not a sprint. Take structured breaks to avoid burnout, but maintain the rigor.
-                    </p>
 
-                    <h3 class="font-bold text-primary flex items-center pt-6">
-                        <span class="mr-2">📂</span> Real-World Practice
-                    </h3>
-                    <p class="text-[11px] leading-relaxed text-gray-700 italic border-l-4 border-accent pl-4 py-1">
-                        "Avoid practicing with hardcoded arrays. Instead, work directly with .csv files that mimic real datasets. Ask your AI agent to generate suitable .csv files for the topic you are learning."
-                    </p>
+                    <div class="pt-4 border-t border-gray-100">
+                        <h3 class="font-bold text-primary flex items-center mb-2">
+                            <span class="mr-2">📂</span> Real-World Practice
+                        </h3>
+                        <p class="text-sm leading-relaxed text-gray-700 mb-4">
+                            Mimic industry data science workflows.
+                        </p>
+                        <p class="text-[11px] leading-relaxed text-gray-700 italic border-l-4 border-accent pl-4 py-1 bg-gray-50">
+                            "Avoid practicing with hardcoded arrays. Instead, work directly with .csv files. Ask your AI agent to generate suitable .csv datasets for the topic you are learning."
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="mt-12 bg-light border-2 border-primary p-8">
-            <h2 class="text-xl font-bold text-dark mb-4">Module Map</h2>
-            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <li><strong>01 Mathematics for ML:</strong> Linear Algebra, Calculus, Statistics.</li>
-                    <li><strong>02 Tabular Foundations:</strong> High-speed Pandas & NumPy.</li>
-                    <li><strong>03 Feature Engineering I:</strong> Encoding, Scaling, Binning.</li>
-                    <li><strong>04 Feature Engineering II:</strong> Golden Features & OOF Encoding.</li>
-                    <li><strong>05 Validation Architecture:</strong> Cross-Validation & Leakage.</li>
-                    <li><strong>06 Tree-Based Models:</strong> LightGBM, XGBoost, CatBoost.</li>
-                    <li><strong>07 Optimization & Ensembling:</strong> Optuna & Blending.</li>
-                    <li><strong>08 Production Pipelines:</strong> Scaling and Deployment.</li>
-                    <li><strong>09 Mock Competition:</strong> The Final Churn Challenge.</li>
-                </ul>
+            <h2 class="text-xl font-bold text-dark mb-6 uppercase tracking-widest border-b border-primary pb-2">Module Roadmap</h2>
+            <ul class="space-y-3 text-sm">
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">01</span> <span>Mathematics for ML: Linear Algebra, Calculus, Statistics.</span></li>
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">02</span> <span>Tabular Foundations: High-speed Pandas & NumPy.</span></li>
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">03</span> <span>Feature Engineering I: Categorical Encoding, Scaling, Binning.</span></li>
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">04</span> <span>Feature Engineering II: Smoothed Target Encoding, Contextual Transforms.</span></li>
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">05</span> <span>Validation Architecture: Cross-Validation & Leakage Auditing.</span></li>
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">06</span> <span>Tree-Based Models: LightGBM, XGBoost, CatBoost.</span></li>
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">07</span> <span>Optimization & Ensembling: Optuna Tuning & Weighted Blending.</span></li>
+                <li class="flex items-center"><span class="w-8 font-bold text-primary">08</span> <span>Production Pipelines: Modular Script Architecture & Git.</span></li>
+                <li class="flex items-center font-bold text-dark"><span class="w-8 font-bold text-primary">09</span> <span>Mock Competition Challenge: Capstone Churn Project.</span></li>
+            </ul>
+        </section>
+
+        <section class="mt-12 border-2 border-gray-300 p-8 bg-white">
+            <h2 class="text-xl font-bold text-dark mb-6 uppercase tracking-widest border-b border-gray-200 pb-2">About the Project</h2>
+            <div class="space-y-4 text-sm leading-relaxed text-gray-700">
+                <p>
+                    <strong>Prepared by:</strong> Roman Mia (<a href="https://github.com/rmia46" target="_blank" class="text-primary hover:underline">@rmia46</a>)<br>
+                    <strong>Repository:</strong> <a href="https://github.com/rmia46/fluent-data-science" target="_blank" class="text-primary hover:underline">rmia46/fluent-data-science</a>
+                </p>
+                <div class="bg-gray-50 border-l-4 border-gray-400 p-4 text-xs italic">
+                    <strong>AI Disclosure:</strong> All instructional materials and code in this repository were generated using <strong>Gemini 1.5 Pro</strong>. While every effort was made to ensure accuracy, AI can occasionally generate incorrect information. If you notice any errors, please report them via <a href="https://github.com/rmia46/fluent-data-science/issues" target="_blank" class="text-primary hover:underline">GitHub Issues</a>.
+                </div>
+                <p class="pt-2 text-xs font-bold text-dark">
+                    🔓 These materials are free for everyone to share, modify, and reuse as they prefer.
+                </p>
             </div>
         </section>
     </div>
