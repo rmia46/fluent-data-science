@@ -26,6 +26,8 @@ const styleHTML = `
     }
     /* Typography Refinement */
     .page-container h2 { @apply text-xl font-bold text-dark mb-4 border-b-2 border-primary pb-1 tracking-tight mt-10; }
+    .bg-dark h2 { @apply text-white border-white border-opacity-30 !important; }
+    .bg-dark p { @apply text-white opacity-80 !important; }
     .page-container h3 { @apply text-lg font-semibold text-dark mb-3 mt-8; }
     .page-container p { @apply mb-6 text-gray-700 leading-relaxed text-sm; }
     .card-standard { @apply bg-white border-2 border-gray-200 shadow-md p-6; }
