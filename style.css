@@ -1,17 +1,9 @@
-:root {
-    --primary-green: #2e7d32;
-    --light-green: #e8f5e9;
-    --dark-green: #1b5e20;
-    --text-color: #333;
-}
-
-body { font-family: 'Segoe UI', sans-serif; background-color: #f9f9f9; color: var(--text-color); margin: 20px; }
-header { background: var(--primary-green); color: white; padding: 20px; border-radius: 8px; text-align: center; }
-.container { max-width: 900px; margin: auto; }
-.module { background: white; margin: 15px 0; padding: 15px; border-radius: 6px; border-left: 5px solid var(--primary-green); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.module h2 { margin-top: 0; color: var(--dark-green); }
-.file-links { display: flex; gap: 10px; margin-top: 10px; }
-a { color: var(--primary-green); text-decoration: none; font-weight: bold; }
-a:hover { text-decoration: underline; }
-input[type="checkbox"] { transform: scale(1.5); margin-right: 10px; }
-footer { text-align: center; margin-top: 40px; color: #666; font-size: 0.9em; }
+/* style.css */
+:root { --primary-green: #2e7d32; --light-green: #e8f5e9; --dark-green: #1b5e20; }
+body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+.container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+.tree-node { margin-left: 20px; cursor: pointer; }
+.folder { font-weight: bold; color: var(--primary-green); margin-top: 10px; }
+.file { font-weight: normal; color: #555; }
+.hidden { display: none; }
+.arrow { display: inline-block; width: 15px; }

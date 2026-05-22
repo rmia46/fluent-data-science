@@ -2,61 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluent Data Science Curriculum</title>
+    <title>Curriculum Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Fluent Data Science Curriculum</h1>
-            <p>Mastering the Pipeline for Competitive Data Science</p>
-        </header>
-
-        <div id="modules">
-            <script>
-                const modules = [
-                    {id: "01", name: "Mathematics for ML"},
-                    {id: "02", name: "Tabular Foundations"},
-                    {id: "03", name: "Feature Engineering I"},
-                    {id: "04", name: "Feature Engineering II"},
-                    {id: "05", name: "Validation Architecture"},
-                    {id: "06", name: "Tree-Based Models"},
-                    {id: "07", name: "Optimization & Ensembling"},
-                    {id: "08", name: "Production Pipelines"},
-                    {id: "09", name: "Mock Competition"}
-                ];
-                
-                const modDirs = [
-                    "01_Mathematics_for_ML",
-                    "02_Tabular_Foundations",
-                    "03_Feature_Engineering_I",
-                    "04_Feature_Engineering_II",
-                    "05_Validation_Architecture",
-                    "06_Tree_Based_Models",
-                    "07_Optimization_and_Ensembling",
-                    "08_Production_Pipelines",
-                    "09_Mock_Competition"
-                ];
-
-                modules.forEach((mod, index) => {
-                    const dir = modDirs[index];
-                    document.write(`
-                        <div class="module">
-                            <h2><input type="checkbox" id="mod${mod.id}"> Module ${mod.id}: ${mod.name}</h2>
-                            <div class="file-links">
-                                <a href="https://github.com/rmia46/fluent-data-science/tree/main/${dir}/notebooks">Notebooks</a>
-                                <a href="https://github.com/rmia46/fluent-data-science/tree/main/${dir}/pdf_materials">Theory PDFs</a>
-                            </div>
-                        </div>
-                    `);
-                });
-            </script>
-        </div>
-
-        <footer>
-            <p>Prepared by Roman Mia @rmia46</p>
-        </footer>
+        <h1>Datathon Curriculum</h1>
+        <div id="file-browser"></div>
     </div>
     <script src="script.js"></script>
 </body>
