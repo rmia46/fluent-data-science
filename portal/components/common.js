@@ -24,6 +24,10 @@ const styleHTML = `
     .page-container { 
         @apply max-w-5xl mx-auto px-6 md:px-16 py-10; 
     }
+    /* Typography Refinement */
+    .page-container h2 { @apply text-xl font-bold text-dark mb-4 border-b-2 border-primary pb-1 tracking-tight mt-10; }
+    .page-container h3 { @apply text-lg font-semibold text-dark mb-3 mt-8; }
+    .page-container p { @apply mb-6 text-gray-700 leading-relaxed text-sm; }
     .card-standard { @apply bg-white border-2 border-gray-200 shadow-md p-6; }
     .hidden { display: none; }
 </style>
@@ -79,4 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
 window.toggleAnswer = function(id) {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('hidden');
+};
+
+window.switchTab = function(tabId, groupClass, contentClass) {
+    document.querySelectorAll(`.${contentClass}`).forEach(el => el.classList.add('hidden'));
+    const targetContent = document.getElementById(tabId);
+    if (targetContent) targetContent.classList.remove('hidden');
+    document.querySelectorAll(`.${groupClass}`).forEach(el => {
+        el.classList.remove('border-primary', 'text-primary', 'bg-white', 'border-b-4');
+        el.classList.add('border-transparent', 'text-gray-500', 'bg-gray-50');
+    });
+    const btn = event.currentTarget;
+    btn.classList.add('border-primary', 'text-primary', 'bg-white', 'border-b-4');
+    btn.classList.remove('border-transparent', 'text-gray-500', 'bg-gray-50');
 };
