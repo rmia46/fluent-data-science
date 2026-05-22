@@ -14,22 +14,44 @@
         </header>
 
         <div id="modules">
-            <!-- Example Module -->
-            <div class="module">
-                <h2><input type="checkbox" id="mod01"> Module 01: Mathematics for ML</h2>
-                <div class="file-links">
-                    <a href="https://github.com/rmia46/fluent-data-science/tree/main/01_Mathematics_for_ML/notebooks">Notebooks</a>
-                    <a href="https://github.com/rmia46/fluent-data-science/tree/main/01_Mathematics_for_ML/pdf_materials">Theory PDFs</a>
-                </div>
-            </div>
-            <div class="module">
-                <h2><input type="checkbox" id="mod02"> Module 02: Tabular Foundations</h2>
-                <div class="file-links">
-                    <a href="https://github.com/rmia46/fluent-data-science/tree/main/02_Tabular_Foundations/notebooks">Notebooks</a>
-                    <a href="https://github.com/rmia46/fluent-data-science/tree/main/02_Tabular_Foundations/pdf_materials">Theory PDFs</a>
-                </div>
-            </div>
-            <!-- Continue for modules 03-09... -->
+            <script>
+                const modules = [
+                    {id: "01", name: "Mathematics for ML"},
+                    {id: "02", name: "Tabular Foundations"},
+                    {id: "03", name: "Feature Engineering I"},
+                    {id: "04", name: "Feature Engineering II"},
+                    {id: "05", name: "Validation Architecture"},
+                    {id: "06", name: "Tree-Based Models"},
+                    {id: "07", name: "Optimization & Ensembling"},
+                    {id: "08", name: "Production Pipelines"},
+                    {id: "09", name: "Mock Competition"}
+                ];
+                
+                const modDirs = [
+                    "01_Mathematics_for_ML",
+                    "02_Tabular_Foundations",
+                    "03_Feature_Engineering_I",
+                    "04_Feature_Engineering_II",
+                    "05_Validation_Architecture",
+                    "06_Tree_Based_Models",
+                    "07_Optimization_and_Ensembling",
+                    "08_Production_Pipelines",
+                    "09_Mock_Competition"
+                ];
+
+                modules.forEach((mod, index) => {
+                    const dir = modDirs[index];
+                    document.write(`
+                        <div class="module">
+                            <h2><input type="checkbox" id="mod${mod.id}"> Module ${mod.id}: ${mod.name}</h2>
+                            <div class="file-links">
+                                <a href="https://github.com/rmia46/fluent-data-science/tree/main/${dir}/notebooks">Notebooks</a>
+                                <a href="https://github.com/rmia46/fluent-data-science/tree/main/${dir}/pdf_materials">Theory PDFs</a>
+                            </div>
+                        </div>
+                    `);
+                });
+            </script>
         </div>
 
         <footer>
