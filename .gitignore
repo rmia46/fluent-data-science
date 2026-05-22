@@ -4,5 +4,4 @@ __pycache__/
 *.log
 *.aux
 *.out
-*.pdf
 .venv/
