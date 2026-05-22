@@ -1,0 +1,25 @@
+/* portal/theme.css */
+@layer base {
+    * { border-radius: 0 !important; }
+    body { 
+        @apply font-mono bg-gray-100 text-gray-900; 
+        line-height: 1.6;
+    }
+}
+
+/* Standardized container for all pages */
+.page-container {
+    @apply container mx-auto px-4 py-12 max-w-5xl;
+}
+
+.card-standard {
+    @apply bg-white border-2 border-gray-200 shadow-md p-6 transition-all duration-200;
+}
+
+.btn-primary {
+    @apply bg-primary text-white px-8 py-3 font-bold hover:bg-dark transition shadow-lg inline-block text-center;
+}
+
+.btn-secondary {
+    @apply bg-dark text-white px-8 py-3 font-bold hover:bg-primary transition shadow-lg inline-block text-center;
+}

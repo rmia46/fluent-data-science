@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 06: Tree-Based Models | Fluent Data Science</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
+                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../theme.css">
+</head>
+<body>
+    <div class="page-container bg-white shadow-xl min-h-screen">
+        <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
+        
+        <header class="mb-16">
+            <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 06</h3>
+            <h1 class="text-4xl font-bold text-dark mb-4">Tree-Based Models</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">GBDT mechanics, LightGBM, and XGBoost.</p>
+        </header>
+
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. The Boosting Logic</h2>
+            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
+                <h4 class="font-bold mb-2">Intuition: The Golf Analogy</h4>
+                Sequence of swings. Each swing fixes the mistake of the previous one.
+            </div>
+            <div class="my-10 p-6 border-2 border-primary">
+                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
+                <p class="text-gray-700 mb-4 text-sm">Which strategy is safer for tiny datasets?</p>
+                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
+                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: <strong>Level-wise (XGBoost)</strong>.</div>
+            </div>
+        </section>
+
+        <!-- Outcome -->
+        <div class="bg-dark text-white p-8 my-12 shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
+            <ul class="space-y-4 text-sm">
+                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Build OOF pipelines for GBDTs.</li>
+                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Tame trees using stochastic regularization.</li>
+            </ul>
+        </div>
+    </div>
+    <script src="../components/common.js"></script>
+</body>
+</html>

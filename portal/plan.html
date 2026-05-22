@@ -9,55 +9,25 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#2e7d32',
-                        dark: '#1b5e20',
-                        light: '#e8f5e9',
-                    },
-                    fontFamily: {
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-                    }
+                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
+                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
                 }
             }
         }
     </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            * { border-radius: 0 !apply !important; }
-            body { @apply font-mono bg-gray-100 text-gray-900; }
-        }
-    </style>
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-    <nav class="bg-primary p-4 sticky top-0 z-50 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-white font-bold text-xl">Fluent Data Science</a>
-            <div class="hidden md:flex space-x-6">
-                <a href="index.html" class="text-white hover:text-light transition">Home</a>
-                <a href="plan.html" class="text-white hover:text-light transition underline underline-offset-4">Curriculum Plan</a>
-                <a href="materials.html" class="text-white hover:text-light transition">Materials</a>
-            </div>
-            <button id="menu-btn" class="md:hidden text-white focus:outline-none">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-dark flex flex-col space-y-4 p-4 mt-2 border-t border-primary">
-            <a href="index.html" class="text-white">Home</a>
-            <a href="plan.html" class="text-white underline">Curriculum Plan</a>
-            <a href="materials.html" class="text-white">Materials</a>
-        </div>
-    </nav>
-
-    <div class="container mx-auto px-4 py-8 max-w-5xl">
+    <div class="page-container">
         <header class="mb-12">
-            <h1 class="text-3xl font-bold text-dark mb-2 text-center">9-Day Hyper-Drive Plan</h1>
+            <h1 class="text-3xl font-bold text-dark mb-2 text-center">9-Module Plan</h1>
             <p class="text-gray-600 text-center italic text-sm">The ultimate strategy for competitive data science contests.</p>
         </header>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             <div class="bg-white p-4 border-l-4 border-primary shadow-sm">
                 <h5 class="text-[10px] uppercase text-gray-500 mb-1">Duration</h5>
-                <p class="font-bold text-dark">9 Days</p>
+                <p class="font-bold text-dark">9 Modules</p>
             </div>
             <div class="bg-white p-4 border-l-4 border-primary shadow-sm">
                 <h5 class="text-[10px] uppercase text-gray-500 mb-1">Daily Rigor</h5>
@@ -65,7 +35,7 @@
             </div>
             <div class="bg-white p-4 border-l-4 border-primary shadow-sm">
                 <h5 class="text-[10px] uppercase text-gray-500 mb-1">Session Split</h5>
-                <p class="font-bold text-dark">1hr Theory / 2hr Lab</p>
+                <p class="font-bold text-dark">Theory / Lab</p>
             </div>
             <div class="bg-white p-4 border-l-4 border-primary shadow-sm">
                 <h5 class="text-[10px] uppercase text-gray-500 mb-1">Target</h5>
@@ -74,173 +44,62 @@
         </div>
 
         <div class="space-y-12">
-            <!-- Day 1 -->
+            <!-- Module 1 -->
             <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 01: Mathematics for ML</h3>
+                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Module 01: Mathematics for ML</h3>
                 <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
                     <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. Linear Algebra</h4>
-                        <p class="text-gray-600">Vectors, matrices, dot products, and dimensions. Eigenvalues and PCA foundations.</p>
+                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">Session 1: Linear Algebra</h4>
+                        <p class="text-gray-600"><strong>Learn:</strong> Vectors, matrices, dot products, and dimensions. Eigenvalues and PCA foundations.</p>
+                        <p class="text-gray-600"><strong>Practice:</strong> Implement matrix operations using NumPy and solve linear systems.</p>
                     </div>
                     <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Calculus</h4>
-                        <p class="text-gray-600">Derivatives, partials, and the chain rule. Gradient Descent intuition and optimization.</p>
+                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">Session 2: Calculus</h4>
+                        <p class="text-gray-600"><strong>Learn:</strong> Derivatives, partials, and the chain rule. Gradient Descent intuition and optimization.</p>
+                        <p class="text-gray-600"><strong>Practice:</strong> Write a gradient descent loop from scratch to minimize cost functions.</p>
                     </div>
                     <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Probability</h4>
-                        <p class="text-gray-600">Distributions, Bayes' Theorem, and Z-scores. Standardizing features for model stability.</p>
+                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">Session 3: Probability</h4>
+                        <p class="text-gray-600"><strong>Learn:</strong> Distributions, Bayes' Theorem, and Z-scores. Standardizing features for model stability.</p>
+                        <p class="text-gray-600"><strong>Practice:</strong> Simulate distributions and write functions to apply Bayes' Theorem.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Day 2 -->
+            <!-- Module 2 -->
             <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 02: Tabular Foundations</h3>
+                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Module 02: Tabular Foundations</h3>
                 <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
                     <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. High-Speed Pandas</h4>
-                        <p class="text-gray-600">Vectorized operations and the 'Loop Ban'. Handling millions of rows efficiently.</p>
+                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">Session 1: Pandas & Vectorization</h4>
+                        <p class="text-gray-600"><strong>Learn:</strong> Fast data loading, indexing, slicing, and avoiding slow loops using vectorized operations.</p>
+                        <p class="text-gray-600"><strong>Practice:</strong> 15 unique data manipulation and multi-index challenges.</p>
                     </div>
                     <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Relational Ops</h4>
-                        <p class="text-gray-600">Mastering groupbys, complex merges, and structural joins across multi-table datasets.</p>
+                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">Session 2: Merging & Aggs</h4>
+                        <p class="text-gray-600"><strong>Learn:</strong> Mastering .groupby(), .merge(), .join(), and constructing dynamic summary tables.</p>
+                        <p class="text-gray-600"><strong>Practice:</strong> Combine multiple relational tables and build custom cross-feature statistics.</p>
                     </div>
                     <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Diagnostic Cleaning</h4>
-                        <p class="text-gray-600">Imputation vs. missingness indicator flags. Separating signal from noise in messy data.</p>
+                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">Session 3: Data Cleaning</h4>
+                        <p class="text-gray-600"><strong>Learn:</strong> Imputation strategies (mean/median/mode) vs. tracking missingness with explicit indicator flags.</p>
+                        <p class="text-gray-600"><strong>Practice:</strong> Build a robust processing function for heavily corrupted datasets.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Day 3 -->
-            <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 03: Feature Engineering I</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. Categorical Coding</h4>
-                        <p class="text-gray-600">OHE vs. Label vs. Frequency Encoding. Managing high-cardinality features.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Numerical Scaling</h4>
-                        <p class="text-gray-600">Skewness correction, log transforms, and Scaling choices (Z-score, MinMax).</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Interactions</h4>
-                        <p class="text-gray-600">Constructing ratios, products, and continuous binning to expose hidden patterns.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Day 4 -->
-            <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 04: Feature Engineering II</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. Target Encoding</h4>
-                        <p class="text-gray-600">Advanced OOF Target Encoding with smoothing. Handling ID columns without leakage.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Contextual Transforms</h4>
-                        <p class="text-gray-600">Using .transform() to create peer-group metrics and localized behavioral signals.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Selection/Pruning</h4>
-                        <p class="text-gray-600">Dropping collinear features and using LightGBM importance to rank predictors.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Day 5 -->
-            <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 05: Validation Architecture</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. CV Frameworks</h4>
-                        <p class="text-gray-600">Stratified K-Fold vs. Time-Series Splits. Building the 'Truth' pipeline.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Baseline Models</h4>
-                        <p class="text-gray-600">Training RF and Linear baselines within the CV loop for stable benchmarks.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Leakage Auditing</h4>
-                        <p class="text-gray-600">Hunting silent performance inflation. Ensuring transformations stay inside folds.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Day 6 -->
-            <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 06: Tree-Based Models</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. LightGBM & XGB</h4>
-                        <p class="text-gray-600">Mastering GBDT mechanics. Handling missing values and categorical parameters.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Overfitting Analysis</h4>
-                        <p class="text-gray-600">Mapping the divergence between Train and Val scores. Tuning depth and leaves.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Regularization</h4>
-                        <p class="text-gray-600">Taming variance with subsampling, colsampling, and L1/L2 penalties.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Day 7 -->
-            <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 07: Optimization & Ensembling</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. Optuna Tuning</h4>
-                        <p class="text-gray-600">Automated Bayesian search for hyperparameter optimization in high-dimensional spaces.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Blending</h4>
-                        <p class="text-gray-600">Ensembling low-correlation models (LGBM + XGB) via weighted prediction averaging.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Metric Optimization</h4>
-                        <p class="text-gray-600">Post-processing. Finding the optimal probability threshold to maximize F1/MCC.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Day 8 -->
-            <div class="bg-white border-2 border-gray-200 p-8 shadow-md">
-                <h3 class="text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-6">Day 08: Production Pipelines</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[13px] leading-relaxed">
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">1. Modular Code</h4>
-                        <p class="text-gray-600">Architecting clean pipelines with modular Python scripts (Prep, Model, Main).</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">2. Collaborative Git</h4>
-                        <p class="text-gray-600">Handling PRs, branching, and merge conflicts under competition stress.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-dark border-b border-gray-100 pb-1">3. Master Template</h4>
-                        <p class="text-gray-600">Building a ready-to-run template for instant deployment in any datathon.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Day 9 -->
-            <div class="bg-dark text-white p-8 border-l-8 border-primary">
-                <h3 class="text-xl font-bold mb-4 uppercase tracking-widest">Day 09: 4-Hour Mock Competition</h3>
-                <p class="text-sm mb-6 text-gray-300">Apply everything. A raw dataset, a hidden test set, and a ticking clock. Your mission is to iterate, validate, and blend your way to the top of the leaderboard.</p>
-                <div class="flex gap-4">
-                    <a href="materials.html" class="bg-primary px-6 py-2 font-bold text-sm hover:bg-green-600 transition">View Materials</a>
-                    <a href="https://github.com/rmia46/fluent-data-science/tree/main/09_Mock_Competition" class="bg-white text-dark px-6 py-2 font-bold text-sm hover:bg-gray-200 transition">GitHub Data</a>
+            <!-- Module 9 -->
+            <div class="bg-dark text-white p-8 border-l-8 border-primary shadow-xl">
+                <h3 class="text-xl font-bold mb-4 uppercase tracking-widest">Module 09: 4-Hour Mock Competition</h3>
+                <p class="text-[13px] mb-6 text-gray-300 leading-relaxed"><strong>The Final Sprint:</strong> Apply every skill to a raw, messy dataset in a simulated competition environment. Pick a historic Kaggle tabular problem, use your Day 7 template, and iterate your way to the top under a ticking clock.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="materials.html" class="bg-primary px-8 py-3 font-bold text-sm hover:bg-green-600 transition text-center">View Materials</a>
+                    <a href="https://github.com/rmia46/fluent-data-science/tree/main/09_Mock_Competition" class="bg-white text-dark px-8 py-3 font-bold text-sm hover:bg-gray-200 transition text-center" target="_blank">Access Training Data</a>
                 </div>
             </div>
         </div>
-
-        <footer class="mt-20 pt-8 border-t border-gray-300 text-center text-gray-500 text-sm">
-            <p>Prepared by Roman Mia @rmia46</p>
-        </footer>
     </div>
-    <script src="script.js"></script>
+
+    <script src="components/common.js"></script>
 </body>
 </html>
