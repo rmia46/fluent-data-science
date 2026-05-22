@@ -1,4 +1,4 @@
-[
+const FILE_TREE = [
   {
     "name": "01_Mathematics_for_ML",
     "type": "directory",
@@ -9,19 +9,9 @@
         "path": "01_Mathematics_for_ML/Validation.py"
       },
       {
-        "name": "hessian_matrix.png",
-        "type": "file",
-        "path": "01_Mathematics_for_ML/hessian_matrix.png"
-      },
-      {
         "name": "educational-illustration-showing-right-skewed-data.jpeg",
         "type": "file",
         "path": "01_Mathematics_for_ML/educational-illustration-showing-right-skewed-data.jpeg"
-      },
-      {
-        "name": "educational-infographic-showing-four-statistical-d.jpeg",
-        "type": "file",
-        "path": "01_Mathematics_for_ML/educational-infographic-showing-four-statistical-d.jpeg"
       },
       {
         "name": "educational-infographic-of-the-standard-normal-dis.jpeg",
@@ -29,13 +19,23 @@
         "path": "01_Mathematics_for_ML/educational-infographic-of-the-standard-normal-dis.jpeg"
       },
       {
+        "name": "educational-infographic-showing-four-statistical-d.jpeg",
+        "type": "file",
+        "path": "01_Mathematics_for_ML/educational-infographic-showing-four-statistical-d.jpeg"
+      },
+      {
+        "name": "hessian_matrix.png",
+        "type": "file",
+        "path": "01_Mathematics_for_ML/hessian_matrix.png"
+      },
+      {
         "name": "notebooks",
         "type": "directory",
         "children": [
           {
-            "name": "datasets",
-            "type": "directory",
-            "children": []
+            "name": "Day1_Mathematics_for_ML_Practice.ipynb",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/notebooks/Day1_Mathematics_for_ML_Practice.ipynb"
           },
           {
             "name": "Practice.ipynb",
@@ -48,9 +48,9 @@
             "path": "01_Mathematics_for_ML/notebooks/Theory.ipynb"
           },
           {
-            "name": "Day1_Mathematics_for_ML_Practice.ipynb",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/notebooks/Day1_Mathematics_for_ML_Practice.ipynb"
+            "name": "datasets",
+            "type": "directory",
+            "children": []
           }
         ]
       },
@@ -62,26 +62,6 @@
             "name": "Learning_Outcome.pdf",
             "type": "file",
             "path": "01_Mathematics_for_ML/pdf_materials/Learning_Outcome.pdf"
-          },
-          {
-            "name": "review_calculus.pdf",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/pdf_materials/review_calculus.pdf"
-          },
-          {
-            "name": "review_linear_algebra.pdf",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/pdf_materials/review_linear_algebra.pdf"
-          },
-          {
-            "name": "review_statistics_part2.pdf",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/pdf_materials/review_statistics_part2.pdf"
-          },
-          {
-            "name": "review_stat_part1.pdf",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/pdf_materials/review_stat_part1.pdf"
           },
           {
             "name": "Theory_Calculus.pdf",
@@ -97,6 +77,26 @@
             "name": "Theory_Stats.pdf",
             "type": "file",
             "path": "01_Mathematics_for_ML/pdf_materials/Theory_Stats.pdf"
+          },
+          {
+            "name": "review_calculus.pdf",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/pdf_materials/review_calculus.pdf"
+          },
+          {
+            "name": "review_linear_algebra.pdf",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/pdf_materials/review_linear_algebra.pdf"
+          },
+          {
+            "name": "review_stat_part1.pdf",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/pdf_materials/review_stat_part1.pdf"
+          },
+          {
+            "name": "review_statistics_part2.pdf",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/pdf_materials/review_statistics_part2.pdf"
           }
         ]
       },
@@ -108,26 +108,6 @@
             "name": "Learning_Outcome.tex",
             "type": "file",
             "path": "01_Mathematics_for_ML/theory_tex/Learning_Outcome.tex"
-          },
-          {
-            "name": "review_calculus.tex",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/theory_tex/review_calculus.tex"
-          },
-          {
-            "name": "review_linear_algebra.tex",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/theory_tex/review_linear_algebra.tex"
-          },
-          {
-            "name": "review_statistics_probability.tex",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/theory_tex/review_statistics_probability.tex"
-          },
-          {
-            "name": "review_statistics.tex",
-            "type": "file",
-            "path": "01_Mathematics_for_ML/theory_tex/review_statistics.tex"
           },
           {
             "name": "Theory_Calculus.tex",
@@ -143,6 +123,26 @@
             "name": "Theory_Stats.tex",
             "type": "file",
             "path": "01_Mathematics_for_ML/theory_tex/Theory_Stats.tex"
+          },
+          {
+            "name": "review_calculus.tex",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/theory_tex/review_calculus.tex"
+          },
+          {
+            "name": "review_linear_algebra.tex",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/theory_tex/review_linear_algebra.tex"
+          },
+          {
+            "name": "review_statistics.tex",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/theory_tex/review_statistics.tex"
+          },
+          {
+            "name": "review_statistics_probability.tex",
+            "type": "file",
+            "path": "01_Mathematics_for_ML/theory_tex/review_statistics_probability.tex"
           }
         ]
       }
@@ -162,11 +162,6 @@
         "type": "directory",
         "children": [
           {
-            "name": "datasets",
-            "type": "directory",
-            "children": []
-          },
-          {
             "name": "Practice.ipynb",
             "type": "file",
             "path": "02_Tabular_Foundations/notebooks/Practice.ipynb"
@@ -175,6 +170,11 @@
             "name": "Theory.ipynb",
             "type": "file",
             "path": "02_Tabular_Foundations/notebooks/Theory.ipynb"
+          },
+          {
+            "name": "datasets",
+            "type": "directory",
+            "children": []
           }
         ]
       },
@@ -211,6 +211,26 @@
         "type": "directory",
         "children": [
           {
+            "name": "Practice.ipynb",
+            "type": "file",
+            "path": "03_Feature_Engineering_I/notebooks/Practice.ipynb"
+          },
+          {
+            "name": "Theory.ipynb",
+            "type": "file",
+            "path": "03_Feature_Engineering_I/notebooks/Theory.ipynb"
+          },
+          {
+            "name": "Validation.py",
+            "type": "file",
+            "path": "03_Feature_Engineering_I/notebooks/Validation.py"
+          },
+          {
+            "name": "datasets",
+            "type": "directory",
+            "children": []
+          },
+          {
             "name": "feat_eng_1_enc.py",
             "type": "file",
             "path": "03_Feature_Engineering_I/notebooks/feat_eng_1_enc.py"
@@ -239,26 +259,6 @@
             "name": "feat_eng_1_scale.py",
             "type": "file",
             "path": "03_Feature_Engineering_I/notebooks/feat_eng_1_scale.py"
-          },
-          {
-            "name": "Practice.ipynb",
-            "type": "file",
-            "path": "03_Feature_Engineering_I/notebooks/Practice.ipynb"
-          },
-          {
-            "name": "Theory.ipynb",
-            "type": "file",
-            "path": "03_Feature_Engineering_I/notebooks/Theory.ipynb"
-          },
-          {
-            "name": "Validation.py",
-            "type": "file",
-            "path": "03_Feature_Engineering_I/notebooks/Validation.py"
-          },
-          {
-            "name": "datasets",
-            "type": "directory",
-            "children": []
           }
         ]
       },
@@ -266,11 +266,6 @@
         "name": "pdf_materials",
         "type": "directory",
         "children": [
-          {
-            "name": "review_feature_engineering_1.pdf",
-            "type": "file",
-            "path": "03_Feature_Engineering_I/pdf_materials/review_feature_engineering_1.pdf"
-          },
           {
             "name": "Theory_Categorical.pdf",
             "type": "file",
@@ -285,6 +280,11 @@
             "name": "Theory_Numerical.pdf",
             "type": "file",
             "path": "03_Feature_Engineering_I/pdf_materials/Theory_Numerical.pdf"
+          },
+          {
+            "name": "review_feature_engineering_1.pdf",
+            "type": "file",
+            "path": "03_Feature_Engineering_I/pdf_materials/review_feature_engineering_1.pdf"
           }
         ]
       },
@@ -292,11 +292,6 @@
         "name": "theory_tex",
         "type": "directory",
         "children": [
-          {
-            "name": "review_feature_engineering_1.tex",
-            "type": "file",
-            "path": "03_Feature_Engineering_I/theory_tex/review_feature_engineering_1.tex"
-          },
           {
             "name": "Theory_Categorical.tex",
             "type": "file",
@@ -311,6 +306,11 @@
             "name": "Theory_Numerical.tex",
             "type": "file",
             "path": "03_Feature_Engineering_I/theory_tex/Theory_Numerical.tex"
+          },
+          {
+            "name": "review_feature_engineering_1.tex",
+            "type": "file",
+            "path": "03_Feature_Engineering_I/theory_tex/review_feature_engineering_1.tex"
           }
         ]
       }
@@ -330,11 +330,6 @@
         "type": "directory",
         "children": [
           {
-            "name": "datasets",
-            "type": "directory",
-            "children": []
-          },
-          {
             "name": "Practice.ipynb",
             "type": "file",
             "path": "04_Feature_Engineering_II/notebooks/Practice.ipynb"
@@ -343,6 +338,11 @@
             "name": "Theory.ipynb",
             "type": "file",
             "path": "04_Feature_Engineering_II/notebooks/Theory.ipynb"
+          },
+          {
+            "name": "datasets",
+            "type": "directory",
+            "children": []
           }
         ]
       },
@@ -404,11 +404,6 @@
         "type": "directory",
         "children": [
           {
-            "name": "datasets",
-            "type": "directory",
-            "children": []
-          },
-          {
             "name": "Practice.ipynb",
             "type": "file",
             "path": "05_Validation_Architecture/notebooks/Practice.ipynb"
@@ -417,6 +412,11 @@
             "name": "Theory.ipynb",
             "type": "file",
             "path": "05_Validation_Architecture/notebooks/Theory.ipynb"
+          },
+          {
+            "name": "datasets",
+            "type": "directory",
+            "children": []
           }
         ]
       },
@@ -478,11 +478,6 @@
         "type": "directory",
         "children": [
           {
-            "name": "datasets",
-            "type": "directory",
-            "children": []
-          },
-          {
             "name": "Practice.ipynb",
             "type": "file",
             "path": "06_Tree_Based_Models/notebooks/Practice.ipynb"
@@ -491,6 +486,11 @@
             "name": "Theory.ipynb",
             "type": "file",
             "path": "06_Tree_Based_Models/notebooks/Theory.ipynb"
+          },
+          {
+            "name": "datasets",
+            "type": "directory",
+            "children": []
           }
         ]
       },
@@ -552,9 +552,9 @@
         "type": "directory",
         "children": [
           {
-            "name": "datasets",
-            "type": "directory",
-            "children": []
+            "name": "Day7_Optimization_and_Ensembling_Practice.ipynb",
+            "type": "file",
+            "path": "07_Optimization_and_Ensembling/notebooks/Day7_Optimization_and_Ensembling_Practice.ipynb"
           },
           {
             "name": "Practice.ipynb",
@@ -567,9 +567,9 @@
             "path": "07_Optimization_and_Ensembling/notebooks/Theory.ipynb"
           },
           {
-            "name": "Day7_Optimization_and_Ensembling_Practice.ipynb",
-            "type": "file",
-            "path": "07_Optimization_and_Ensembling/notebooks/Day7_Optimization_and_Ensembling_Practice.ipynb"
+            "name": "datasets",
+            "type": "directory",
+            "children": []
           }
         ]
       },
@@ -622,11 +622,6 @@
     "type": "directory",
     "children": [
       {
-        "name": "Reading_Modular_Script_Architecture.tex",
-        "type": "file",
-        "path": "08_Production_Pipelines/Reading_Modular_Script_Architecture.tex"
-      },
-      {
         "name": "Reading_Advanced_Feature_Pipeline.tex",
         "type": "file",
         "path": "08_Production_Pipelines/Reading_Advanced_Feature_Pipeline.tex"
@@ -640,6 +635,11 @@
         "name": "Reading_Managing_Template.tex",
         "type": "file",
         "path": "08_Production_Pipelines/Reading_Managing_Template.tex"
+      },
+      {
+        "name": "Reading_Modular_Script_Architecture.tex",
+        "type": "file",
+        "path": "08_Production_Pipelines/Reading_Modular_Script_Architecture.tex"
       }
     ]
   },
@@ -652,14 +652,14 @@
         "type": "directory",
         "children": [
           {
-            "name": "train.csv",
-            "type": "file",
-            "path": "09_Mock_Competition/data/train.csv"
-          },
-          {
             "name": "test.csv",
             "type": "file",
             "path": "09_Mock_Competition/data/test.csv"
+          },
+          {
+            "name": "train.csv",
+            "type": "file",
+            "path": "09_Mock_Competition/data/train.csv"
           },
           {
             "name": "transactions.csv",
@@ -670,4 +670,4 @@
       }
     ]
   }
-]
+];
