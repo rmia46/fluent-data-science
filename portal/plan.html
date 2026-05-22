@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Plan | Fluent Data Science</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .plan-section { background: white; border: 4px solid var(--primary); padding: 30px; margin-bottom: 40px; }
+        .day-title { color: var(--primary); font-size: 1.8rem; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-top: 30px; }
+        .session-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .session-box { border: 2px solid #eee; padding: 15px; }
+        .session-box h4 { margin-top: 0; color: var(--dark); border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
+        .tag { display: inline-block; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-right: 5px; }
+        .tag-lecture { background: var(--light); color: var(--primary); }
+        .tag-practice { background: #ffebee; color: #c62828; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; }
+        .meta-item { background: var(--light); padding: 10px 20px; border-left: 5px solid var(--primary); flex: 1; min-width: 150px; }
+        .meta-item h5 { margin: 0; font-size: 0.8rem; color: #666; text-transform: uppercase; }
+        .meta-item p { margin: 5px 0 0 0; font-weight: bold; color: var(--dark); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Learning Path & Curriculum</h1>
+            <p>The 9-Day Hyper-Drive Strategy for Competitive Data Science</p>
+        </header>
+
+        <div class="meta-info">
+            <div class="meta-item"><h5>Duration</h5><p>9 Days Total</p></div>
+            <div class="meta-item"><h5>Daily Rigor</h5><p>9 Hours</p></div>
+            <div class="meta-item"><h5>Split</h5><p>1hr Read / 2hr Practice</p></div>
+            <div class="meta-item"><h5>Focus</h5><p>End-to-End Tabular</p></div>
+        </div>
+
+        <div class="plan-section">
+            <h3 class="day-title">Day 01: Mathematics for Machine Learning</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: Linear Algebra</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Vectors, matrices, dot products, and dimensions.</p>
+                    <p><span class="tag tag-practice">Practice</span> Implement matrix operations using NumPy.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: Calculus</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Derivatives, partials, and the chain rule.</p>
+                    <p><span class="tag tag-practice">Practice</span> Write a gradient descent loop from scratch.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Probability</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Distributions, Bayes' Theorem, and Z-scores.</p>
+                    <p><span class="tag tag-practice">Practice</span> Simulate distributions and calculate Z-scores.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 02: Tabular Foundations</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: Pandas & Vectorization</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Fast data loading, indexing, and avoiding slow loops.</p>
+                    <p><span class="tag tag-practice">Practice</span> 15 unique manipulation and multi-index challenges.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: Merging & Aggregations</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Mastering .groupby(), .merge(), and .join().</p>
+                    <p><span class="tag tag-practice">Practice</span> Combine relational tables and build custom aggregates.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Data Cleaning</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Imputation strategies vs. missingness indicator flags.</p>
+                    <p><span class="tag tag-practice">Practice</span> Build a robust processing function for corrupted data.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 03: Feature Engineering I</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: Categorical Encoding</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> OHE vs. Label vs. Frequency Encoding. Cardinality management.</p>
+                    <p><span class="tag tag-practice">Practice</span> Process high-cardinality values without memory leaks.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: Numerical Scaling</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Skewness, log transforms, and Scaling choices (Z-score, MinMax).</p>
+                    <p><span class="tag tag-practice">Practice</span> Apply transformations and map distributions with Seaborn.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Interaction Features</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Mathematical combinations (ratios, products) and binning.</p>
+                    <p><span class="tag tag-practice">Practice</span> Construct 5 high-impact interaction features on Titanic data.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 04: Feature Engineering II</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: Target Encoding</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Encoding categories based on target values with smoothing.</p>
+                    <p><span class="tag tag-practice">Practice</span> Build a Target Encoder with OOF protection from scratch.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: Contextual Transforms</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Using .transform() to create peer-group contextual metrics.</p>
+                    <p><span class="tag tag-practice">Practice</span> Build 10 contextual features on messy transactional data.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Feature Selection</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Dropping collinear features and evaluating importance scores.</p>
+                    <p><span class="tag tag-practice">Practice</span> Prune the bottom 50% of low-performing features ruthlessly.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 05: Validation Architecture</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: CV Frameworks</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> K-Fold vs. Stratified vs. Time-Series Splits.</p>
+                    <p><span class="tag tag-practice">Practice</span> Write a robust, reusable Stratified 5-Fold CV loop.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: Baseline Models</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> API consistency. Training Ridge, RF, and Logistic baselines.</p>
+                    <p><span class="tag tag-practice">Practice</span> Generate an end-to-end output submission file.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Leakage Auditing</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Detecting silent performance-inflation traps.</p>
+                    <p><span class="tag tag-practice">Practice</span> Audit and refactor a broken, leaky pipeline.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 06: Tree-Based Models</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: LightGBM</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Leaf-wise growth and missing values handling.</p>
+                    <p><span class="tag tag-practice">Practice</span> Implement LGBM inside your OOF CV loop.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: XGBoost</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Level-wise growth and L1/L2 regularization.</p>
+                    <p><span class="tag tag-practice">Practice</span> Deploy XGBoost side-by-side with LGBM on same folds.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Hyperparameter Deep-Dive</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Structural vs. Stochastic adjustments (Subsample, Depth).</p>
+                    <p><span class="tag tag-practice">Practice</span> Map overfitting curves to find optimal tree complexity.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 07: Optimization & Ensembling</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: Optuna</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Bayesian search optimization for parameter tuning.</p>
+                    <p><span class="tag tag-practice">Practice</span> Automated Optuna script for 50-trial LGBM study.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: Blending</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Principles of model ensembling and prediction smoothing.</p>
+                    <p><span class="tag tag-practice">Practice</span> Compute weighted blends between LGBM and XGBoost.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Metric Optimization</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Probability cutoff points vs. standard 0.5 rules.</p>
+                    <p><span class="tag tag-practice">Practice</span> Threshold scanning loop (0.01 to 0.99) for F1-score maximization.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 08: Production Pipelines</h3>
+            <div class="session-grid">
+                <div class="session-box">
+                    <h4>Session 1: Modular Scripts</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Architecting clean file paths (data_prep.py, models.py).</p>
+                    <p><span class="tag tag-practice">Practice</span> Convert notebooks into modular executable scripts.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 2: Git Workflows</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Managing branches, PRs, and merge conflicts.</p>
+                    <p><span class="tag tag-practice">Practice</span> Simulate a live team sprint: Prep vs Ensembling.</p>
+                </div>
+                <div class="session-box">
+                    <h4>Session 3: Master Template</h4>
+                    <p><span class="tag tag-lecture">Lecture</span> Building your 30-minute "Ready-to-Run" pipeline.</p>
+                    <p><span class="tag tag-practice">Practice</span> Lock in a template for instant datathon deployment.</p>
+                </div>
+            </div>
+
+            <h3 class="day-title">Day 09: Mock Competition</h3>
+            <div style="padding: 20px; border: 1px solid var(--primary); background: #fafafa;">
+                <p><strong>The Final Sprint:</strong> Apply every skill to a raw, messy dataset in a 4-hour simulated competition environment.</p>
+                <a href="materials.html" class="btn">View Challenge Details</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Prepared by Roman Mia @rmia46</p>
+        </footer>
+    </div>
+</body>
+</html>
