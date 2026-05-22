@@ -228,7 +228,28 @@ const FILE_TREE = [
           {
             "name": "datasets",
             "type": "directory",
-            "children": []
+            "children": [
+              {
+                "name": "data.csv",
+                "type": "file",
+                "path": "03_Feature_Engineering_I/notebooks/datasets/data.csv"
+              },
+              {
+                "name": "dataset_step1_cleaned.csv",
+                "type": "file",
+                "path": "03_Feature_Engineering_I/notebooks/datasets/dataset_step1_cleaned.csv"
+              },
+              {
+                "name": "dataset_step2_encoded.csv",
+                "type": "file",
+                "path": "03_Feature_Engineering_I/notebooks/datasets/dataset_step2_encoded.csv"
+              },
+              {
+                "name": "dataset_step3_scaled.csv",
+                "type": "file",
+                "path": "03_Feature_Engineering_I/notebooks/datasets/dataset_step3_scaled.csv"
+              }
+            ]
           },
           {
             "name": "feat_eng_1_enc.py",
