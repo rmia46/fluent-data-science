@@ -14,7 +14,7 @@ configScript.innerHTML = `
 `;
 document.head.appendChild(configScript);
 
-// 2. Global Styles (Fixing the @apply bug in external CSS)
+// 2. Global Styles
 const styleHTML = `
 <style type="text/tailwindcss">
     @layer base {
@@ -25,22 +25,22 @@ const styleHTML = `
         @apply max-w-5xl mx-auto px-6 md:px-16 py-10; 
     }
     .card-standard { @apply bg-white border-2 border-gray-200 shadow-md p-6; }
+    .hidden { display: none; }
 </style>
 `;
 document.head.insertAdjacentHTML('beforeend', styleHTML);
 
-// 3. Detect Path Depth
 const isSubfolder = window.location.pathname.includes('/learn/');
 const root = isSubfolder ? '../' : '';
 
 const navHTML = `
-    <nav class="bg-[#2e7d32] py-1 sticky top-0 z-50 shadow-md">
+    <nav class="bg-[#2e7d32] py-3 sticky top-0 z-50 shadow-md">
         <div class="max-w-5xl mx-auto flex justify-between items-center px-6 md:px-16">
-            <a href="${root}index.html" class="text-white font-bold text-base tracking-tight">Fluent Data Science</a>
+            <a href="${root}index.html" class="text-white font-bold text-lg tracking-tight">Fluent Data Science</a>
             <div class="hidden md:flex space-x-8 text-sm">
                 <a href="${root}index.html" class="text-white hover:text-green-100 transition">Home</a>
                 <a href="${root}plan.html" class="text-white hover:text-green-100 transition">Plan</a>
-                <a href="${root}learn.html" class="text-white hover:text-green-100 transition">Learn</a>
+                <a href="${root}learn.html" class="text-white hover:text-green-100 transition font-bold">Learn</a>
                 <a href="${root}materials.html" class="text-white hover:text-green-100 transition">Materials</a>
             </div>
             <button id="menu-btn" class="md:hidden text-white focus:outline-none">
@@ -64,17 +64,11 @@ const footerHTML = `
     </footer>
 `;
 
-// Inject components on load
 document.addEventListener('DOMContentLoaded', () => {
-    // Inject Nav
-    const body = document.body;
-    body.insertAdjacentHTML('afterbegin', navHTML);
-    
-    // Inject Footer into the main container (usually max-w-5xl)
-    const container = document.querySelector('.page-container') || body;
+    document.body.insertAdjacentHTML('afterbegin', navHTML);
+    const container = document.querySelector('.page-container') || document.body;
     container.insertAdjacentHTML('beforeend', footerHTML);
 
-    // Mobile Menu Logic
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     if (menuBtn && mobileMenu) {
@@ -82,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Global Helpers
 window.toggleAnswer = function(id) {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('hidden');

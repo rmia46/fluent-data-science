@@ -5,25 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curriculum Explorer | Fluent Data Science</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
-                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        .hidden { display: none; }
-    </style>
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <div class="page-container">
-        <div class="bg-white border-b-4 border-primary p-6 sticky top-20 z-40 mb-8 shadow-sm flex justify-between items-center">
+        <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
             <h1 class="text-2xl font-bold text-dark">Curriculum Explorer</h1>
-            <div class="text-lg font-bold text-primary">Progress: <span id="progress-percent">0%</span></div>
+            <div class="text-lg font-bold text-primary">Total Progress: <span id="progress-percent">0%</span></div>
         </div>
 
         <div id="file-browser" class="space-y-4">
