@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 01: Mathematics for ML | Fluent Data Science</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for LaTeX support -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2e7d32',
+                        dark: '#1b5e20',
+                        light: '#e8f5e9',
+                    },
+                    fontFamily: {
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            * { border-radius: 0 !important; }
+            body { @apply font-mono bg-white text-gray-900; }
+        }
+        .reveal-answer { @apply hidden bg-light p-4 border-l-4 border-primary mt-4; }
+        .intuition-box { @apply bg-light p-6 border-l-8 border-primary my-8 italic; }
+        .outcome-box { @apply bg-dark text-white p-8 my-12; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-primary p-4 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-white font-bold text-xl">Fluent Data Science</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="../index.html" class="text-white hover:text-light transition">Home</a>
+                <a href="../plan.html" class="text-white hover:text-light transition">Plan</a>
+                <a href="../learn.html" class="text-white hover:text-light transition underline underline-offset-4">Learn</a>
+                <a href="../materials.html" class="text-white hover:text-light transition">Materials</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-12 max-w-4xl bg-white shadow-xl min-h-screen">
+        <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
+        
+        <header class="mb-16">
+            <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 01</h3>
+            <h1 class="text-4xl font-bold text-dark mb-4">Mathematics for Machine Learning</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">The invisible engine that powers every prediction, optimization, and decision in Data Science.</p>
+        </header>
+
+        <!-- Topic 1: Linear Algebra -->
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. Linear Algebra: The Language of Data</h2>
+            
+            <h3 class="text-lg font-bold text-dark mt-8 mb-4">Why do we need this?</h3>
+            <p class="text-gray-700 mb-6">Computers don't "see" tables; they see multi-dimensional matrices. Linear Algebra allows us to treat a dataset of 1,000,000 rows as a single mathematical object, performing complex operations across all samples simultaneously using optimized hardware (GPUs).</p>
+
+            <div class="intuition-box">
+                <h4 class="font-bold mb-2">Intuition: Coordinates in Space</h4>
+                Imagine a house. Instead of describing it with words, you describe it with a vector: $\mathbf{x} = [3, 1500, 2]^T$ (Bedrooms, SqFt, Bathrooms). Linear Algebra is simply the math of moving and stretching these points in space to find patterns.
+            </div>
+
+            <h3 class="text-lg font-bold text-dark mb-4">Key Example: The Dot Product</h3>
+            <p class="text-gray-700 mb-4">The dot product $\mathbf{w} \cdot \mathbf{x}$ measures "alignment." In Machine Learning, if $\mathbf{w}$ represents the importance of features and $\mathbf{x}$ is a data point, their dot product is the prediction score.</p>
+            <div class="bg-gray-100 p-4 font-mono text-sm border-l-4 border-gray-400 mb-8">
+                $\hat{y} = w_1x_1 + w_2x_2 + \dots + w_nx_n + b$
+            </div>
+
+            <div class="my-10 p-6 border-2 border-primary">
+                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
+                <p class="text-gray-700 mb-4 text-sm">If a weight vector $\mathbf{w} = [0.5, 0.5]$ and an input vector $\mathbf{x} = [10, 20]$, what is the prediction score (ignoring bias)?</p>
+                <button onclick="document.getElementById('ans1').classList.toggle('hidden')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
+                <div id="ans1" class="reveal-answer text-sm">
+                    Answer: $0.5(10) + 0.5(20) = 5 + 10 = \mathbf{15}$.
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic 2: Calculus -->
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">2. Calculus: The Engine of Optimization</h2>
+            
+            <h3 class="text-lg font-bold text-dark mt-8 mb-4">Why do we need this?</h3>
+            <p class="text-gray-700 mb-6">Machine Learning is essentially "finding the best settings." Calculus (specifically derivatives) tells us exactly how to change a model's weights to reduce its error. Without calculus, we would be guessing blindly.</p>
+
+            <div class="intuition-box">
+                <h4 class="font-bold mb-2">Intuition: The Blind Hiker</h4>
+                Imagine you are on a mountain in a thick fog. You want to reach the valley (the minimum error). You can't see the path, but you can feel the slope under your feet. The <strong>Gradient</strong> is that slope, telling you which direction to step to go down.
+            </div>
+
+            <h3 class="text-lg font-bold text-dark mb-4">Key Example: Gradient Descent</h3>
+            <p class="text-gray-700 mb-4">The formula for updating a weight $w$ based on its gradient $g$ and learning rate $\eta$:</p>
+            <div class="bg-gray-100 p-4 font-mono text-sm border-l-4 border-gray-400 mb-8 text-center">
+                $w_{new} = w_{old} - \eta \cdot \nabla L(w)$
+            </div>
+
+            <div class="my-10 p-6 border-2 border-primary">
+                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
+                <p class="text-gray-700 mb-4 text-sm">If your loss function's slope (gradient) is positive, should you increase or decrease your weight to find the minimum?</p>
+                <button onclick="document.getElementById('ans2').classList.toggle('hidden')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
+                <div id="ans2" class="reveal-answer text-sm">
+                    Answer: <strong>Decrease</strong>. A positive slope means the mountain goes UP as you move right. To go DOWN, you must move left (decrease).
+                </div>
+            </div>
+        </section>
+
+        <!-- Module Outcome -->
+        <div class="outcome-box shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
+            <p class="mb-6 opacity-90 text-sm leading-relaxed">After completing this module, you should be able to:</p>
+            <ul class="space-y-4 text-sm">
+                <li class="flex items-start"><span class="mr-2 text-accent">✓</span> Visualize data as vectors in space.</li>
+                <li class="flex items-start"><span class="mr-2 text-accent">✓</span> Understand why "The Gradient" is the compass of learning.</li>
+                <li class="flex items-start"><span class="mr-2 text-accent">✓</span> Differentiate between Mean (signal) and Standard Deviation (noise).</li>
+            </ul>
+            <div class="mt-10 p-4 border border-white border-opacity-20 text-xs italic">
+                Note: If you do not feel confident in these concepts, spend more time on the Module 01 Practice Notebook before moving to tabular data.
+            </div>
+        </div>
+
+        <footer class="mt-20 pt-8 border-t border-gray-300 text-center text-gray-500 text-sm">
+            <p>Prepared by Roman Mia @rmia46</p>
+        </footer>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (menuBtn && mobileMenu) {
+            menuBtn.onclick = () => mobileMenu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
