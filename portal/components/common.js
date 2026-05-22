@@ -5,9 +5,9 @@ const isSubfolder = window.location.pathname.includes('/learn/');
 const root = isSubfolder ? '../' : '';
 
 const navHTML = `
-    <nav class="bg-[#2e7d32] p-4 sticky top-0 z-50 shadow-md">
-        <div class="container mx-auto flex justify-between items-center max-w-5xl">
-            <a href="${root}index.html" class="text-white font-bold text-xl">Fluent Data Science</a>
+    <nav class="bg-[#2e7d32] p-2 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center max-w-5xl px-4">
+            <a href="${root}index.html" class="text-white font-bold text-lg">Fluent Data Science</a>
             <div class="hidden md:flex space-x-6">
                 <a href="${root}index.html" class="text-white hover:text-green-100 transition">Home</a>
                 <a href="${root}plan.html" class="text-white hover:text-green-100 transition">Plan</a>
