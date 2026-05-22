@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 08: Production Pipelines | Fluent Data Science</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+    </script>
+    <link rel="stylesheet" href="../theme.css">
+</head>
+<body>
+    <div class="page-container bg-white shadow-xl min-h-screen">
+        <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
+        
+        <header class="mb-16">
+            <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 08</h3>
+            <h1 class="text-4xl font-bold text-dark mb-4">Production Pipelines & Modular Architecture</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">Transitioning from experimental notebooks to professional, scalable machine learning systems.</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-modular', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">Modular Code</button>
+            <button onclick="switchTab('tab-git', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Collaborative Git</button>
+            <button onclick="switchTab('tab-template', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Master Template</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
+
+        <!-- TAB 1: MODULAR CODE -->
+        <div id="tab-modular" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">1. The Single-Responsibility Principle</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Notebooks are great for exploration, but professional pipelines require <strong>Modular Scripts</strong>. In high-pressure datathons, unorganized notebooks cause silent variable overwrites and tracking failures.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we bundle our messy experimentation into a clean, reproducible engine where updating a single path or hyperparameter doesn't require searching through 50 cells?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Blueprint Layout</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        By separating concerns, team members can work in parallel. A standard professional structure uses a <code>src/</code> directory for logic and a <code>main.py</code> for orchestration.
+                    </p>
+                    <div class="bg-gray-100 p-6 font-mono text-xs border-2 border-gray-300">
+                        <pre>
+.
+├── src/
+│   ├── config.py         # Global Constants & Paths
+│   ├── preprocessing.py  # Data loading & Cleaning
+│   ├── features.py       # Engineering Factory
+│   └── models.py         # CV & Ensembling
+└── main.py               # The Orchestrator
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">A teammate writes a feature engineering function that hardcodes <code>train.csv</code> inside the function. Why is this an anti-pattern?</p>
+                    <button onclick="toggleAnswer('ans-modular-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-modular-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> This violates <strong>Single Responsibility</strong>. Data paths should live exclusively in <code>config.py</code>. If you need to rename a file or point to a new version, you should only have to change it in one place, not hunt through your engineering functions.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: COLLABORATIVE GIT -->
+        <div id="tab-git" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">2. High-Velocity Git Workflows</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Sacrificing code management for speed in a hackathon creates a massive bottleneck. Uncoordinated pushes will break execution paths and destroy valuable work.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Pristine Production Standard</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        The <code>main</code> branch is sacred. It must always hold a functional, end-to-end baseline. Every experiment must happen on a <strong>Feature Branch</strong>.
+                    </p>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary overflow-x-auto">
+                        <span class="text-gray-400"># Start a new experiment</span><br>
+                        git checkout -b feature/transaction-aggs<br>
+                        <span class="text-gray-400"># Atomic commit</span><br>
+                        git commit -m "feat: add user spend transform"
+                    </div>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Surgery Suite</h4>
+                        You don't operate on a patient while they are walking around (Main Branch). You move them to a separate room (Feature Branch), perform the surgery, and only when they are stable and verified do you bring them back to the ward.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">Why are "Atomic Commits" (one change per save) a competitive safety net?</p>
+                    <button onclick="toggleAnswer('ans-git-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-git-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> If a new feature causes your CV score to drop, atomic logs allow you to pinpoint and <strong>roll back</strong> exactly that unit of work without losing any other improvements made by the rest of the team.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: MASTER TEMPLATE -->
+        <div id="tab-template" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">3. The 20-Minute Leaderboard Target</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Teams that waste time re-writing boilerplate code fall behind immediately. Your goal is to have your first baseline submission locked in within 20 minutes of kickoff.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The "Secret Weapon" Architecture</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        A master template consolidates a week's worth of engineering into a single, plug-and-play script. It should include:
+                    </p>
+                    <ul class="list-disc ml-6 text-sm text-gray-600 space-y-2">
+                        <li><strong>Stratified 5-Fold Loop:</strong> Pre-built and tested.</li>
+                        <li><strong>Optuna Integration:</strong> Ready to toggle on.</li>
+                        <li><strong>Blending Suite:</strong> Auto-calculates weighted averages.</li>
+                        <li><strong>Threshold Scanner:</strong> Optimized cutoff search.</li>
+                    </ul>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">Your team plugs data into the template. It runs in 12 mins but gives a poor F1-score of 0.12. Is the template a failure?</p>
+                    <button onclick="toggleAnswer('ans-temp-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-temp-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> <strong>NO. It is a massive success.</strong> The template proved the execution path works and gave you a score in 12 minutes. You now know the issue is <strong>Data-related</strong> (missing signals, imbalance), not code-related. You can spend the next 3 hours focusing on the data instead of debugging script errors.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist -->
+        <div class="bg-dark text-white p-8 my-12 shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Modular Architecture:</strong> Deconstruct notebooks into single-responsibility Python modules (Config, Prep, Model).</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Sacred Main:</strong> Maintain a pristine <code>main</code> branch with a verified end-to-end baseline pipeline.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Conflict Resolution:</strong> Resolve structural Git boundary markers to integrate parallel feature streams.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Zero Boilerplate:</strong> Build a plug-and-play master template to lock in your first submission within 20 minutes.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="../tree_data.js"></script>
+    <script src="../explorer.js"></script>
+    <script src="../components/common.js"></script>
+</body>
+</html>

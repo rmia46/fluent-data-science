@@ -3,64 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 04: Advanced Feature Engineering | Fluent Data Science</title>
+    <title>Module 04: Feature Engineering II | Fluent Data Science</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
-                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
-                }
-            }
-        }
     </script>
+    <link rel="stylesheet" href="../theme.css">
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
         <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
         
-        <header class="mb-16">
+        <header class="mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 04</h3>
             <h1 class="text-4xl font-bold text-dark mb-4">Advanced Feature Engineering</h1>
-            <p class="text-gray-600 text-lg leading-relaxed">Target encoding, contextual transforms, and automated selection.</p>
+            <p class="text-gray-600 text-lg leading-relaxed">Mastering "Golden Features," leakage-proof encoding, and the science of automated selection.</p>
         </header>
 
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. Target Encoding with Smoothing</h2>
-            <p class="text-gray-700 mb-6">Using the target signal to encode categories. Smoothing blends specific category means with the global average.</p>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: The Reputation Score</h4>
-                A single review is unreliable. Smoothing blends that 1 review with the city average for stability.
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">What happens if you Target Encode without smoothing on a single-row category?</p>
-                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: <strong>Instant Overfitting</strong>. The model will memorize the target perfectly for that row.</div>
-            </div>
-        </section>
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-target', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">Target Encoding</button>
+            <button onclick="switchTab('tab-trans', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Group Transforms</button>
+            <button onclick="switchTab('tab-select', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Selection & Validation</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
 
-        <!-- Outcome -->
+        <!-- TAB 1: TARGET ENCODING -->
+        <div id="tab-target" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">1. Target Encoding with M-Estimate Smoothing</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Target encoding is arguably the most powerful technique for high-cardinality features (like <code>ZIP_Code</code> or <code>Product_ID</code>). However, it is a "double-edged sword." If done incorrectly, it causes severe data leakage and instant overfitting.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we encode a text category using its historical target success rate without letting the model simply memorize individual rows?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Concept: Encoding the Signal</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        You replace each text category with the <strong>average target value</strong> for that specific category. For example, if users in "Dhaka" default on loans 15% of the time, "Dhaka" becomes <strong>0.15</strong>.
+                    </p>
+                    
+                    <div class="bg-red-50 border-l-4 border-red-500 p-6 my-8 text-sm">
+                        <h4 class="font-bold text-red-900 mb-2">The Single-Row Trap (Data Leakage)</h4>
+                        Imagine a category that appears only <strong>once</strong>. If that row is a "1", the encoding becomes 1.0. The model sees this and thinks it has found a perfect rule, but it has just memorized a single sample. This ruins your private leaderboard score.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Fix: M-Estimate Smoothing</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        We blend the category's specific average with the <strong>Global Average</strong> of the whole dataset. Rare categories are pulled toward the global mean, while common categories keep their specific signal.
+                    </p>
+                    <div class="text-center py-6 text-xl">
+                        $S_i = \alpha_i \cdot \bar{y}_i + (1 - \alpha_i) \cdot \bar{y}_{global}$
+                    </div>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Reputation Score</h4>
+                        A restaurant with one 5-star review isn't necessarily the best in the city. Smoothing is like looking at the average rating of ALL restaurants in that city and blending it in until the new restaurant has at least 50 reviews.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Professional Implementation</h3>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary mb-8 overflow-x-auto">
+                        <span class="text-gray-400"># IMPORTANT: Only fit on Training data!</span><br>
+                        from category_encoders import TargetEncoder<br>
+                        te = TargetEncoder(smoothing=10)<br>
+                        X_train['Encoded'] = te.fit_transform(X_train['City'], y_train)<br>
+                        X_test['Encoded'] = te.transform(X_test['City'])
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 text-sm">Why is it critical to only <code>fit</code> the TargetEncoder on the training set and not the full dataset?</p>
+                    <button onclick="toggleAnswer('ans-target-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-target-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> To prevent <strong>Data Leakage</strong>. If you use the test set targets to calculate the encoding, the model "sees" the future during training and will give an artificially high accuracy that fails completely in production.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: GROUP TRANSFORMS -->
+        <div id="tab-trans" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">2. Group-Level Transforms & Contextual Modeling</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Machine learning models cannot naturally understand the context of a number. If a transaction is $150, a model doesn't know if that is normal or highly suspicious. Contextual features build this understanding.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we teach the model to compare an individual data point against its specific peer group?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Power of .transform()</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Unlike <code>.agg()</code>, <code>.transform()</code> keeps the original row count. It calculates a group statistic and maps it back to every individual row.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Grading Curve</h4>
+                        Getting an 80 on a test is good. But if the class average was 95, you are actually performing poorly. <code>.transform()</code> allows us to subtract the group average from your score to see the "relative performance."
+                    </div>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary mb-8 overflow-x-auto">
+                        <span class="text-gray-400"># Calculate behavioral deviation</span><br>
+                        df['user_avg'] = df.groupby('User_ID')['Spend'].transform('mean')<br>
+                        df['spend_vs_avg'] = df['Spend'] - df['user_avg']
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">In fraud detection, why is <code>Amount - Avg_Amount_By_User</code> a better feature than just <code>Amount</code>?</p>
+                    <button onclick="toggleAnswer('ans-trans-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-trans-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> Because behavioral context matters. A $500 transaction is normal for a corporate account but "abnormal" for a student account. The relative difference highlights the <strong>anomaly</strong>, which is the signal the model needs.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: SELECTION & VALIDATION -->
+        <div id="tab-select" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">3. Automated Selection & Adversarial Validation</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        As you engineer hundreds of features, your dataset becomes cluttered with noise and redundancy. Pruning is the hard part of winning a datathon.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Pruning the Feature Forest</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        The fastest way to rank features is by running a baseline <strong>LightGBM</strong> model. It calculates "Gain" importance, telling you exactly which columns provided the most signal for the splits.
+                    </p>
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 text-xs text-orange-900 italic">
+                        <strong>Rule of Thumb:</strong> Drop the bottom 30% of features that have zero or near-zero importance. They are likely just adding noise and slowing down your training.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Secret Weapon: Adversarial Validation</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        This technique detects <strong>Data Drift</strong>. You train a model to predict: "Is this row from the Train set or the Test set?"
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: Spot the Difference</h4>
+                        If a model can easily tell the difference between your training and test data (AUC > 0.70), it means your features behave differently in the real world. Any feature that allows the model to "cheat" and identify test rows must be dropped.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">Your Adversarial Validation model shows that <code>Transaction_Date</code> is the top feature for identifying test rows. What should you do?</p>
+                    <button onclick="toggleAnswer('ans-select-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-select-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> Drop the feature or transform it. This means the test set comes from a different time period. Using raw dates will make your model memorize the time gap instead of learning the behavioral patterns.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist -->
         <div class="bg-dark text-white p-8 my-12 shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
-            <ul class="space-y-4 text-sm">
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Encode high-cardinality features using OOF smoothing.</li>
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Build contextual group-level features using .transform().</li>
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Leakage-Free Encoding:</strong> Build smoothed Target Encoders fitted strictly on training folds.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Peer-Group Signaling:</strong> Use .transform() to create contextual deviation and peer-based metrics.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Systematic Pruning:</strong> Rank features by GBDT importance and drop bottom-tier noise columns.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Drift Detection:</strong> Use Adversarial Validation to identify features that wreck private leaderboard scores.</span>
+                </li>
             </ul>
         </div>
-    
-        <!-- Module Materials Explorer -->
-        <section class="mt-20 mb-10">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
-            <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
-                <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
-                <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
-            </div>
-            <div id="file-browser" class="space-y-4"></div>
-        </section>
     </div>
     <script src="../tree_data.js"></script>
     <script src="../explorer.js"></script>

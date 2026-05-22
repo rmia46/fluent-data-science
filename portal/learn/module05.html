@@ -8,59 +8,195 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
-                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
-                }
-            }
-        }
     </script>
+    <link rel="stylesheet" href="../theme.css">
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
         <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
         
-        <header class="mb-16">
+        <header class="mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 05</h3>
-            <h1 class="text-4xl font-bold text-dark mb-4">Validation Architecture</h1>
-            <p class="text-gray-600 text-lg leading-relaxed">The science of building trustworthy models and avoiding LB shake-downs.</p>
+            <h1 class="text-4xl font-bold text-dark mb-4">Validation Architecture & Baselines</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">The science of building trustworthy models and avoiding the catastrophic "Public Leaderboard Shake-down."</p>
         </header>
 
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. Stratified K-Fold</h2>
-            <p class="text-gray-700 mb-6">Rotating the validation set to ensure generalization.</p>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: The Mock Exams</h4>
-                Prepare for a final by taking 5 different mock exams. Each chapter is tested eventually.
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">Should you use Stratified CV for imbalanced targets?</p>
-                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: <strong>YES</strong>. It preserves target ratios in every fold.</div>
-            </div>
-        </section>
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-cv', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">CV Frameworks</button>
+            <button onclick="switchTab('tab-base', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Baseline Models</button>
+            <button onclick="switchTab('tab-leak', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Leakage Auditing</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
 
-        <!-- Outcome -->
+        <!-- TAB 1: CV FRAMEWORKS -->
+        <div id="tab-cv" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">1. Stratified K-Fold: Distributed Evaluation</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Validation architecture is the single most critical component of a competitive pipeline. A model is only as good as our ability to evaluate it. Relying on a single, static train/test split introduces massive variance—your score will fluctuate based on a lucky shuffle of data.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we build an unbreakable local validation setup that perfectly mirrors competition leaderboards and protects against statistical noise?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Why do we need this?</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        In a high-stakes hackathon, chasing hyperparameter tweaks based on a single split is equivalent to chasing random noise. <strong>K-Fold Cross-Validation</strong> ensures your model generalizes by rotating the validation slice so every single row gets used for validation exactly once.
+                    </p>
+                    
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Mock Exams</h4>
+                        Imagine preparing for a final exam. Reading the same 10 questions over and over (Simple Split) makes you good at <em>those</em> questions, not the subject. <strong>K-Fold</strong> is like taking 5 different mock exams where every chapter of the book is tested eventually.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Stratification: Preserving the Balance</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        For imbalanced tasks (e.g., 5% fraud, 95% legit), random K-Fold might give one fold 10% fraud and another 0% fraud. <strong>Stratified K-Fold</strong> is mandatory for classification; it ensures every fold preserves the exact class ratio of the global dataset.
+                    </p>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 leading-relaxed">You have 10,000 samples and run 5-Fold CV. In any single iteration, how many samples are in your Training set?</p>
+                    <button onclick="toggleAnswer('ans-cv-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-cv-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> 8,000 samples. Each fold is $10,000 / 5 = 2,000$. The model trains on $K-1$ folds ($4 \times 2,000 = 8,000$) and validates on the remaining $2,000$ samples.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: BASELINE MODELS -->
+        <div id="tab-base" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">2. The Philosophy of the Baseline First</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        The absolute worst mistake is sprinting toward complex gradient boosting architectures without a benchmark. A baseline model acts as your structural and statistical benchmark—a line in the sand.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "What is the simplest possible mathematical solution to this problem, and how much complexity do I need to add to actually improve the score?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Why a Baseline Matters</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        If a simple, un-tuned Random Forest achieves $0.82$, you have established a benchmark. Any fancy "golden feature" or LightGBM model must score strictly higher than $0.82$ to justify its existence. It protects you from complicating your pipeline for negative returns.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Base Camp</h4>
+                        Sprinting to the summit of Everest without building a base camp is suicide. The baseline is your base camp—it proves your oxygen (data loading), gear (transformers), and communication (submission format) all work before you attempt the heavy climb.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Consistent API Architecture</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        By using the Scikit-Learn API (<code>.fit()</code>, <code>.predict_proba()</code>), your training loop becomes model-agnostic. Swapping a baseline RF for a tuned LightGBM should require changing exactly one line of code.
+                    </p>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">You achieve a score of $0.784$ with a Random Forest. Later, you add a complex feature selection script that takes 45 minutes to run and increases the score to $0.785$. Should you keep it?</p>
+                    <button onclick="toggleAnswer('ans-base-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-base-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> <strong>Ruthlessly Drop It.</strong> An improvement of $0.001$ is statistically insignificant and does not justify the 45-minute execution penalty. In a datathon, this bottleneck will prevent you from running rapid iterations later.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: LEAKAGE AUDITING -->
+        <div id="tab-leak" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">3. Hunting Data Leakage: The Silent Killer</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Data leakage creates a catastrophic illusion of success. It artificially inflates your local CV score while ensuring you "tank" on the hidden private leaderboard.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we ensure our training process never accidentally 'sees' information from the target variable or the future holdout sets?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Global Preprocessing Leakage</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        If you calculate the <strong>Mean</strong> or <strong>Median</strong> of the entire dataset to fill missing values <em>before</em> splitting into folds, you have committed leakage. The training folds now "know" the average value of the validation data points.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Open Book Trap</h4>
+                        Imagine taking a test while the answer key is visible in the reflection of your glasses. You get 100% (High CV), but when you sit for the real final exam (Hidden Test Set), you fail because the key is gone.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Defensive Isolation Rule</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Every data transformation parameter must be derived <strong>strictly from the active training fold</strong>.
+                    </p>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary overflow-x-auto">
+                        <span class="text-gray-400"># The Correct Flow</span><br>
+                        scaler = StandardScaler()<br>
+                        scaler.fit(X_train_fold) <span class="text-green-400"># Fit ONLY on train fold</span><br>
+                        X_tr = scaler.transform(X_train_fold)<br>
+                        X_val = scaler.transform(X_val_fold)
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 leading-relaxed">You are predicting loan default. You find a feature called <code>collection_agency_fees_paid</code>. Is this safe to use?</p>
+                    <button onclick="toggleAnswer('ans-leak-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-leak-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> <strong>NO. Target Leakage.</strong> Fees are only paid <em>after</em> a default has occurred. This feature essentially tells the model the answer before it asks the question. Including it will give perfect training accuracy but zero predictive power for future loans.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist (Always Visible at Bottom) -->
         <div class="bg-dark text-white p-8 my-12 shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
-            <ul class="space-y-4 text-sm">
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Architect a robust 5-Fold OOF CV pipeline.</li>
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Fix global preprocessing leakage.</li>
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Validation Compass:</strong> Build a local Stratified K-Fold setup that perfectly replicates leaderboard evaluation.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Baseline Discipline:</strong> Wire an end-to-end un-tuned baseline within the first hour to establish a line in the sand.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Leakage-Proof Pipeline:</strong> Fit all transformers (scalers, encoders) strictly inside training folds to isolate validation data.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>API Modularity:</strong> Design a training loop that treats any model as a plug-and-play Scikit-Learn estimator.</span>
+                </li>
             </ul>
         </div>
-    
-        <!-- Module Materials Explorer -->
-        <section class="mt-20 mb-10">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
-            <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
-                <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
-                <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
-            </div>
-            <div id="file-browser" class="space-y-4"></div>
-        </section>
     </div>
     <script src="../tree_data.js"></script>
     <script src="../explorer.js"></script>

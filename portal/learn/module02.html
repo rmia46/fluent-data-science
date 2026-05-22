@@ -8,61 +8,282 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
-                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
-                }
-            }
-        }
     </script>
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
         <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
         
-        <header class="mb-16">
+        <header class="mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 02</h3>
-            <h1 class="text-4xl font-bold text-dark mb-4">Tabular Foundations & High-Speed Data Manipulation</h1>
-            <p class="text-gray-600 text-lg leading-relaxed">Mastering high-speed data manipulation without hitting memory limits.</p>
+            <h1 class="text-3xl font-bold text-dark mb-4">Tabular Foundations & High-Speed Data Manipulation</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">Mastering the skills to manipulate thousands of rows instantly without hitting memory limits or slowing down your script.</p>
         </header>
 
-        <!-- Topic 1: Vectorization -->
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. Vectorization: The Loop Ban</h2>
-            <h3 class="text-lg font-bold text-dark mt-8 mb-4">Why do we need this?</h3>
-            <p class="text-gray-700 mb-6">Python loops are too slow for millions of rows. Vectorization performs parallel operations at the C level.</p>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: The Assembly Line</h4>
-                Imagine a loop as one worker picking up one box. Vectorization is an assembly line processing 1,000 boxes at once.
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">How much faster is vectorization than .iterrows() on 1M rows?</p>
-                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: Usually 100x to 1000x faster.</div>
-            </div>
-        </section>
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-vec', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">Vectorization</button>
+            <button onclick="switchTab('tab-rel', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Relational Ops</button>
+            <button onclick="switchTab('tab-clean', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Cleaning</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
 
-        <!-- Outcome -->
+        <!-- Tab Contents -->
+        <!-- TAB 1: VECTORIZATION -->
+        <div id="tab-vec" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">1. Vectorization vs. Iteration: The Loops Ban</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        The single most important technical transition a beginner makes is moving away from row-wise thinking. In standard Python, we think in sequences. In Data Science, we think in <strong>Vector Spaces</strong>. Using <code>for</code> loops to iterate over rows (like <code>.iterrows()</code>) is not just "bad practice"—it is a fatal performance mistake that will crash your execution window during a timed datathon.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we perform column-to-column math, string parsing, and logical mappings natively using Pandas expressions instead of loops?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Performance Gap: Why Iteration Fails</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Pandas and NumPy are built on top of <strong>C</strong> and <strong>Fortran</strong>. When you use a vectorized operation, you are sending a single instruction to the CPU to process an entire array of data simultaneously. When you use a <code>for</code> loop, the Python interpreter must manually step through every single row, resulting in massive overhead.
+                    </p>
+                    
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Assembly Line</h4>
+                        Imagine a loop as a single postman delivering one letter at a time across a whole city. <strong>Vectorization</strong> is a fleet of 1,000 postmen all dropping off letters at every house at the exact same moment. 
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-xs text-left border border-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 border">Method</th>
+                                    <th class="px-4 py-2 border">Speed (1M Rows)</th>
+                                    <th class="px-4 py-2 border">Professional Verdict</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-4 py-2 border font-mono">.iterrows()</td>
+                                    <td class="px-4 py-2 border">~18.5 seconds</td>
+                                    <td class="px-4 py-2 border text-red-600 font-bold">Banned</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 border font-mono">.apply(lambda)</td>
+                                    <td class="px-4 py-2 border">~1.2 seconds</td>
+                                    <td class="px-4 py-2 border text-orange-600 font-bold">Emergency Only</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 border font-mono">Vectorized (Direct)</td>
+                                    <td class="px-4 py-2 border"><strong>~0.004 seconds</strong></td>
+                                    <td class="px-4 py-2 border text-green-600 font-bold">Standard</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Mastering Direct Vectorization</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Every math operation in Pandas is vectorized by default. You can add, subtract, multiply, and divide entire columns as if they were single numbers.
+                    </p>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary mb-8 overflow-x-auto">
+                        <span class="text-gray-400"># Direct column math</span><br>
+                        df['Total_Price'] = (df['Quantity'] * df['Unit_Price']) - df['Discount']<br><br>
+                        <span class="text-gray-400"># Boolean flags at scale</span><br>
+                        df['is_profitable'] = df['Total_Price'] > df['Cost']
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Advanced Tool: Logic with <code>np.where()</code></h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        One of the biggest bottlenecks for beginners is trying to write <code>if-else</code> logic inside a loop. <code>numpy.where()</code> is the professional "Swiss Army Knife" for vectorized logic.
+                    </p>
+                    <div class="bg-gray-100 p-6 font-mono text-xs border-l-4 border-gray-400">
+                        <span class="text-primary font-bold">Syntax:</span> np.where(condition, value_if_true, value_if_false)<br><br>
+                        df['Risk_Level'] = np.where(df['Debt'] > 10000, 'High', 'Low')
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Advanced Tool: Mappings with <code>.map()</code></h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        For fixed replacements (like converting "Male/Female" to 0/1), <code>.map()</code> with a dictionary is significantly faster than any other method.
+                    </p>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary overflow-x-auto">
+                        gender_map = {'Male': 0, 'Female': 1}<br>
+                        df['Gender_Encoded'] = df['Gender'].map(gender_map)
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Inventor's Problem: Nested Vectorization</h4>
+                    <p class="text-gray-700 mb-6 text-sm">
+                        You need to categorize "Transaction_Amount" into three tiers: <strong>Small</strong> (under 100), <strong>Medium</strong> (100 to 500), and <strong>Large</strong> (over 500). How do you do this WITHOUT a loop and WITHOUT using <code>.apply()</code>?
+                    </p>
+                    <button onclick="toggleAnswer('ans-vec-2')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-vec-2" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md space-y-4">
+                        <p><strong>The Pro Way:</strong> Use nested <code>np.where</code> statements or <code>pd.cut()</code>.</p>
+                        <div class="bg-gray-100 p-4 font-mono text-xs">
+                            <span class="text-gray-500"># Option A: Nested np.where</span><br>
+                            df['Tier'] = np.where(df['Amt'] < 100, 'Small', <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;np.where(df['Amt'] <= 500, 'Medium', 'Large'))<br><br>
+                            <span class="text-gray-500"># Option B: pd.cut (Cleaner)</span><br>
+                            df['Tier'] = pd.cut(df['Amt'], bins=[0, 100, 500, np.inf], labels=['Small', 'Medium', 'Large'])
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: INDEXING & RELATIONAL OPS -->
+        <div id="tab-rel" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">2. Advanced Indexing, Filtering, and Relational Logic</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        In a datathon, your data is a matrix. To manipulate it effectively, you must be able to slice it in any direction based on complex logic. This module covers high-speed filtering, relational merging, and the critical distinction between labels and positions.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we selectively update millions of rows based on multi-column criteria without triggering silent errors or slowing down our pipeline?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Slicing Duo: .loc vs .iloc</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Failing to use the correct indexer is the #1 cause of the <code>SettingWithCopyWarning</code>. 
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-6 my-6">
+                        <div class="border border-gray-200 p-4 bg-white shadow-sm">
+                            <h4 class="font-bold text-primary text-sm mb-2">.loc[] (Label-based)</h4>
+                            <p class="text-[11px] text-gray-500 mb-2 italic">Intuition: The Address</p>
+                            <p class="text-xs text-gray-600">Uses index labels and column names. Use this when you know the "name" of the data point.</p>
+                        </div>
+                        <div class="border border-gray-200 p-4 bg-white shadow-sm">
+                            <h4 class="font-bold text-primary text-sm mb-2">.iloc[] (Integer-based)</h4>
+                            <p class="text-[11px] text-gray-500 mb-2 italic">Intuition: GPS Coordinates</p>
+                            <p class="text-xs text-gray-600">Uses zero-based positions. Use this when you want the "first 10 rows" or "last column" regardless of names.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Relational Logic: The Merge Master</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Data scientists rarely get a single CSV. You will get relational tables (User Profile + Transactions). <code>.merge()</code> is your primary tool.
+                    </p>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary overflow-x-auto">
+                        <span class="text-gray-400"># Standard 'Left' Join for feature adding</span><br>
+                        df = profiles.merge(transactions, on='user_id', how='left')
+                    </div>
+                    <div class="bg-light p-4 border border-primary text-xs italic">
+                        <strong>Pro Tip:</strong> Always use <code>how='left'</code> when adding features to your main training set to ensure you don't lose any rows that don't have matches in the secondary table.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 text-sm">You have two tables: <code>Train</code> (10,000 rows) and <code>Transactions</code> (5,000 unique IDs). If you do an <strong>Inner Join</strong>, how many rows will your final dataset have?</p>
+                    <button onclick="toggleAnswer('ans-rel-2')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-rel-2" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> 5,000 rows (at most). An Inner Join only keeps records where the ID exists in <strong>both</strong> tables. This is a common mistake that deletes half your training data—always use <strong>Left Join</strong> unless you intentionally want to filter out non-matching rows.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: DIAGNOSTIC CLEANING -->
+        <div id="tab-clean" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">3. Diagnostic Data Cleaning & Missingness Indicators</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Tabular datasets in competitions are deliberately messy. They will contain missing values (NaN), structural errors, and random noise. Building a winning model requires you to become a data detective before you become a data modeler.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we fill the gaps in our data without shifting the statistical properties of our dataset or introducing data leakage?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">1. The Diagnostic Phase: Seeing the Gaps</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Before cleaning, you must quantify the mess. The first step in any pipeline is calculating the percentage of missing values per column.
+                    </p>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary mb-8 overflow-x-auto">
+                        missing_pct = df.isna().sum() / len(df) * 100<br>
+                        print(missing_pct.sort_values(ascending=False))
+                    </div>
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 text-xs text-orange-900 italic">
+                        <strong>The 40% Rule:</strong> In many competitions, if a column has more than 40-50% missing data, it may be safer to drop the column entirely rather than trying to guess half the values.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">2. The "Indicator" Strategy: Binary Flags</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Tree-based models (LightGBM, XGBoost) can learn from the <em>fact</em> that data was missing. We create explicit binary indicator flags to tell the model exactly where the gaps were.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Faded Receipt</h4>
+                        Imagine a faded grocery receipt. You can't read the price of the milk, but you know you <em>bought</em> milk. By creating a flag (1 = missing), you tell the model: "The price is roughly $3, but remember, the original receipt was unreadable."
+                    </div>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary overflow-x-auto">
+                        <span class="text-gray-400"># 1. Create signal flag</span><br>
+                        df['Age_was_missing'] = df['Age'].isna().astype(int)<br><br>
+                        <span class="text-gray-400"># 2. Impute the actual values</span><br>
+                        df['Age'] = df['Age'].fillna(df['Age'].median())
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 text-sm">Why should you usually use the <strong>Median</strong> instead of the <strong>Mean</strong> to fill missing values in a column like "House Prices"?</p>
+                    <button onclick="toggleAnswer('ans-clean-3')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-clean-3" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> House prices are often heavily <strong>Skewed</strong> by extreme luxury outliers. The Mean is sensitive to these outliers and will shift the "average" too high. The Median is <strong>Robust</strong>—it stays at the true middle of the pack, providing a much more realistic typical value for imputation.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="tab-mats" class="tab-content hidden">
+            <!-- Module Materials Explorer -->
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist (Always Visible at Bottom) -->
         <div class="bg-dark text-white p-8 my-12 shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
-            <ul class="space-y-4 text-sm">
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Eliminate loops from your data prep.</li>
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Master .loc and .iloc indexing addresses.</li>
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>High-Performance Code:</strong> Strictly avoid loops and .iterrows(); use vectorized column operations instead.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Slicing Precision:</strong> Differentiate between .loc (address) and .iloc (GPS) to avoid SettingWithCopy bugs.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Relational Integrity:</strong> Master join types (Left, Inner, Outer) to combine fragmented tables without data loss.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Diagnostic Cleaning:</strong> Use binary missingness indicator flags to pass hidden signals to tree-based models.</span>
+                </li>
             </ul>
         </div>
-    
-        <!-- Module Materials Explorer -->
-        <section class="mt-20 mb-10">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
-            <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
-                <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
-                <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
-            </div>
-            <div id="file-browser" class="space-y-4"></div>
-        </section>
     </div>
     <script src="../tree_data.js"></script>
     <script src="../explorer.js"></script>

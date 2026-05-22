@@ -8,58 +8,188 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
-                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
-                }
-            }
-        }
     </script>
+    <link rel="stylesheet" href="../theme.css">
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
         <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
         
-        <header class="mb-16">
+        <header class="mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 06</h3>
-            <h1 class="text-4xl font-bold text-dark mb-4">Tree-Based Models</h1>
-            <p class="text-gray-600 text-lg leading-relaxed">GBDT mechanics, LightGBM, and XGBoost.</p>
+            <h1 class="text-4xl font-bold text-dark mb-4">Tree-Based Gradient Boosting Dominance</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">Mastering the workhorses of tabular data science: LightGBM, XGBoost, and the science of regularization.</p>
         </header>
 
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. The Boosting Logic</h2>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: The Golf Analogy</h4>
-                Sequence of swings. Each swing fixes the mistake of the previous one.
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">Which strategy is safer for tiny datasets?</p>
-                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: <strong>Level-wise (XGBoost)</strong>.</div>
-            </div>
-        </section>
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-mech', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">GBDT Mechanics</button>
+            <button onclick="switchTab('tab-over', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Overfitting Control</button>
+            <button onclick="switchTab('tab-taming', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Taming Trees</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
 
-        <!-- Outcome -->
+        <!-- Tab Contents -->
+        <!-- TAB 1: GBDT MECHANICS -->
+        <div id="tab-mech" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">1. The Paradigm Shift in Tree Generation</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Gradient Boosted Decision Trees (GBDTs) are the undisputed gold standard for tabular data. Unlike simple Decision Trees or Random Forests that build independent models, GBDTs build models sequentially, where each new tree specifically targets the errors (residuals) made by all previous trees combined.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we build deeper, more accurate trees without wasting compute on nodes that already have low error, and how do we choose between horizontal symmetry and vertical efficiency?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">LightGBM: Leaf-Wise Growth</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        LightGBM searches across <strong>all</strong> available leaf nodes in the tree and splits only the single leaf that maximizes the reduction in global loss. This creates deep, asymmetric decision paths that excel at capturing complex feature interactions.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Precise Architect</h4>
+                        Imagine building a house. A <strong>level-wise</strong> architect (XGBoost) forces every floor to be completed before starting the next. A <strong>leaf-wise</strong> architect (LightGBM) ignores the floors and builds a tower as high as possible in only the most important room, where the view (information gain) is best.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">XGBoost: Level-Wise Stability</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        XGBoost historically builds trees level by level. It completes an entire horizontal layer of depth before moving down. This structural uniformity acts as a built-in constraint, naturally resisting overfitting by preventing isolated, hyper-deep branches.
+                    </p>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Inventor's Problem: Growth Risk</h4>
+                    <p class="text-gray-700 mb-6 text-sm">You have a dataset with only 1,000 samples. Why is LightGBM's default leaf-wise growth more dangerous than XGBoost's level-wise growth here?</p>
+                    <button onclick="toggleAnswer('ans-mech-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-mech-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> Leaf-wise growth is greedy. On small datasets, it can create an extremely deep branch that isolates just 2 or 3 noisy samples. Because it doesn't have the structural "level-level" constraint, it will perfectly memorize the noise in that small pocket, causing heavy overfitting.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: OVERFITTING CONTROL -->
+        <div id="tab-over" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">2. Structural Constraints: Deterministic Hard Floors</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        A GBDT model is a high-performance engine that can easily drive itself off a cliff. <strong>Structural constraints</strong> physically limit the complexity of individual decision boundaries, forcing the model to stay on the "safe" part of the road.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Dual-Axis Regularization Framework</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Practitioners often make the mistake of over-tuning one limit while ignoring others. High-performance optimization operates along two axes:
+                    </p>
+                    <ul class="list-disc ml-6 text-sm text-gray-600 space-y-4">
+                        <li><strong>Physical Limits:</strong> Hard vertical and horizontal ceilings like <code>max_depth</code> and <code>num_leaves</code>.</li>
+                        <li><strong>Statistical Penalty:</strong> Explicit complexity costs embedded in the loss function, such as L1 ($\alpha$) and L2 ($\lambda$) weights.</li>
+                    </ul>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The L1/L2 Magnitude Penalty</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we mathematically punish overconfident leaf weights and force the model to distribute its signal across multiple features?"
+                    </p>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        XGBoost and LightGBM use an objective function that includes the sum of squared weights ($L_2$) and absolute weights ($L_1$). As these penalties increase, the model is forced to keep its predictions "small and smooth," preventing any single tree from dominating the ensemble with extreme guesses.
+                    </p>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 text-sm">Your model has a Training Log-Loss of 0.08 but a Validation Log-Loss of 0.45. Suggest a 3-step strategy using structural parameters.</p>
+                    <button onclick="toggleAnswer('ans-over-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-over-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> The gap indicates heavy noise memorization. 
+                        1. <strong>Decrease</strong> <code>max_depth</code> (e.g. from 10 to 4).
+                        2. <strong>Decrease</strong> <code>num_leaves</code> to strictly $\le 2^{\text{depth}}$.
+                        3. <strong>Increase</strong> <code>min_data_in_leaf</code> to force branches to base decisions on more samples.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: TAMING TREES -->
+        <div id="tab-taming" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">3. Stochastic Controls: Injecting Algorithmic Noise</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Sometimes, the best way to keep a model honest is to hide parts of the data. <strong>Stochastic controls</strong> inject random variations into the learning process to prevent trees from repeatedly learning the same localized noise patterns.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Row & Column Sampling Shield</h3>
+                    <div class="grid md:grid-cols-2 gap-4 my-6">
+                        <div class="border border-gray-200 p-4 bg-white shadow-sm">
+                            <h4 class="font-bold text-primary text-sm mb-2">subsample (Bagging)</h4>
+                            <p class="text-xs text-gray-600">Forces each tree to train on a random fraction (e.g. 80%) of the rows. This ensures outliers only skew a small portion of your ensemble.</p>
+                        </div>
+                        <div class="border border-gray-200 p-4 bg-white shadow-sm">
+                            <h4 class="font-bold text-primary text-sm mb-2">colsample_bytree</h4>
+                            <p class="text-xs text-gray-600">Forces each tree to pick its splits from a random fraction of columns. This breaks feature dominance and helps discover hidden signals.</p>
+                        </div>
+                    </div>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Blindfolded Student</h4>
+                        If a student can see the whole textbook, they might memorize a specific typo on page 50 to answer a question. If you only let them see 70% of the book at a time, they are <strong>forced</strong> to learn the broad concepts that are repeated everywhere, rather than relying on one specific detail.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 text-sm">You have one column that has a correlation of 0.95 with the target. It dominates your model. How can stochastic parameters help?</p>
+                    <button onclick="toggleAnswer('ans-taming-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-taming-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> Lower <code>colsample_bytree</code> to ~0.5. This ensures that in 50% of your trees, that dominant column is <strong>invisible</strong>. The model is forced to build trees using the "weaker" features, uncovering subtle patterns that would have been ignored otherwise, resulting in a much more robust ensemble.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist (Always Visible at Bottom) -->
         <div class="bg-dark text-white p-8 my-12 shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
-            <ul class="space-y-4 text-sm">
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Build OOF pipelines for GBDTs.</li>
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Tame trees using stochastic regularization.</li>
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>GBDT Architecture:</strong> Differentiate between Leaf-wise (LightGBM) and Level-wise (XGBoost) growth engines.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Structural Guardrails:</strong> Set num_leaves and max_depth constraints to prevent asymmetric overfitting.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Regularization Penalties:</strong> Use L1/L2 penalties to smooth out leaf weights and introduce signal sparsity.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Stochastic Resilience:</strong> Apply row and column sampling to force the ensemble to learn diverse, non-redundant patterns.</span>
+                </li>
             </ul>
         </div>
-    
-        <!-- Module Materials Explorer -->
-        <section class="mt-20 mb-10">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
-            <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
-                <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
-                <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
-            </div>
-            <div id="file-browser" class="space-y-4"></div>
-        </section>
     </div>
     <script src="../tree_data.js"></script>
     <script src="../explorer.js"></script>

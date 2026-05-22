@@ -17,68 +17,240 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="../theme.css">
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
         <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
         
-        <header class="mb-16">
+        <header class="mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 01</h3>
             <h1 class="text-4xl font-bold text-dark mb-4">Mathematics for Machine Learning</h1>
             <p class="text-gray-600 text-lg leading-relaxed">The invisible engine that powers every prediction, optimization, and decision in Data Science.</p>
         </header>
 
-        <!-- Topic 1: Linear Algebra -->
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. Linear Algebra: The Language of Data</h2>
-            <h3 class="text-lg font-bold text-dark mt-8 mb-4">Why do we need this?</h3>
-            <p class="text-gray-700 mb-6">Computers see multi-dimensional matrices. Linear Algebra allows us to treat a dataset of 1,000,000 rows as a single object.</p>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: Coordinates in Space</h4>
-                Imagine a house as a vector: $\mathbf{x} = [3, 1500, 2]^T$. Linear Algebra is the math of finding patterns among these points.
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">If weight vector $\mathbf{w} = [0.5, 0.5]$ and input $\mathbf{x} = [10, 20]$, what is the prediction score?</p>
-                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: $0.5(10) + 0.5(20) = \mathbf{15}$.</div>
-            </div>
-        </section>
-
-        <!-- Topic 2: Calculus -->
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">2. Calculus: The Engine of Optimization</h2>
-            <h3 class="text-lg font-bold text-dark mt-8 mb-4">Why do we need this?</h3>
-            <p class="text-gray-700 mb-6">Calculus tells us exactly how to change a model's weights to reduce its error.</p>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: The Blind Hiker</h4>
-                The <strong>Gradient</strong> is the slope under your feet, telling you which direction to step to reach the valley (minimum error).
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">If slope is positive, should you increase or decrease weight?</p>
-                <button onclick="toggleAnswer('ans2')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans2" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: <strong>Decrease</strong>.</div>
-            </div>
-        </section>
-
-        <!-- Module Outcome -->
-        <div class="bg-dark text-white p-8 my-12 shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
-            <ul class="space-y-4 text-sm">
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Visualize data as vectors in space.</li>
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Understand why "The Gradient" is the compass of learning.</li>
-            </ul>
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-la', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">Linear Algebra</button>
+            <button onclick="switchTab('tab-calc', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Calculus</button>
+            <button onclick="switchTab('tab-stats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Statistics</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
         </div>
-        <!-- Module Materials Explorer -->
-        <section class="mt-20 mb-10">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
-            <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
-                <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
-                <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
-            </div>
-            <div id="file-browser" class="space-y-4"></div>
-        </section>
+
+        <!-- Tab Contents -->
+        <!-- TAB 1: LINEAR ALGEBRA -->
+        <div id="tab-la" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-3xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Linear Algebra: The Architecture of Information</h2>
+                    <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                        Winning a modern datathon requires more than copying code or tuning hyperparameters blindly. It demands an unshakeable grasp of foundational engineering principles. In this module, we look at the <strong>architectural intuition</strong> behind why these tools were invented.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50">
+                        "How do we bundle massive collections of multi-featured data into a single, clean mathematical object that a computer can process all at once, avoiding chaotic, slow nested loops?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">1. The Data Structure Hierarchy Problem</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        We move from 0D <strong>Scalars</strong> (configuration constants like the learning rate $\alpha$) to 1D <strong>Vectors</strong> (a single data sample) to 2D <strong>Matrices</strong> (the structured grid layout of a spreadsheet). This abstraction allows high-dimensional <strong>Tensors</strong> to represent complex data shapes seamlessly.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-6 italic">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition</h4>
+                        Abstractions allow us to "hide" the complexity of millions of calculations inside a single variable name, like $\mathbf{X}$.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">2. Alignment & Similarity</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The <strong>Matrix Transpose</strong> ($X^T$) acts as a physical adapter plug to satisfy dimension matching rules. The <strong>Vector Dot Product</strong> ($u \cdot v = w^T x$) serves as a semantic similarity engine, scoring alignment to power core ML predictions ($y = w^Tx + b$).
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">3. Systems of Equations & The Normal Equation</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        When an overdetermined system has more samples than variables, the <strong>Normal Equation</strong> calculates the single set of weights that minimizes total squared error in one step:
+                    </p>
+                    <div class="text-center py-6 text-xl">
+                        $\mathbf{w} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}$
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">4. Signal Compression: PCA</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        <strong>Principal Component Analysis (PCA)</strong> uses Eigenvectors/Eigenvalues to look at a cloud of data points and isolate the absolute most important axes of variance, filtering out noise.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">5. Regularization: Vector Norms</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The <strong>$L_1$ norm</strong> ($\sum |w_i|$) applies a constant tax, forcing minor weights to exactly zero for automatic feature selection. The <strong>$L_2$ norm</strong> ($\sqrt{\sum w_i^2}$) pulls down massive outliers to keep parameters stable.
+                    </p>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 leading-relaxed">Your input batch matrix $X$ is $(128 \times 30)$. You project into a $15$-dim hidden space via $XW$. What is the shape of $W$?</p>
+                    <button onclick="toggleAnswer('ans-la-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition">Show Solution</button>
+                    <div id="ans-la-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed">
+                        <strong>The Solution:</strong> Rows of $W$ must match columns of $X$. Since we want 15 outputs, $W$ is <strong>$(30 \times 15)$</strong>.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: CALCULUS -->
+        <div id="tab-calc" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-3xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Calculus: The Engine of Optimization</h2>
+                    <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                        Calculus provides the rules for improving our representation. Without it, we would be guessing parameters blindly.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50">
+                        "Standing at a completely random point on a curving mountain of total error, how do we systematically determine which way to step to lower our elevation?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">1. The Derivative: Navigation Signal</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The derivative provides the instantaneous slope. A negative slope dictates stepping forward (increasing weight) to find the valley floor.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">2. The Gradient Vector ($\nabla$): The Compass</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The Gradient bundles all partial derivatives into a single compass that points to the steepest ascent. We learn by moving in the <strong>opposite</strong> direction: $\mathbf{w} \leftarrow \mathbf{w} - \eta \nabla L$.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">3. Backpropagation: Credit Assignment</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The <strong>Chain Rule</strong> links layers together via multiplication. <strong>Backpropagation</strong> traces error backward from the loss layer to update the earliest parameters.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">4. Advanced Terrain Assessment</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="border border-gray-200 p-4 bg-white">
+                            <h4 class="font-bold text-primary">Jacobian ($J$)</h4>
+                            <p class="text-xs text-gray-600">First-order derivatives for multi-output functions.</p>
+                        </div>
+                        <div class="border border-gray-200 p-4 bg-white">
+                            <h4 class="font-bold text-primary">Hessian ($H$)</h4>
+                            <p class="text-xs text-gray-600">Second-order partial derivatives tracking terrain curvature.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">If the Gradient is zero but the Hessian has both positive and negative eigenvalues, what feature have you found?</p>
+                    <button onclick="toggleAnswer('ans-calc-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition">Show Solution</button>
+                    <div id="ans-calc-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed">
+                        <strong>The Solution:</strong> This is a <strong>Saddle Point</strong>. Standard Gradient Descent will get stuck here!
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: STATISTICS -->
+        <div id="tab-stats" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-3xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Probability & Statistics: Signal vs. Noise</h2>
+                    <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                        Statistics helps us understand what we have learned and how much we can trust our data. Probability provides the framework for modeling uncertainty.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">1. Descriptive Statistics: The Shape of Data</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Before modeling, you must understand Central Tendency (Mean/Median) and Dispersion (Standard Deviation). <strong>Skewness</strong> and <strong>Kurtosis</strong> help identify if your data has "fat tails" or extreme outliers.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">2. Synchronized Movement: Correlation</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        <strong>Pearson Correlation</strong> ($r$) measures linear strength (-1 to +1). This is your primary tool for removing redundant feature columns that add noise without value.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">3. Bayes' Theorem: Updating Beliefs</h3>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50">
+                        "How do we update our probability of an event when we get new evidence?"
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        We start with a <strong>Prior</strong> belief and update it to a <strong>Posterior</strong> after seeing new Evidence. This powers the <strong>Naive Bayes</strong> classifier.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">4. Maximum Likelihood Estimation (MLE)</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        MLE reverse-engineers the underlying distribution parameters that make our observed sample most probable. Training a model is essentially performing MLE to find the optimal weights.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-dark">5. Information Theory: Cross-Entropy</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        <strong>Cross-Entropy Loss</strong> measures the informational distance between model predictions and reality. It is the core loss function for classification models like Logistic Regression and LightGBM.
+                    </p>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">Mean is 1,200; Median is 150. What does this indicate about outliers?</p>
+                    <button onclick="toggleAnswer('ans-stats-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition">Show Solution</button>
+                    <div id="ans-stats-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed">
+                        <strong>The Solution:</strong> Extreme high-value outliers are pulling the Mean up. The data is <strong>Right-Skewed</strong>. Use the Median for robust imputation.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist (Always Visible at Bottom) -->
+        <div class="bg-dark text-white p-8 my-12 shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Data Abstraction:</strong> Bundle massive data into Tensors to avoid slow loops.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Geometric Alignment:</strong> Use Transpose and Dot Product for similarity engines.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Optimal Weights:</strong> Solve systems via the Normal Equation in one step.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Curvature Navigation:</strong> Use derivatives to step systematically toward minima.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Compass:</strong> Use Gradients to synchronize multi-dimensional updates.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><span><strong>Credit Assignment:</strong> Leverage the Chain Rule for Backpropagation.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Terrain assessment:</strong> Identify saddle points via Jacobian and Hessian.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Signal vs. Noise:</strong> Use Correlation to remove redundant features.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Updating Beliefs:</strong> Use Bayes' Theorem to model new evidence.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Informational Distance:</strong> Minimize Cross-Entropy to fit classification models.</span></li>
+            </ul>
+            <p class="mt-10 text-[11px] text-gray-400 italic">If you cannot explain 'why' these tools are used to another person, spend more time in the Lab section above.</p>
+        </div>
     </div>
     <script src="../tree_data.js"></script>
     <script src="../explorer.js"></script>

@@ -8,58 +8,190 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
-                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
-                }
-            }
-        }
     </script>
+    <link rel="stylesheet" href="../theme.css">
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
         <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
         
-        <header class="mb-16">
+        <header class="mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 07</h3>
             <h1 class="text-4xl font-bold text-dark mb-4">Optimization & Ensembling</h1>
-            <p class="text-gray-600 text-lg leading-relaxed">Optuna tuning and weighted blending.</p>
+            <p class="text-gray-600 text-lg leading-relaxed">The final polish. Moving from a single model to a high-performance ensemble tuned to perfection.</p>
         </header>
 
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. Bayesian Optimization</h2>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: Dialing in a Radio</h4>
-                 robot hand turning the dial precisely until sound is crystal clear.
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">Bayesian search vs Random search?</p>
-                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: Optuna remembers previous results to build a probability model.</div>
-            </div>
-        </section>
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-optuna', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">Optuna Tuning</button>
+            <button onclick="switchTab('tab-ensemble', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Model Blending</button>
+            <button onclick="switchTab('tab-metric', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Metric Optimization</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
 
-        <!-- Outcome -->
+        <!-- Tab Contents -->
+        <!-- TAB 1: OPTUNA -->
+        <div id="tab-optuna" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">1. Bayesian Optimization (Optuna)</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Hyperparameter tuning is often the differentiator between a mediocre submission and a podium finish. In a time-constrained hackathon, you cannot afford to waste compute cycles on blind (Random) or exhaustive (Grid) guessing.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we build an automated search engine that actively learns from its own history to locate the absolute best model configuration in the shortest time possible?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Heat-Seeking Missile Mechanism</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Optuna frames tuning as a sequential optimization problem. It builds a probability distribution of where excellent parameter combinations live. As trials run, it calculates the <strong>Expected Improvement</strong> to aggressively focus compute resources on the most promising regions.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: Dialing in a Radio</h4>
+                        Imagine searching for a radio station. You don't just jump to random frequencies. You turn the dial slowly, and when you hear a bit of music, you focus on that area and move the dial very precisely until the sound is crystal clear. Optuna is that specialized robot hand turning the dial for you.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Optimization Commandment</h3>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 my-8 text-sm">
+                        <h4 class="font-bold text-blue-900 mb-2">OOF-Only Optimization</h4>
+                        Never optimize parameters against a single static train/test split. Optuna's Bayesian engine will rapidly overfit that specific partition. Always return the <strong>average Out-of-Fold (OOF) cross-validation score</strong> from your objective function.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Inventor's Problem: Scaled Search</h4>
+                    <p class="text-gray-700 mb-6">You want to optimize a <code>learning_rate</code> from 0.001 to 0.1. Why is a standard linear scale search (e.g. 0.001, 0.002, 0.003...) inappropriate here?</p>
+                    <button onclick="toggleAnswer('ans-optuna-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-optuna-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> Learning rates operate <strong>Exponentially</strong>. The difference between 0.001 and 0.01 changes the model's behavior far more than the difference between 0.08 and 0.09. Use <code>log=True</code> in your suggest method to ensure Optuna searches across orders of magnitude with uniform granularity.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: MODEL BLENDING -->
+        <div id="tab-ensemble" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">2. The Wisdom of the Crowd (Ensembling)</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        No single model is perfect. Every algorithm interprets the feature space through a distinct mathematical lens, inevitably leaving behind structural "blind spots."
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we combine diverse model perspectives to cancel out individual localized biases and build a collective intelligence that is robust to overfitting?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Mechanics of Blending</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Model blending involves taking the continuous prediction probabilities from multiple distinct models and combining them using a weighted linear operation.
+                    </p>
+                    <div class="bg-gray-100 p-6 font-mono text-sm border-2 border-gray-300 text-center my-6">
+                        $P_{ensemble} = 0.6 \cdot P_{LGBM} + 0.4 \cdot P_{XGBoost}$
+                    </div>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Expert Panel</h4>
+                        If you have a strange medical symptom, you don't just ask one doctor. You ask a cardiologist, a neurologist, and a general practitioner. They each have a different perspective. If they all agree, you are confident. If they disagree, you take a weighted average of their opinions based on their proven expertise.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Diversity Commandment</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Blending only yields improvements if your models make <strong>uncorrelated errors</strong>. If you calculate the correlation between two prediction vectors and get $r > 0.98$, averaging them provides zero value. You want diversity in model architectures or feature sets.
+                    </p>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">In a regression contest (RMSE), Model A overpredicts for high-income rows (+ error), and Model B underpredicts for those same rows (- error). Why is blending them a "cheat code"?</p>
+                    <button onclick="toggleAnswer('ans-blend-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-blend-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> Their residuals are negatively correlated. When you average them, the positive and negative error vectors partially <strong>cancel each other out</strong>, dragging the final ensemble prediction closer to the true value and significantly lowering your RMSE.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: METRIC OPTIMIZATION -->
+        <div id="tab-metric" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">3. Post-Processing: Threshold Calibration</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Standard libraries automatically apply a rigid threshold cutoff at exactly $0.5$. Any probability $\ge 0.5$ is marked '1', everything else '0'. This is a massive pitfall for imbalanced datasets and advanced metrics like the $F_1$-Score.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we systematically find the precise probability boundary that maximizes our specific competition metric?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Search Loop Strategy</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Instead of accepting the $0.5$ default, you must set up a search loop that scans across candidate thresholds from $0.01$ to $0.99$. 
+                    </p>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary mb-8 overflow-x-auto">
+                        <span class="text-gray-400"># Pseudo-code for threshold scanning</span><br>
+                        for t in np.arange(0.01, 1.0, 0.01):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;score = f1_score(y_true, oof_probs > t)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if score > best_score: best_t = t
+                    </div>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 text-xs text-yellow-900 italic">
+                        <strong>The Validation Rule:</strong> You MUST calculate your optimal threshold using <strong>Out-of-Fold (OOF) probabilities</strong>. Calibrating on training probabilities will lead to extreme over-optimization and a private leaderboard crash.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">A rare disease dataset at $0.5$ threshold yields $TP=10, FP=2, FN=15$ ($F1 \approx 0.54$). Shifting to $0.3$ yields $TP=22, FP=8, FN=3$. What is the new F1-score?</p>
+                    <button onclick="toggleAnswer('ans-metric-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-metric-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> $F_1 = \frac{2TP}{2TP + FP + FN} = \frac{2(22)}{2(22) + 8 + 3} = \frac{44}{55} = \mathbf{0.80}$. Lowering the threshold successfully captured missing positive cases, jumping your score from 0.54 to 0.80!
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist -->
         <div class="bg-dark text-white p-8 my-12 shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
-            <ul class="space-y-4 text-sm">
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Setup Optuna for automated tuning.</li>
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Blend diverse models for leaderboard stability.</li>
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Automated Search:</strong> Deploy Optuna Bayesian optimization using OOF-only objective functions.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Constituent Diversity:</strong> Select models with uncorrelated residuals to maximize ensembling gain.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Weighted Blending:</strong> Linearly combine probability vectors to smooth decision boundaries and reduce variance.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Threshold Calibration:</strong> sistematically scan OOF cutoffs to find the absolute maximum metric peak.</span>
+                </li>
             </ul>
         </div>
-    
-        <!-- Module Materials Explorer -->
-        <section class="mt-20 mb-10">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
-            <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
-                <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
-                <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
-            </div>
-            <div id="file-browser" class="space-y-4"></div>
-        </section>
     </div>
     <script src="../tree_data.js"></script>
     <script src="../explorer.js"></script>

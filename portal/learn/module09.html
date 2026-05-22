@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 09: Mock Competition | Fluent Data Science</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+    </script>
+    <link rel="stylesheet" href="../theme.css">
+</head>
+<body>
+    <div class="page-container bg-white shadow-xl min-h-screen">
+        <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
+        
+        <header class="mb-8">
+            <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 09</h3>
+            <h1 class="text-4xl font-bold text-dark mb-4">The Mock Competition Challenge</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">The Final Boss. Apply every strategy to a raw, messy dataset under the pressure of a simulated contest.</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-challenge', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">The Challenge</button>
+            <button onclick="switchTab('tab-pitfalls', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Pitfalls & Traps</button>
+            <button onclick="switchTab('tab-submit', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Submission</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
+
+        <!-- TAB 1: THE CHALLENGE -->
+        <div id="tab-challenge" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Capstone Project: Customer Churn Prediction</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        You are provided with a multi-table dataset from a major service provider. Your goal is to predict which customers are likely to <strong>Churn</strong> (leave the service) in the next 30 days.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Final Boss</h4>
+                        This isn't just a coding exercise. It is a simulation of the chaos, stress, and strategic decision-making required to reach the top 1% of a real Kaggle competition. You must manage your time between feature engineering and model ensembling.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Data Blueprint</h3>
+                    <ul class="list-disc ml-6 text-sm text-gray-600 space-y-2">
+                        <li><strong>profiles.csv:</strong> User demographics, tenure, and ZIP codes.</li>
+                        <li><strong>transactions.csv:</strong> Granular spending history (needs aggregation!).</li>
+                        <li><strong>target.csv:</strong> The ground truth labels (Training set only).</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: PITFALLS & TRAPS -->
+        <div id="tab-pitfalls" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Avoid the Common Traps</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        This dataset has been "sabotaged" with standard competition artifacts.
+                    </p>
+                </div>
+
+                <div class="space-y-10">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-6">
+                        <h4 class="font-bold text-red-900 mb-2">1. The Drift Trap</h4>
+                        <p class="text-xs text-red-800">The <code>Age</code> distribution in the test set is shifted by +10 years compared to the training set. If your model relies too heavily on raw Age, your private leaderboard score will plummet. Use <strong>Adversarial Validation</strong> to detect this.</p>
+                    </div>
+                    <div class="bg-red-50 border-l-4 border-red-500 p-6">
+                        <h4 class="font-bold text-red-900 mb-2">2. The High-Cardinality Leak</h4>
+                        <p class="text-xs text-red-800">The <code>ZIP_Code</code> column contains 250 unique values. If you Target Encode this globally, you will experience extreme leakage. Implement <strong>OOF Smoothed Encoding</strong> strictly inside your folds.</p>
+                    </div>
+                    <div class="bg-red-50 border-l-4 border-red-500 p-6">
+                        <h4 class="font-bold text-red-900 mb-2">3. Redundant Features</h4>
+                        <p class="text-xs text-red-800">We've added features with 0.99 correlation. Use an <strong>Automated Pruning Loop</strong> to remove them and speed up your training.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: SUBMISSION -->
+        <div id="tab-submit" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Final Submission Checklist</h2>
+                <div class="bg-gray-100 p-8 border-2 border-dashed border-gray-400">
+                    <ul class="space-y-6 text-sm">
+                        <li class="flex items-center"><input type="checkbox" class="mr-4"> <span>Is your CV loop Stratified 5-Fold?</span></li>
+                        <li class="flex items-center"><input type="checkbox" class="mr-4"> <span>Did you blend at least two models (LGBM + XGB)?</span></li>
+                        <li class="flex items-center"><input type="checkbox" class="mr-4"> <span>Did you scan for the optimal F1 threshold?</span></li>
+                        <li class="flex items-center"><input type="checkbox" class="mr-4"> <span>Is your final submission file in the exact required format?</span></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Competition Data & Tools</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Competition Run</h3>
+                    <div class="text-lg font-bold text-primary">Challenge Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist -->
+        <div class="bg-dark text-white p-8 my-12 shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Final Curriculum Mastery</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>End-to-End Pipeline:</strong> Executing a complete multi-model pipeline from raw relational data to calibrated submission in under 4 hours.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Elite Troubleshooting:</strong> Detecting and fixing distribution drifts and target leakage exploits under stress.</span></li>
+                <li class="flex items-start"><span class="mr-3 text-green-400 font-bold">✓</span> <span><strong>Collaborative Dominance:</strong> Using professional Git workflows to maintain a clean codebase during iterative team sprints.</span></li>
+            </ul>
+            <p class="mt-10 text-[11px] text-gray-400 italic">Congratulations. If you have reached this stage, you are ready to compete on the global stage. Win the Datathon.</p>
+        </div>
+    </div>
+    <script src="../tree_data.js"></script>
+    <script src="../explorer.js"></script>
+    <script src="../components/common.js"></script>
+</body>
+</html>

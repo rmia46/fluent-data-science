@@ -8,61 +8,216 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
-                    fontFamily: { mono: ['ui-monospace', 'monospace'] }
-                }
-            }
-        }
     </script>
+    <link rel="stylesheet" href="../theme.css">
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
         <a href="../learn.html" class="text-primary font-bold mb-8 inline-block">← Back to Learn</a>
         
-        <header class="mb-16">
+        <header class="mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Module 03</h3>
             <h1 class="text-4xl font-bold text-dark mb-4">Feature Engineering I</h1>
             <p class="text-gray-600 text-lg leading-relaxed">The art of transforming raw data into "Golden Features" that models can actually understand.</p>
         </header>
 
-        <!-- Topic 1: Categorical Encoding -->
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">1. Categorical Encoding</h2>
-            <h3 class="text-lg font-bold text-dark mt-8 mb-4">Why do we need this?</h3>
-            <p class="text-gray-700 mb-6">Models cannot process words. You must convert text into numbers without losing structural information.</p>
-            <div class="bg-light p-6 border-l-8 border-primary my-8 italic">
-                <h4 class="font-bold mb-2">Intuition: The Color Palette</h4>
-                OHE gives each color its own bucket. Label Encoding gives them a number on a scale.
-            </div>
-            <div class="my-10 p-6 border-2 border-primary">
-                <h4 class="font-bold text-dark mb-4">Test Your Understanding</h4>
-                <p class="text-gray-700 mb-4 text-sm">Which encoding is best for [Cold, Warm, Hot]?</p>
-                <button onclick="toggleAnswer('ans1')" class="bg-primary text-white px-4 py-2 font-bold text-xs hover:bg-dark transition">Reveal Answer</button>
-                <div id="ans1" class="hidden bg-light p-4 border-l-4 border-primary mt-4 text-sm">Answer: <strong>Ordinal Encoding</strong>.</div>
-            </div>
-        </section>
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('tab-cat', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-primary text-primary bg-white transition-all whitespace-nowrap">Categorical Encoding</button>
+            <button onclick="switchTab('tab-num', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Numerical Scaling</button>
+            <button onclick="switchTab('tab-int', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Interactions & Binning</button>
+            <button onclick="switchTab('tab-mats', 'tab-btn', 'tab-content')" class="tab-btn py-3 px-6 font-bold text-sm border-b-4 border-transparent text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap">Materials</button>
+        </div>
 
-        <!-- Outcome -->
+        <!-- Tab Contents -->
+        <!-- TAB 1: CATEGORICAL ENCODING -->
+        <div id="tab-cat" class="tab-content">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">1. Categorical Encoding: The Cardinality Rules</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Machine Learning models are mathematical engines; they only understand numbers. However, real-world data is messy and full of text categories (City, Job Title, Device Type). The way you transform these words into numbers determines whether your model finds a pattern or gets lost in a "Dimensionality Explosion."
+                    </p>
+                    <p class="text-gray-700 leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 text-sm">
+                        "How do we translate human language categories into machine-readable math without confusing the algorithm's understanding of relationships?"
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Strategy 1: One-Hot Encoding (OHE)</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        One-Hot Encoding creates a new binary column ($0$ or $1$) for every unique category in the feature.
+                    </p>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-xs text-blue-900 italic">
+                        <strong>When to use OHE:</strong> Only use this for <strong>Low Cardinality</strong> features (&lt; 10 unique values). If you use OHE on a column with 500 cities, you will add 500 new columns, making your data matrix massive and sparse, which ruins performance.
+                    </div>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary overflow-x-auto">
+                        <span class="text-gray-400"># Using Pandas to One-Hot Encode</span><br>
+                        df = pd.get_dummies(df, columns=['Device_Type'], drop_first=True)
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Strategy 2: Label & Ordinal Encoding</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        <strong>Label Encoding</strong> assigns arbitrary integers. <strong>Ordinal Encoding</strong> is used when those integers follow a natural mathematical order (e.g., Low &rarr; 0, Medium &rarr; 1, High &rarr; 2).
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Color Palette vs. The Size Scale</h4>
+                        Imagine buckets of paint. Red and Blue have no order; they just need separate buckets (OHE). But Small, Medium, and Large are positions on a scale. Assigning them numbers 1, 2, and 3 tells the model that Large is "greater" than Small.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Strategy 3: Frequency / Count Encoding</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        This method replaces each category with its total <strong>count</strong> or <strong>percentage</strong> in the dataset.
+                    </p>
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 text-xs text-orange-900 italic">
+                        <strong>When to use Frequency:</strong> The gold standard for <strong>High Cardinality</strong> (IP Addresses, ZIP codes). It captures "rarity" as a signal without adding columns.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6 text-sm">Which encoding method is best for a column <code>Education_Level</code> with values [High School, Bachelors, Masters, PhD]?</p>
+                    <button onclick="toggleAnswer('ans-cat-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-cat-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> <strong>Ordinal Encoding</strong>. These categories have a clear logical progression where a PhD represents a higher level than High School. Using OHE would ignore this useful relationship.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: NUMERICAL SCALING -->
+        <div id="tab-num" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">2. Numerical Scaling & Skewness Transformations</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Raw numerical data can be deceptive. If you have an <code>Age</code> column (0-100) and an <code>Income</code> column (0-1,000,000), many algorithms will treat Income as 10,000 times more important simply because the numbers are larger.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">The Scaling Problem: Levelling the Field</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Distance-based models (KNN, SVM) are sensitive to magnitude. Scaling ensure all features have an equal vote.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-4 my-6">
+                        <div class="border border-gray-200 p-4 bg-white shadow-sm">
+                            <h4 class="font-bold text-primary text-sm mb-2">Standard Scaling ($Z$-Score)</h4>
+                            <p class="text-xs text-gray-600">Shifts data to Mean=0 and Std=1. Best for Gaussian data.</p>
+                        </div>
+                        <div class="border border-gray-200 p-4 bg-white shadow-sm">
+                            <h4 class="font-bold text-primary text-sm mb-2">MinMax Scaling</h4>
+                            <p class="text-xs text-gray-600">Squishes values into [0, 1]. Essential for Neural Networks.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Taming the Tail: Log Transformation</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Transaction amounts or population sizes are often "Right-Skewed." They have extreme outliers that create a long tail.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Log Tamer</h4>
+                        Imagine a distribution with a few billionaires and many people earning average wages. A <strong>Log Transform</strong> is like a set of tongs that pulls those billionaires back toward the center, turning a long tail into a standard bell curve.
+                    </div>
+                    <div class="bg-gray-800 text-white p-4 font-mono text-xs border-l-4 border-primary overflow-x-auto">
+                        <span class="text-gray-400"># Handle zeros with np.log1p (log of 1+x)</span><br>
+                        df['Income_Log'] = np.log1p(df['Income'])
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">Does scaling improve the performance of a LightGBM or XGBoost model?</p>
+                    <button onclick="toggleAnswer('ans-num-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-num-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> <strong>Usually No</strong>. Tree-based models are "scale-invariant"—they only care about the <em>relative order</em> of values, not their magnitude. However, scaling is still best practice for ensembling with linear models.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: INTERACTIONS & BINNING -->
+        <div id="tab-int" class="tab-content hidden">
+            <section class="space-y-16 mb-20">
+                <div class="prose max-w-none">
+                    <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">3. Interaction Features & Continuous Binning</h2>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-6">
+                        Sometimes, the most important pattern in your data isn't in a single column, but in the <strong>relationship</strong> between columns.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Interaction Features: The Force Multipliers</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Interaction features explicitly give the model mathematical relationships like ratios or products.
+                    </p>
+                    <div class="bg-light p-6 border-l-8 border-primary my-8 italic text-sm">
+                        <h4 class="font-bold mb-2 text-dark">The Intuition: The Efficiency Score</h4>
+                        If you have <code>Total_Calories</code> and <code>Serving_Size</code>, a model will find it much easier to learn if you explicitly give it <code>Calories_Per_Gram</code>.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-dark mb-3 mt-8">Continuous Binning: Noise Reduction</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        Binning turns continuous numbers (Age, Income) into categorical "buckets." 
+                    </p>
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 text-xs text-orange-900 italic">
+                        <strong>The Generalization Benefit:</strong> Is there a real difference between 25.4 and 25.6 years old? No. By binning them into [19-35], you help the model ignore noise and generalize better.
+                    </div>
+                </div>
+
+                <div class="my-10 p-8 border-4 border-primary bg-gray-50 shadow-inner text-sm">
+                    <h4 class="font-bold text-dark mb-4 text-lg">💡 Quick Check</h4>
+                    <p class="text-gray-700 mb-6">What is the difference between <code>pd.cut</code> and <code>pd.qcut</code>?</p>
+                    <button onclick="toggleAnswer('ans-int-1')" class="bg-primary text-white px-6 py-2 font-bold text-sm hover:bg-dark transition shadow-lg">Show Solution</button>
+                    <div id="ans-int-1" class="hidden bg-white p-6 border-l-4 border-primary mt-6 text-sm text-gray-700 leading-relaxed shadow-md">
+                        <strong>The Solution:</strong> <code>pd.cut</code> creates bins based on <strong>value ranges</strong> (e.g., 0-10, 10-20). <code>pd.qcut</code> creates bins based on <strong>quantiles</strong>, ensuring each bin has roughly the same number of data samples.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: MATERIALS -->
+        <div id="tab-mats" class="tab-content hidden">
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-dark border-b-2 border-primary pb-1 tracking-tight mt-10">Module Materials</h2>
+                <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-dark italic mt-0">Track Your Lab Progress</h3>
+                    <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
+                </div>
+                <div id="file-browser" class="space-y-4"></div>
+            </section>
+        </div>
+
+        <!-- Mastery Checklist -->
         <div class="bg-dark text-white p-8 my-12 shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight">Learning Outcome</h2>
-            <ul class="space-y-4 text-sm">
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Decide between OHE and Frequency encoding.</li>
-                <li class="flex items-start"><span class="mr-2 text-green-400">✓</span> Tame skewness with Log Transforms.</li>
+            <h2 class="text-2xl font-bold mb-6 border-b border-white border-opacity-30 pb-4 tracking-tight uppercase tracking-widest text-lg">Mastery Checklist</h2>
+            <ul class="space-y-6 text-sm" id="module-outcomes">
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Cardinality Strategy:</strong> Choose OHE for low-cardinality and Frequency encoding for high-cardinality features.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Distribution Correction:</strong> Identify right-skewed data and apply Log Transformations to normalize the signal.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Feature Ratios:</strong> Construct interaction features to expose explicit mathematical relationships between columns.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-3 text-green-400 font-bold">✓</span> 
+                    <span><strong>Quantization:</strong> Segment noisy continuous variables into stable bins to improve model generalization.</span>
+                </li>
             </ul>
         </div>
-    
-        <!-- Module Materials Explorer -->
-        <section class="mt-20 mb-10">
-            <h2 class="text-2xl font-bold text-dark border-b-4 border-primary pb-2 mb-8">Module Materials</h2>
-            <div class="bg-white border-b-4 border-primary p-6 mb-8 shadow-sm flex justify-between items-center">
-                <h3 class="text-lg font-bold text-dark italic">Track Your Lab Progress</h3>
-                <div class="text-lg font-bold text-primary">Module Progress: <span id="progress-percent">0%</span></div>
-            </div>
-            <div id="file-browser" class="space-y-4"></div>
-        </section>
     </div>
     <script src="../tree_data.js"></script>
     <script src="../explorer.js"></script>
