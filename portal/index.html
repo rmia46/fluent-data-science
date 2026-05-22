@@ -7,13 +7,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+    <div class="data-matrix-bg"></div>
     <div class="page-container">
-        <div class="bg-white border-4 border-primary p-12 text-center mb-12 shadow-lg">
-            <h1 class="text-4xl font-bold text-dark mb-2">Fluent Data Science</h1>
-            <p class="text-lg text-gray-600 mb-8 italic">A fast-paced curriculum designed for data science contests.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="learn.html" class="btn-primary">Start Learning</a>
-                <a href="plan.html" class="btn-secondary">View Curriculum Plan</a>
+        <div class="bg-white border-4 border-primary p-12 text-center mb-12 shadow-lg relative overflow-hidden">
+            <!-- Background Decorative Logo (Spinning) -->
+            <img src="logo.svg" class="absolute -right-10 -top-10 w-48 h-48 opacity-5 spin-slow pointer-events-none" alt="">
+            
+            <div class="relative z-10">
+                <div class="flex justify-center mb-6">
+                    <img src="logo.svg" class="w-20 h-20" alt="Fluent Data Science Logo">
+                </div>
+                <h1 class="text-4xl font-bold text-dark mb-2 uppercase tracking-tighter">Fluent Data Science</h1>
+                <p class="text-lg text-gray-600 mb-8 italic">Learn how to win your next data science contest.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="learn.html" class="btn-primary">Start Training</a>
+                    <a href="plan.html" class="btn-secondary">View Strategy</a>
+                </div>
             </div>
         </div>
 
@@ -78,19 +87,59 @@
             </div>
         </section>
 
-        <section class="mt-12 bg-light border-2 border-primary p-8">
-            <h2 class="text-xl font-bold text-dark mb-6 uppercase tracking-widest border-b border-primary pb-2">Module Roadmap</h2>
-            <ul class="space-y-3 text-sm">
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">01</span> <span>Mathematics for ML: Linear Algebra, Calculus, Statistics.</span></li>
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">02</span> <span>Tabular Foundations: High-speed Pandas & NumPy.</span></li>
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">03</span> <span>Feature Engineering I: Categorical Encoding, Scaling, Binning.</span></li>
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">04</span> <span>Feature Engineering II: Smoothed Target Encoding, Contextual Transforms.</span></li>
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">05</span> <span>Validation Architecture: Cross-Validation & Leakage Auditing.</span></li>
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">06</span> <span>Tree-Based Models: LightGBM, XGBoost, CatBoost.</span></li>
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">07</span> <span>Optimization & Ensembling: Optuna Tuning & Weighted Blending.</span></li>
-                <li class="flex items-center"><span class="w-8 font-bold text-primary">08</span> <span>Production Pipelines: Modular Script Architecture & Git.</span></li>
-                <li class="flex items-center font-bold text-dark"><span class="w-8 font-bold text-primary">09</span> <span>Mock Competition Challenge: Capstone Churn Project.</span></li>
-            </ul>
+        <section class="mt-12 bg-white border-2 border-primary overflow-hidden shadow-md">
+            <h2 class="text-xl font-bold text-dark p-4 uppercase tracking-widest border-b-2 border-primary">Module Roadmap</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <tbody class="text-sm divide-y divide-gray-100">
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">01</td>
+                            <td class="p-4 font-bold text-dark">Mathematics for ML</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">Linear Algebra, Calculus, Statistics foundations.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">02</td>
+                            <td class="p-4 font-bold text-dark">Tabular Foundations</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">High-speed Pandas & NumPy manipulation.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">03</td>
+                            <td class="p-4 font-bold text-dark">Feature Engineering I</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">Encoding, Scaling, and Interaction features.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">04</td>
+                            <td class="p-4 font-bold text-dark">Feature Engineering II</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">Target Encoding and Contextual Transforms.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">05</td>
+                            <td class="p-4 font-bold text-dark">Validation Architecture</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">Cross-Validation & Leakage Auditing.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">06</td>
+                            <td class="p-4 font-bold text-dark">Tree-Based Models</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">LightGBM, XGBoost, and Regularization.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">07</td>
+                            <td class="p-4 font-bold text-dark">Optimization & Ensembling</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">Optuna Tuning & Weighted Blending.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors">08</td>
+                            <td class="p-4 font-bold text-dark">Production Pipelines</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell">Modular Script Architecture & Git workflows.</td>
+                        </tr>
+                        <tr class="hover:bg-green-50 transition-colors group">
+                            <td class="p-4 w-16 font-bold text-primary border-r border-gray-100 bg-gray-50 group-hover:bg-primary group-hover:text-white transition-colors text-xs">FIN</td>
+                            <td class="p-4 font-bold text-primary uppercase tracking-tighter">Mock Competition</td>
+                            <td class="p-4 text-gray-500 hidden sm:table-cell italic">The Final Capstone Churn Project.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <section class="mt-12 border-2 border-gray-300 p-8 bg-white">

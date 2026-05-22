@@ -1,0 +1,11 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Square (Sharp Edges) -->
+    <rect width="100" height="100" fill="#2e7d32"/>
+    <!-- Central Node -->
+    <rect x="35" y="35" width="30" height="30" fill="white"/>
+    <!-- Connection Lines -->
+    <path d="M15 15L35 35" stroke="white" stroke-width="6" stroke-linecap="square"/>
+    <path d="M85 15L65 35" stroke="white" stroke-width="6" stroke-linecap="square"/>
+    <path d="M15 85L35 65" stroke="white" stroke-width="6" stroke-linecap="square"/>
+    <path d="M85 85L65 65" stroke="white" stroke-width="6" stroke-linecap="square"/>
+</svg>
