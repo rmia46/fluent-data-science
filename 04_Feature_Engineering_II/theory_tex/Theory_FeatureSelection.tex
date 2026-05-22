@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\title{Module 04: Feature Engineering II - Automated Selection and Adversarial Validation}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+As you engineer hundreds of features, your dataset becomes cluttered with noise and redundancy. This note covers the critical "Pruning Phase"---how to systematically drop features that don't help, and a secret Grandmaster technique called "Adversarial Validation" to ensure your model doesn't fail when it hits the hidden test set.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Systematic Pruning: Cleaning the Feature Forest}
+Engineering 200 features is easy; keeping the right 50 is the hard part.
+
+\subsection{Feature Importance Filtering}
+The fastest way to rank features is by running a baseline \textbf{LightGBM} model with default parameters.
+\textit{Why?} Tree-based models calculate \textbf{Gain} and \textbf{Split} importance, telling you exactly which columns provided the most signal.
+
+\begin{lstlisting}[language=Python]
+import lightgbm as lgb
+model = lgb.LGBMRegressor().fit(X, y)
+importance_df = pd.DataFrame({'feature': X.columns, 'importance': model.feature_importances_})
+importance_df = importance_df.sort_values(by='importance', ascending=False)
+# Strategy: Drop the bottom 30% of features
+\end{lstlisting}
+
+\subsection{Dropping Collinear Features}
+Redundant features add noise and slow down training. If two features have a correlation $> 0.95$, they are essentially the same.
+
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black,title=The Selection Rule]
+Identify pairs of highly correlated features. Keep the one that has the \textbf{strongest relationship to the target} and drop the other.
+\end{tcolorbox}
+
+\section{Adversarial Validation: Detecting Data Drift}
+This is a high-level competitive technique to see if your training data and test data come from different distributions.
+
+\subsection{The Concept}
+\begin{enumerate}
+    \item Label all your training rows as \texttt{0} and all test rows as \texttt{1}.
+    \item Combine them into one big dataset (dropping the actual target).
+    \item Train a model to predict: \textbf{"Is this row from the Test Set?"}
+\end{enumerate}
+
+\subsection{Interpreting the Results}
+\begin{itemize}
+    \item \textbf{AUC $\approx$ 0.50:} The model can't tell the difference. Your data is stable.
+    \item \textbf{AUC $>$ 0.70:} The model can identify test rows. This means some features behave differently in the test set.
+\end{itemize}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Action Plan]
+If the AUC is high, check the feature importance of your Adversarial Model. The features at the top are "leaking" information about the test set. \textbf{Drop them immediately} to avoid a massive score drop on the private leaderboard.
+\end{tcolorbox}
+
+\section{Practice Problems}
+\textbf{P1:} You have engineered 150 features. You run a baseline model and find that 40 features have an importance score of exactly 0. What should you do? \\
+\textit{Answer: Drop them. They are pure noise and never used for a single split in the tree model.}
+
+\textbf{P2:} Your Adversarial Validation model has an AUC of 0.85. The top feature is "Transaction\_Date". What does this tell you? \\
+\textit{Answer: The test data likely comes from a different time period than the training data. This feature allows the model to "memorize" the time gap. You should probably drop it or transform it into a relative feature (e.g., "Days Since Start").}
+
+\end{document}

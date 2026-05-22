@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\geometry{a4paper, margin=1in}
+
+\title{Module 06: Tree-Based Gradient Boosting Dominance - Part 3}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Optimizing gradient boosted trees requires balancing two contrasting architectural concepts: structural constraints and stochastic regularization. Tuning only one of these dimensions often results in models that either underfit or memorize dataset noise. This note details the interactions between physical tree boundaries and random sampling parameters, providing an operational strategy to achieve maximum generalization on competitive leaderboards.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The Dual-Axis Regularization Framework}
+When training complex ensemble architectures like LightGBM or XGBoost, fighting overfitting requires a multi-layered approach. Practitioners often make the mistake of over-tuning structural limits while ignoring the regularizing power of random variation. High-performance tree optimization operates along two distinct axes:
+
+\begin{enumerate}
+    \item \textbf{Structural Constraints:} Deterministic limits built into the tree-splitting logic that physically restrict the size, depth, and granularity of individual decision boundaries.
+    \item \textbf{Stochastic Controls:} Random variations injected into the data ingestion layer that prevent trees from repeatedly learning the same localized noise patterns.
+\end{enumerate}
+
+\section{Structural Parameters: Deterministic Hard Floors}
+Structural parameters define the physical boundaries of individual estimators. They dictate how complex or granular a single decision tree is allowed to become.
+
+\subsection{\texttt{max\_depth} and \texttt{num\_leaves}}
+As covered in previous modules, these parameters control the scale of the tree's architecture. \texttt{max\_depth} sets a strict vertical ceiling for level-wise models, while \texttt{num\_leaves} limits the horizontal complexity of leaf-wise models. Lowering these parameters restricts the model's capacity, keeping it from building complex feature interactions that only exist in the training subset.
+
+\subsection{\texttt{min\_child\_weight} (\texttt{min\_sum\_hessian\_in\_leaf})}
+This parameter defines the minimum sum of instance weights (Hessians) required inside a leaf node before a split can be made.
+\begin{itemize}
+    \item **The Intuition:** For squared-error regression, this corresponds to the raw number of samples required in a leaf. For classification, it measures the confidence (variance) of predictions within that node. If a split isolates a small group of highly volatile samples, \texttt{min\_child\_weight} will block it, forcing the model to stick to broader, higher-signal patterns.
+\end{itemize}
+
+\section{Stochastic Parameters: Injecting Algorithmic Noise}
+Stochastic controls introduce random variations to make your ensemble robust against data volatility. Instead of allowing every tree to see the entire dataset, these settings introduce row and column sampling.
+
+\subsection{\texttt{subsample} (\texttt{bagging\_fraction}): Row Sampling}
+This parameter dictates the exact percentage of the training dataset randomly sampled to build each individual tree.
+\begin{itemize}
+    \item **The Operational Rule:** Setting \texttt{subsample = 0.8} means each tree trains on a completely random 80\% subset of rows. This row-level shuffle introduces a bagging effect. It ensures that if a few extreme outliers are skewing your gradients, they will only impact a fraction of the boosting rounds, preventing the global model from tracking them.
+\end{itemize}
+
+\subsection{\texttt{colsample\_bytree} (\texttt{feature\_fraction}): Column Sampling}
+This parameter dictates the percentage of features randomly sampled before building an individual tree.
+\begin{itemize}
+    \item **The Operational Rule:** Setting \texttt{colsample\_bytree = 0.7} forces each tree to select its splits from a random 70\% subset of features. This column-level shuffle is essential for breaking feature dominance. If your dataset contains one highly dominant column, standard gradient boosting will use it at the root of almost every tree. Forcing trees to ignore that dominant column forces them to discover hidden, subtle signals in the remaining features.
+\end{itemize}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!70!black,title=The Generalization Commandment]
+If your model is memorizing training noise (indicated by high training accuracy but low out-of-fold validation scores), turn your stochastic parameters down to $0.7$ or $0.8$. This forces individual trees to learn diverse patterns, creating a highly stable ensemble.
+\end{tcolorbox}
+
+\newpage
+\section{Practice Problems}
+
+\textbf{P1:} An engineer sets \texttt{colsample\_bytree = 0.20} for an XGBoost model built on a wide tabular dataset. While evaluating the model, they find that the local cross-validation score has collapsed due to severe underfitting. Explain the statistical flaw behind this drop.
+\\
+\textit{Answer: Setting \texttt{colsample\_bytree = 0.20} restricts each individual tree to searching across only 20\% of the available features. If the primary informative signals in the dataset are distributed across a few specific columns, a significant portion of the trees will be completely starved of useful features. This makes individual trees weak predictors, slowing down convergence and causing the final ensemble score to collapse due to severe underfitting.}
+
+\newline
+\textbf{P2:} You are evaluating a LightGBM model on an imbalanced binary classification dataset. A teammate suggests dropping the structural parameter \texttt{min\_child\_weight} to exactly $0.001$ to allow the model to catch rare minority class instances. Evaluate this suggestion and its impact on validation metrics.
+\\
+\textit{Answer: Dropping \texttt{min\_child\_weight} to $0.001$ allows LightGBM to split leaf nodes that contain only one or two minority samples. While this will increase training set performance and maximize recall for the minority class on training data, it leaves the model highly vulnerable to overfitting. The model will create hyper-specific rules around individual noisy samples, leading to an increase in False Positives and a drop in your out-of-fold validation Precision and $F_1$-score.}
+
+\newline
+\textbf{P3:} A model trained on a tabular dataset of 50,000 observations shows a large performance gap: its training ROC-AUC is $0.985$ while its out-of-fold validation ROC-AUC is $0.832$. The current configuration uses default values: \texttt{max\_depth=6}, \texttt{subsample=1.0}, and \texttt{colsample\_bytree=1.0}. Propose an updated parameter configuration to close this gap using both structural and stochastic adjustments.
+\\
+\textit{Answer: The large performance gap indicates that the model is memorizing the training data instead of generalizing. To fix this, you should reduce structural complexity and introduce stochastic variations:
+\begin{enumerate}
+    \item **Structural Adjustments:** Reduce \texttt{max\_depth} from 6 down to 4 to physically limit the complexity of individual trees.
+    \item **Stochastic Adjustments:** Reduce \texttt{subsample} from 1.0 down to 0.8 to train each tree on a random subset of rows.
+    \item **Stochastic Adjustments:** Reduce \texttt{colsample\_bytree} from 1.0 down to 0.7 to force the model to explore alternative feature combinations and break feature dominance.
+\end{enumerate}
+These changes will slightly increase training error but will significantly improve out-of-fold validation performance, closing the overfitting gap.}
+
+\end{document}

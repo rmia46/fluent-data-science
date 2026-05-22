@@ -1,0 +1,98 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+% Color definitions (Using a clean, professional dark green forest palette)
+\definecolor{primary}{HTML}{0D5C3A}
+\definecolor{secondary}{HTML}{1B4D3E}
+\definecolor{accent}{HTML}{2E8B57}
+\definecolor{darktext}{HTML}{000000}
+\definecolor{lightbg}{HTML}{F4F9F6}
+
+\titlelabel{\thetitle.\quad}
+\titleformat{\section}{\color{primary}\large\bfseries}{}{0pt}{}[{\titlerule[1pt]}]
+\titleformat{\subsection}{\color{secondary}\bfseries}{}{0pt}{}
+
+\title{\textbf{\color{primary}Datathon Revision Notes: Module 1 \\ Linear Algebra Foundations}}
+\author{\textbf{Roman}}
+\date{\today}
+
+\begin{document}
+\color{darktext}
+\maketitle
+
+\section{Core Architecture: The Data Hierarchy}
+\subsection*{The Inventor's Problem}
+\textit{How do we bundle massive collections of multi-featured data into a single, clean mathematical object that a computer can process all at once, avoiding chaotic, slow nested loops?}
+
+\subsection*{The Analogy}
+Think of data dimensionality as structural building blocks:
+\begin{itemize}
+    \item \textbf{0D Scalar ($\alpha$):} A single configuration value floating in isolation (e.g., your model's learning rate like $\alpha = 0.01$).
+    \item \textbf{1D Vector ($\mathbf{x}$):} A single data profile or customer passport. It is a straight line of numbers where each position represents a specific feature (e.g., a customer's $[\text{Age}, \text{Income}, \text{Credit Score}]$).
+    \item \textbf{2D Matrix ($\mathbf{X}$):} An entire spreadsheet grid layout. It stacks multiple customer vectors on top of each other. Rows represent individual samples; columns represent specific features.
+    \item \textbf{ND Tensor:} Higher-dimensional data shapes (e.g., a 3D tensor stacking multiple 2D matrices over time, like tracking customer spreadsheets month-by-month).
+\end{itemize}
+
+\subsection*{The First-Principles Logic}
+By organizing features into contiguous matrices, we unlock hardware-level optimizations. Instead of using Python \texttt{for} loops to inspect each row sequentially, modern CPUs and GPUs use SIMD (Single Instruction, Multiple Data) architectures to run vector operations simultaneously across an entire grid in a single clock cycle.
+
+\section{Alignment and Measurement: Transpose \& Dot Product}
+\subsection*{The Inventor's Problem}
+\textit{How do we manipulate the spatial orientation of an incompatible data grid to satisfy matching constraints, and how do we compute a single similarity score showing how well two multi-featured variables align or push together?}
+
+\subsection*{The Analogy}
+\begin{itemize}
+    \item \textbf{Matrix Transpose ($\mathbf{X}^T$):} Think of this as a physical orientation adapter plug. If your matrix is standing up tall (Rows $\times$ Columns) and you need it to lay flat sideways to plug into a multiplication formula, the transpose flips it across its diagonal axis, turning all rows into columns and columns into rows.
+    \item \textbf{Vector Dot Product ($\mathbf{u} \cdot \mathbf{v}$):} Think of this as a \textbf{Directional Alignment Meter}. If two vectors are pointing in the exact same direction, their dot product explodes to its maximum value. If they point at a right angle ($90^\circ$), they share zero alignment and their dot product is exactly 0.
+\end{itemize}
+
+\subsection*{The First-Principles Logic}
+The core engine of a machine learning prediction layer is a dot product between a feature vector and a learned weight vector:
+$$\hat{y} = \mathbf{w}^T \mathbf{x} + b = w_1x_1 + w_2x_2 + \dots + w_nx_n + b$$
+The model evaluates incoming customer features $\mathbf{x}$ against its internalized weight pattern $\mathbf{w}$. The stronger the structural alignment (higher dot product), the higher the output probability score.
+
+\newpage
+\section{Single-Step Optimization: The Normal Equation}
+\subsection*{The Inventor's Problem}
+\textit{When dealing with an overdetermined system of equations (vastly more rows/samples than columns/features), a perfect zero-error solution is mathematically impossible. How do we compute the single best possible weight vector that minimizes total squared error across every row simultaneously in one step?}
+
+\subsection*{The Analogy}
+Imagine a scatterplot with millions of chaotic data points. You are holding a straight wooden stick, trying to drop it into the data cloud so that it acts as a perfect average centerline. You cannot bend the stick to touch every single point. The Normal Equation calculates the exact structural equilibrium point where the gravitational pull of all points combined forces the stick into the absolute minimum total squared error position.
+
+\subsection*{The First-Principles Logic}
+We start with the ideal, unresolvable linear system: $\mathbf{X}\mathbf{w} = \mathbf{y}$. Because the rectangular matrix $\mathbf{X}$ is not square, we cannot compute its inverse directly. To resolve this, we multiply both sides of the equation by the adapter plug $\mathbf{X}^T$:
+$$\mathbf{X}^T\mathbf{X}\mathbf{w} = \mathbf{X}^T\mathbf{y}$$
+The multiplication $\mathbf{X}^T\mathbf{X}$ collapses the tall rectangular data matrix into a neat, symmetric square matrix. We then isolate the optimal weight vector $\mathbf{w}$ by multiplying by the computed square inverse:
+$$\mathbf{w} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$$
+
+\section{Dimensionality Compression: Eigenvalues \& PCA}
+\subsection*{The Inventor's Problem}
+\textit{How do we look at a massive, redundant cloud of data points containing hundreds of highly correlated columns and isolate the absolute most informative directional axes so we can compress the space without losing critical predictive signal?}
+
+\subsection*{The Analogy}
+Imagine looking at a complex, three-dimensional wire sculpture hanging in a room. If you shine a flashlight on it from a random angle, its shadow on the flat wall becomes a chaotic, unreadable smear. But if you slowly walk around the sculpture until you find the perfect perspective, the shadow suddenly projects a clean, wide silhouette that captures the entire structure of the object. Principal Component Analysis (PCA) finds that exact optimal perspective angle.
+
+\subsection*{The First-Principles Logic}
+An eigenvector ($\mathbf{v}$) represents a special directional axis in your feature space that does not change its spatial orientation when a transformation matrix $\mathbf{A}$ is applied to it—it only scales. The eigenvalue ($\lambda$) is the scale factor that quantifies exactly how much data variance is distributed along that axis:
+$$\mathbf{A}\mathbf{v} = \lambda\mathbf{v}$$
+By calculating the eigenvectors of a dataset's covariance matrix, PCA identifies the axes of maximum variance. Projecting your high-dimensional data onto the top-scoring eigenvectors allows you to compress wide data tables cleanly while filtering out random noise.
+
+\section{Overfitting Protection: Vector Norms ($L_1$ \& $L_2$)}
+\subsection*{The Inventor's Problem}
+\textit{How do we mathematically track and punish the physical magnitude of a model's weight vector to prevent it from using massive, volatile coefficients to memorize random training noise?}
+
+\subsection*{The Analogy}
+\begin{itemize}
+    \item \textbf{$L_1$ Regularization (Manhattan Distance / Taxi Tax):} This acts like a strict flat-rate toll collector. It looks at the absolute sum of the weights ($\sum |w_i|$). It doesn't care if a weight is small or large; it applies a steady, constant downward pressure. This pressure forces less critical weights to drop all the way down to exactly 0, acting as an automatic feature selection engine.
+    \item \textbf{$L_2$ Regularization (Euclidean Distance / Crow-Flies Tax):} This acts like an emergency siren. It squares the weights ($\sum w_i^2$). If a weight is tiny (e.g., $0.1$), its squared penalty is microscopic ($0.01$). But if a weight balloons out of control to $+90.0$, the penalty skyrockets exponentially ($8100.0$). This aggressively crushes massive outlier parameters, forcing the model to distribute its attention evenly across all features.
+\end{itemize}
+
+\end{document}

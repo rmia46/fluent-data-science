@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\title{Module 03: Feature Engineering I - Interaction Features and Continuous Binning}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Machine Learning models are powerful, but they aren't magic. Sometimes, the most important pattern in your data isn't in a single column, but in the \textbf{relationship} between two columns. Other times, the exact numerical value of a feature is just "noise," and the model would perform better if it saw broad categories instead. This note covers how to engineer interaction features and how to simplify continuous data through binning.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Interaction Features: The Force Multipliers}
+An interaction feature is a new column created by mathematically combining two or more existing ones. 
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Why Interactions Matter]
+While complex models like Gradient Boosted Trees can eventually "discover" these relationships on their own, giving them the relationship explicitly makes the learning process much faster and more robust. It turns a non-linear problem into a linear one.
+\end{tcolorbox}
+
+\subsection{Common Types of Interactions}
+\begin{itemize}
+    \item \textbf{Ratios (Division):} Used to normalize values.
+    \textit{Example:} If you have \texttt{Total\_Calories} and \texttt{Serving\_Size}, the model will benefit from:
+    \begin{equation}
+        \text{Calories\_Per\_Gram} = \frac{\text{Total\_Calories}}{\text{Serving\_Size}}
+    \end{equation}
+    \item \textbf{Products (Multiplication):} Used when the effect of one variable depends on the other.
+    \textit{Example:} \texttt{House\_Area} $\times$ \texttt{Price\_Per\_Sqft}.
+    \item \textbf{Differences (Subtraction):} Used to measure a "gap" or "change."
+    \textit{Example:} \texttt{Price\_Listed} - \texttt{Price\_Sold}.
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+# Creating a ratio feature in Pandas
+df['Efficiency'] = df['Output'] / df['Input']
+\end{lstlisting}
+
+\section{Continuous Binning (Quantization)}
+Binning is the process of turning a continuous number (like Age or Income) into categorical "buckets" or "bins."
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,title=The Generalization Benefit]
+Continuous data often contains small, random fluctuations that are just noise. For example, is there a real difference between someone who is 25.4 years old and 25.6 years old? Probably not. By binning them into a [19--35] bucket, you help the model ignore the noise and focus on the meaningful age group.
+\end{tcolorbox}
+
+\subsection{Implementation with \texttt{pd.cut}}
+Pandas provides the \texttt{pd.cut()} function to segment data into specific ranges.
+
+\begin{lstlisting}[language=Python]
+# Binning Age into 4 categories
+bins = [0, 18, 35, 60, 100]
+labels = ['Minor', 'Young Adult', 'Middle Aged', 'Senior']
+df['Age_Group'] = pd.cut(df['Age'], bins=bins, labels=labels)
+\end{lstlisting}
+
+\subsection{Quantile-based Binning with \texttt{pd.qcut}}
+If you want each bin to have the \textbf{same number of people} (e.g., separating the dataset into 4 equal quartiles), use \texttt{qcut}.
+\begin{lstlisting}[language=Python]
+# Divide Income into 4 equal groups (Quartiles)
+df['Income_Tier'] = pd.qcut(df['Income'], q=4, labels=['Q1', 'Q2', 'Q3', 'Q4'])
+\end{lstlisting}
+
+\section{Practice Problems}
+\textbf{P1:} You are building a model to predict house prices. You have \texttt{Lot\_Frontage} and \texttt{Lot\_Depth}. What interaction feature could you create that represents the total size of the lot? \\
+\textit{Answer: \texttt{Lot\_Area} = \texttt{Lot\_Frontage} $\times$ \texttt{Lot\_Depth}.}
+
+\textbf{P2:} You have a column \texttt{Exam\_Score} (0--100). You notice that the difference between a 91 and a 93 doesn't matter, but the difference between an 89 and a 91 (the "A" threshold) matters a lot. Should you keep the scores as numbers or bin them? \\
+\textit{Answer: Bin them into grade categories (e.g., F, D, C, B, A). This focuses the model on the meaningful thresholds rather than the numerical noise.}
+
+\textbf{P3:} What is the difference between \texttt{pd.cut} and \texttt{pd.qcut}? \\
+\textit{Answer: \texttt{pd.cut} creates bins based on specific \textbf{value ranges} (e.g., 0-10, 10-20), while \texttt{pd.qcut} creates bins based on \textbf{quantiles}, ensuring each bin has roughly the same number of data samples.}
+
+\end{document}

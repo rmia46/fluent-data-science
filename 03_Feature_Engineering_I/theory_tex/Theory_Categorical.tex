@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\title{Module 03: Feature Engineering I - The Cardinality Rules of Categorical Encoding}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Machine Learning models are mathematical engines; they only understand numbers. However, real-world data is messy and full of text categories (City, Job Title, Device Type). The way you transform these words into numbers determines whether your model finds a pattern or gets lost in a "Dimensionality Explosion." This note covers the three primary strategies for handling categories based on their cardinality.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Introduction to Cardinality}
+\textbf{Cardinality} refers to the number of unique values in a categorical column. 
+\begin{itemize}
+    \item \textbf{Low Cardinality:} A few unique values (e.g., \texttt{Gender}, \texttt{Subscription\_Type}).
+    \item \textbf{High Cardinality:} Hundreds or thousands of unique values (e.g., \texttt{City}, \texttt{User\_ID}, \texttt{ZIP\_Code}).
+\end{itemize}
+The strategy you choose must match the cardinality of the feature.
+
+\section{Strategy 1: One-Hot Encoding (OHE)}
+One-Hot Encoding creates a new binary column ($0$ or $1$) for every unique category in the feature.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=When to use OHE]
+Only use this for \textbf{Low Cardinality} features ($< 10$ unique values). If you use OHE on a column with 500 cities, you will add 500 new columns to your dataset, making your data matrix massive and sparse (full of zeros), which ruins model performance.
+\end{tcolorbox}
+
+\begin{lstlisting}[language=Python]
+# Using Pandas to One-Hot Encode
+df = pd.get_dummies(df, columns=['Device_Type'], drop_first=True)
+\end{lstlisting}
+
+\section{Strategy 2: Label and Ordinal Encoding}
+\textbf{Label Encoding} assigns a unique integer to each category (e.g., Apple $\to 0$, Banana $\to 1$). 
+\textbf{Ordinal Encoding} is a special case where the integers follow a natural mathematical order.
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,title=When to use Ordinal]
+Use this when the categories have a \textbf{Ranked Order}. 
+\textit{Example:} Low $\to 0$, Medium $\to 1$, High $\to 2$.
+This tells the model that "High" is mathematically "greater" than "Low."
+\end{tcolorbox}
+
+\begin{lstlisting}[language=Python]
+# Manual Ordinal Mapping
+mapping = {'Low': 0, 'Medium': 1, 'High': 2}
+df['Priority'] = df['Priority'].map(mapping)
+\end{lstlisting}
+
+\section{Strategy 3: Frequency / Count Encoding}
+This method replaces each category with either the total \textbf{count} or the \textbf{percentage} of times it appears in the dataset.
+
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black,title=When to use Frequency]
+This is the gold standard for \textbf{High Cardinality} columns (like IP Addresses or Zip Codes). It captures the "importance" or "rarity" of a category without adding new columns.
+\end{tcolorbox}
+
+\begin{lstlisting}[language=Python]
+# Frequency Encoding
+freq = df['City'].value_counts(normalize=True)
+df['City_Freq'] = df['City'].map(freq)
+\end{lstlisting}
+
+\section{Practice Problems}
+\textbf{P1:} You have a column \texttt{Job\_Title} with 1,200 unique titles. Should you use One-Hot Encoding? Why or why not? \\
+\textit{Answer: No. Using OHE would create 1,200 new columns, leading to the "Curse of Dimensionality" and likely causing your model to overfit or crash due to memory limits.}
+
+\textbf{P2:} Which encoding method is best for a column \texttt{Education\_Level} with values [High School, Bachelors, Masters, PhD]? \\
+\textit{Answer: Ordinal Encoding. These categories have a clear logical progression where a PhD represents a higher level than High School.}
+
+\textbf{P3:} Why is Frequency Encoding useful for fraud detection? \\
+\textit{Answer: In fraud detection, "rarity" is a signal. Frequency encoding tells the model exactly how rare an IP address or ZIP code is, helping it identify unusual (low-frequency) behavior.}
+
+\end{document}

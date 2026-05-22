@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\geometry{a4paper, margin=1in}
+
+\title{Module 07: Optimization \& Advanced Ensembling - Part 1}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Hyperparameter tuning is often the differentiator between a mediocre submission and a podium finish on a competitive leaderboard. However, manual tuning is too slow for short-duration hackathons, and brute-force searching is computationally inefficient. This note introduces Optuna, an elite automated optimization framework driven by Bayesian mechanics, and outlines how to deploy it safely within your cross-validation loop.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The Inefficiency of Brute-Force Tuning}
+Once you lock in your feature engineering steps and baseline models, your next objective is to squeeze every drop of predictive performance out of your tree-based models.
+
+\subsection{The Failure of Traditional Searches}
+Many data scientists instinctively turn to traditional parameter exploration techniques, which generally fall into two categories:
+\begin{itemize}
+    \item \textbf{Grid Search:} A deterministic search that evaluates every single combination within a hardcoded grid of values. It scales poorly, suffering from the curse of dimensionality as more parameters are added.
+    \item \textbf{Random Search:} A stochastic search that samples configurations randomly. While statistically superior to Grid Search, it possesses no memory; a brilliant result or a catastrophic failure on Trial 12 has zero influence on where Trial 13 samples its parameters.
+\end{itemize}
+
+In a time-constrained datathon, you cannot afford to waste compute cycles on blind or exhaustive guessing.
+
+\section{Optuna and Bayesian Optimization}
+To optimize your parameters efficiently, you need an algorithm that actively learns from its own history. **Optuna** fulfills this requirement by framing hyperparameter tuning as a sequential optimization problem powered by Bayesian mechanics.
+
+\subsection{The Objective Function Concept}
+The fundamental architecture of an Optuna optimization workflow centers on a self-contained execution unit called the \textbf{Objective Function}. This function handles a single evaluation loop:
+\begin{enumerate}
+    \item It defines the boundaries of the hyperparameter search space using specialized suggestion methods (e.g., sampling a learning rate continuously across a logarithmic scale).
+    \item It instantiates the model using the suggested parameters.
+    \item It trains and evaluates the model strictly inside your cross-validation loop.
+    \item It returns a single scalar value representing your evaluation metric (such as a multi-fold validation log-loss or ROC-AUC score).
+\end{enumerate}
+
+\subsection{The Heat-Seeking Missile Mechanism}
+Instead of wandering blindly through the search space, Optuna constructs a probabilistic surrogate model (typically using a Tree-structured Parzen Estimator, or TPE).
+
+As trials run, Optuna builds a probability distribution of where excellent parameter combinations live versus where terrible combinations live. It calculates the **Expected Improvement** ($EI$) to select the next set of hyperparameters:
+\begin{equation}
+    EI(x) = \int_{-\infty}^{y^*} (y^* - y) p(y|x) \, dy
+\end{equation}
+Where $y^*$ is a threshold performance mark, and $x$ represents the hyperparameter vector. This allows the search algorithm to act like a heat-seeking missile on autopilot, aggressively focusing compute resources on the most promising regions of the parameter space.
+
+\section{Defensive Optuna Implementation Rules}
+While Optuna is incredibly powerful, setting it up incorrectly can ruin an entire hackathon run. Adhere to these strict execution rules:
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!70!black,title=The Optimization Commandment]
+The score returned by your objective function must be the average \textbf{Out-of-Fold (OOF) cross-validation score}. Never optimize parameters against a single static train/test split.
+\end{tcolorbox}
+
+If you optimize hyperparameters against a single validation split, Optuna's Bayesian engine will rapidly find settings that overfit that specific partition perfectly. When you later attempt to run those parameters across other data folds, your performance will collapse due to evaluation bias.
+
+\newpage
+\section{Practice Problems}
+
+\textbf{P1:} An engineer configures Optuna to optimize a LightGBM classifier. They want to test a learning rate parameter ranging continuously from $0.001$ to $0.1$. State which specific Optuna suggestion method should be applied, and explain why a standard linear scale search is inappropriate here.
+\\
+\textit{Answer: The method \texttt{trial.suggest\_float('learning\_rate', 0.001, 0.1, log=True)} must be used. A standard linear scale is inappropriate because learning rates operate exponentially in gradient descent; the difference between $0.001$ and $0.01$ changes optimization dynamics far more than the difference between $0.08$ and $0.09$. A logarithmic scale ensures that Optuna searches across orders of magnitude with uniform granularity.}
+
+\newline
+\textbf{P2:} Write out a clean, functional Python code block that defines an Optuna objective function designed to find the optimal \texttt{max\_depth} (integer between 3 and 10) for a Scikit-Learn Random Forest regressor evaluated via 3-Fold cross-validation.
+\\
+\textit{Answer:}
+\begin{verbatim}
+import optuna
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomForestRegressor
+
+def objective(trial):
+    # Suggest hyperparameter boundaries
+    max_depth = trial.suggest_int('max_depth', 3, 10)
+
+    # Instantiate the estimator with the suggested parameter
+    regressor = RandomForestRegressor(max_depth=max_depth, random_state=42)
+
+    # Evaluate strictly within a cross-validation architecture
+    scores = cross_val_score(regressor, X_train, y_train, cv=3, scoring='r2')
+
+    # Return the average validation metric for Optuna to maximize
+    return scores.mean()
+\end{verbatim}
+
+\newline
+\textbf{P3:} During a 4-hour mock competition, you set Optuna to run for 500 trials to find the absolute perfect parameters for an XGBoost model. After 1.5 hours, it has completed only 40 trials. Evaluate this situation from a strategic datathon perspective and explain how to fix the pipeline bottlenecks.
+\\
+\textit{Answer: This is a major operational failure. Allocating nearly half of your total competition timeline to an un-pruned hyperparameter search cripples your feature engineering sprints. To fix this bottleneck, you must immediately lower the number of total trials (e.g., limit it to 30 or 50 trials), or implement Optuna's \texttt{MedianPruner} callback. Pruning allows Optuna to monitor early iterations within individual folds and abort unpromising trials instantly if their early performance falls below the historic median score.}
+
+\end{document}

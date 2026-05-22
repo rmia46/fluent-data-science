@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\title{Module 04: Feature Engineering II - Group-Level Transforms and Contextual Modeling}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Numbers in isolation are often meaningless. If a column says a user spent \$150, is that high or low? Without context, the model cannot know. This note covers the use of the \texttt{.transform()} function to build contextual features that compare individual data points against their peer groups, transforming raw numbers into behavioral signals.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The Concept of Contextual Modeling}
+Machine learning models struggle to understand "normality." To help them, we must explicitly calculate what is normal for a specific group and then show the model how an individual row deviates from that norm.
+
+\section{The \texttt{.transform()} Function}
+Unlike \texttt{.agg()}, which reduces the number of rows to a summary table, \texttt{.transform()} calculates a statistic for a group but \textbf{broadcasts it back} to the original shape of the DataFrame.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Essential Syntax]
+\texttt{df['group\_mean'] = df.groupby('Group\_Col')['Target\_Col'].transform('mean')}
+\end{tcolorbox}
+
+\section{Practical Contextual Features}
+
+\subsection{Relative Deviation}
+Is this user spending more than their personal average? 
+\begin{equation}
+    \text{Diff\_From\_Avg} = \text{Current\_Spend} - \text{User\_Avg\_Spend}
+\end{equation}
+
+\begin{lstlisting}[language=Python]
+df['user_avg'] = df.groupby('User_ID')['Spend'].transform('mean')
+df['spend_vs_user_avg'] = df['Spend'] - df['user_avg']
+\end{lstlisting}
+
+\subsection{Group-Based Z-Scores}
+Is this house priced abnormally high for its neighborhood?
+\begin{equation}
+    z_{group} = \frac{x - \mu_{group}}{\sigma_{group}}
+\end{equation}
+
+\begin{lstlisting}[language=Python]
+df['hood_avg'] = df.groupby('Neighborhood')['Price'].transform('mean')
+df['hood_std'] = df.groupby('Neighborhood')['Price'].transform('std')
+df['price_z_hood'] = (df['Price'] - df['hood_avg']) / df['hood_std']
+\end{lstlisting}
+
+\section{Practice Problems}
+\textbf{P1:} When should you use \texttt{.transform()} instead of \texttt{.merge()}? \\
+\textit{Answer: Use \texttt{.transform()} for simple statistical broadcasts (mean, sum, std) because it is faster and requires less code. Use \texttt{.merge()} when you need to join complex summary tables with multiple different metrics.}
+
+\textbf{P2:} You are predicting fraud in transactions. Why is \texttt{Amount - Avg\_Amount\_For\_That\_Card} a better feature than just \texttt{Amount}? \\
+\textit{Answer: Because \$500 might be normal for a wealthy user but highly suspicious for a student. The relative difference provides the "behavioral context" that raw numbers lack.}
+
+\end{document}

@@ -1,0 +1,98 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+% Color definitions (Using a clean, vibrant teal/cyan palette for statistics)
+\definecolor{primary}{HTML}{008080}
+\definecolor{secondary}{HTML}{005B5B}
+\definecolor{accent}{HTML}{00A8A8}
+\definecolor{darktext}{HTML}{000000}
+\definecolor{lightbg}{HTML}{E6F2F2}
+
+\titlelabel{\thetitle.\quad}
+\titleformat{\section}{\color{primary}\large\bfseries}{}{0pt}{}[{\titlerule[1pt]}]
+\titleformat{\subsection}{\color{secondary}\bfseries}{}{0pt}{}
+
+\title{\textbf{\color{primary}Datathon Revision Notes: Module 3 \\ Probability, Statistics \& Information Theory}}
+\author{\textbf{Roman}}
+\date{\today}
+
+\begin{document}
+\color{darktext}
+\maketitle
+
+\section{Belief Updating: Bayes' Theorem Mechanics}
+\subsection*{The Inventor's Problem}
+\textit{How do we mathematically update our initial baseline probability about a hidden reality when a rare, highly specific piece of new evidence lands on our desk?}
+
+\subsection*{The Analogy}
+Imagine a high-security banking system. The baseline probability of any random account being hacked is tiny ($P(A) = 0.1\%$). However, a sudden alert triggers: an account has failed its login 5 consecutive times ($Evidence\ B$). If we assume the account *is* hacked, the probability of failing 5 times is massive ($P(B|A) = 99\%$). Crucially, the history of ordinary accounts failing 5 times consecutively is extremely rare ($P(B) = 1\%$). Because the background rate $P(B)$ is so microscopic, the evidence ratio $\frac{P(B|A)}{P(B)}$ becomes a massive multiplier ($99$), violently pulling our baseline belief upward.
+
+\subsection*{The First-Principles Logic}
+Bayes' Theorem formalizes this exact update mechanic:
+$$P(A|B) = P(A) \cdot \frac{P(B|A)}{P(B)}$$
+\begin{itemize}
+    \item $P(A)$: \textbf{Prior Probability} (Our baseline belief before seeing the evidence).
+    \item $P(B|A)$: \textbf{Likelihood} (The probability of seeing this evidence if our hypothesis is true).
+    \item $P(B)$: \textbf{Evidence Background Rate} (The total probability of this evidence occurring naturally).
+    \item $P(A|B)$: \textbf{Posterior Probability} (Our updated, finalized belief).
+\end{itemize}
+
+\section{Synchronized Movement: Joint Probability \& Correlation}
+\subsection*{The Inventor's Problem}
+\textit{How do we calculate the exact direction and strength of the synchronized movement between multiple columns of data to spot structural dependencies and drop redundant features?}
+
+\subsection*{The Analogy}
+Think of your dataset's columns as dancers on a stage.
+\begin{itemize}
+    \item \textbf{Covariance:} Tracks their general direction. If Dancer X steps forward and Dancer Y also steps forward, they have positive covariance. If one steps back while the other steps forward, they have negative covariance.
+    \item \textbf{Pearson Correlation ($r$):} A strict judge scoring their linear alignment from $-1$ to $+1$. A $+1$ means perfect linear lockstep. A $0$ means they are entirely ignoring each other.
+    \item \textbf{Spearman Correlation:} Judges them by their relative \textbf{rank order}. If one dancer moves in an upward curving path (exponentially) while the other follows, Pearson gets thrown off, but Spearman flags a perfect $+1$ because their rank steps match flawlessly.
+\end{itemize}
+
+\subsection*{The First-Principles Logic}
+Pearson's coefficient standardizes covariance by dividing it by the product of both standard deviations, stripping away raw units:
+$$r = \frac{\text{Covariance}(X, Y)}{\sigma_X \cdot \sigma_Y}$$
+
+\newpage
+\section{Parameter Reverse-Engineering: MLE}
+\subsection*{The Inventor's Problem}
+\textit{Given a finite set of raw data points observed on our screen, how do we reverse-engineer the hidden settings of a probability formula to make this specific dataset the absolute most likely and least surprising outcome?}
+
+\subsection*{The Analogy}
+Imagine a glass jar filled with 100 marbles. You draw a small random sample of 10 marbles, and 9 turn out to be red while 1 is blue. If someone asks whether the true ratio in the jar is $50/50$ or $90/10$, you immediately choose $90/10$. Why? Because pulling 9 red marbles out of a $50/50$ jar would be an astronomical coincidence. Maximum Likelihood Estimation (MLE) is the mathematical dial you turn to adjust your model's parameters until the data on your screen transforms from a freak accident into the most natural, highly expected outcome.
+
+\subsection*{The First-Principles Logic}
+For a set of independent data points, the likelihood function multiplies their individual probabilities together: $L(\theta) = \prod P(x_i | \theta)$. To find the optimal parameter $\theta$, we take the natural log to turn multiplications into additions, compute the derivative with respect to $\theta$, set it to zero, and solve. Minimizing Cross-Entropy Loss or Mean Squared Error is mathematically identical to maximizing log-likelihood.
+
+\section{Leaderboard Protection: Hypothesis Testing}
+\subsection*{The Inventor's Problem}
+\textit{How do we verify whether an incremental boost in our model's validation score represents a genuine, statistically sound improvement or just a lucky statistical fluke that will evaporate on the final test set?}
+
+\subsection*{The Analogy}
+Hypothesis Testing operates exactly like a criminal court trial.
+\begin{itemize}
+    \item \textbf{Null Hypothesis ($H_0$):} Presumed innocence. It assumes your new feature is completely useless and has zero true impact on the performance.
+    \item \textbf{The p-value:} The strength of the defendant's alibi. It measures the probability of observing an accuracy jump this high purely out of random background luck if the feature was actually completely useless. If $p < 0.05$ (less than a 5\% chance of luck), the alibi breaks. We reject $H_0$ and declare the feature statistically significant.
+\end{itemize}
+
+\section{Information Metrics: Cross-Entropy \& KL-Divergence}
+\subsection*{The Inventor's Problem}
+\textit{How do we precisely quantify the exact amount of informational data loss or structural 'surprise' that occurs when we use a simplified model distribution to approximate a complex real-world distribution?}
+
+\subsection*{The Analogy}
+Think of translating a beautiful, poetic foreign book into English. The true distribution ($P$) is the original book, rich with cultural metaphors and rhythm. Your model's prediction ($Q$) is the translated version. If the translation is lazy and literal, the reader grabs the basic plot but completely misses the subtle multi-peaked emotional nuances. KL-Divergence is the master editor that evaluates both versions and calculates a score showing exactly how much native context and information was lost during the approximation.
+
+\subsection*{The First-Principles Logic}
+The mathematical bridge explicitly links Cross-Entropy to informational divergence:
+$$\text{Cross-Entropy}(P, Q) = \text{Entropy}(P) + \text{KL-Divergence}(P \| Q)$$
+Because the true baseline entropy $\text{Entropy}(P)$ is fixed by nature, minimizing Cross-Entropy during model training directly forces the KL-Divergence down to 0, driving your model's probability estimates to map seamlessly onto the true contours of reality.
+
+\end{document}

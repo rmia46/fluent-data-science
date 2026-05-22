@@ -1,0 +1,87 @@
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+% Color definitions (Using an intense orange/terracotta palette as requested for a vibrant change)
+\definecolor{primary}{HTML}{D35400}
+\definecolor{secondary}{HTML}{A04000}
+\definecolor{accent}{HTML}{E67E22}
+\definecolor{darktext}{HTML}{000000}
+\definecolor{lightbg}{HTML}{FDF2E9}
+
+\titlelabel{\thetitle.\quad}
+\titleformat{\section}{\color{primary}\large\bfseries}{}{0pt}{}[{\titlerule[1pt]}]
+\titleformat{\subsection}{\color{secondary}\bfseries}{}{0pt}{}
+
+\title{\textbf{\color{primary}Datathon Revision Notes: Module 2 \\ Advanced Calculus \& Optimization}}
+\author{\textbf{Roman}}
+\date{\today}
+
+\begin{document}
+\color{darktext}
+\maketitle
+
+\section{Terrain Navigation: The 1D Derivative}
+\subsection*{The Inventor's Problem}
+\textit{Standing at a completely random, uninitialized coordinate point on a complex, curving mountain of total model error, how do we look directly beneath our feet to determine exactly which direction to step to lower our elevation?}
+
+\subsection*{The Analogy}
+Imagine you are blindfolded on a rolling hillside of total error, trying to find the absolute bottom of the valley. You cannot see the landscape. However, by balancing on one foot, you can instantly feel the exact slant or tilt of the patch of grass you are standing on. That localized slant is the instantaneous tangent line slope—the derivative. If the ground tilts down to the right (negative slope), you step forward. If the ground tilts down to the left (positive slope), you step backward.
+
+\subsection*{The First-Principles Logic}
+The 1D derivative represents the instantaneous rate of change of a loss function $L$ with respect to a single weight $w$:
+$$\frac{dL}{dw} = \lim_{\Delta w \to 0} \frac{L(w + \Delta w) - L(w)}{\Delta w}$$
+By observing the sign of the derivative, an optimization algorithm knows how to change the parameter to guarantee a drop in error. If $\frac{dL}{dw} > 0$, increasing the weight increases error, so we must reduce $w$.
+
+\section{Multi-Dimensional Compass: The Gradient Vector ($\nabla$)}
+\subsection*{The Inventor's Problem}
+\textit{When navigating an optimization landscape containing thousands or millions of parameters simultaneously, how do we bundle the independent slants of every single individual dimension into a single cohesive compass needle that points directly toward the steepest path up or down?}
+
+\subsection*{The Analogy}
+Imagine you are no longer on a 1D line, but standing on a massive 3D continuous sheet of cloth being waved in the air. You can move north, south, east, or west. The gradient vector ($\nabla L$) is a physical magnetic compass needle glued to your shoe. If you turn and walk in the exact direction the needle points, you will scale the mountain along the steepest possible path of ascent. By walking in the exact opposite direction ($-\nabla L$), you slide down the steepest localized drop.
+
+\subsection*{The First-Principles Logic}
+The gradient $\nabla L$ packages all the independent first-order partial derivatives of a multi-variable function into a single structural column vector:
+$$\nabla L = \begin{bmatrix} \frac{\partial L}{\partial w_1} \\ \frac{\partial L}{\partial w_2} \\ \vdots \\ \frac{\partial L}{\partial w_n} \end{bmatrix}$$
+To minimize error, Gradient Descent updates the entire weight vector simultaneously by subtracting a small step of this gradient vector, controlled by the learning rate $\eta$:
+$$\mathbf{w} \leftarrow \mathbf{w} - \eta \nabla L$$
+
+\newpage
+\section{Upstream Credit Assignment: The Chain Rule \& Backpropagation}
+\subsection*{The Inventor's Problem}
+\textit{In a deeply nested computational network, how do we pass a final prediction error layer-by-layer backward through an intricate web of hidden variables to calculate the exact share of blame belonging to a parameter located at the absolute start of the chain?}
+
+\subsection*{The Analogy}
+Think of an industrial assembly line manufacturing lightbulbs. Worker A cuts the glass, Worker B blows the bulb shape, and Worker C fits the metal base. At the end of the line, an inspector finds a defect in a bulb. To fix the factory, the inspector cannot simply yell at Worker C. They must trace the rates of structural variation backward through the line to calculate exactly how much a minor error in Worker A's cutting step compounded down the line to cause the final structural failure.
+
+\subsection*{The First-Principles Logic}
+If a variable $L$ depends on $v$, which depends on $u$, which ultimately depends on our weight $w$, the Chain Rule states that the final rate of change is computed by multiplying the sequential chain of local dependencies together:
+$$\frac{\partial L}{\partial w} = \frac{\partial L}{\partial v} \cdot \frac{\partial v}{\partial u} \cdot \frac{\partial u}{\partial w}$$
+Backpropagation is simply the algorithmic implementation of this rule. It passes error signals from the output back toward the inputs, reusing calculated downstream derivatives to compute upstream gradients efficiently without redundant calculations.
+
+\section{Advanced Curvature Assessment: The Hessian Matrix}
+\subsection*{The Inventor's Problem}
+\textit{First-order gradients only show the immediate tilt of the ground. How can an optimizer calculate how fast the ground is changing its curve beneath our feet, allowing it to detect stable valleys, dangerous drop-offs, or deceptive flat zones?}
+
+\subsection*{The Analogy}
+A gradient tells you if you are on an incline. The Hessian tells you what shape that incline is forming over space. 
+\begin{itemize}
+    \item \textbf{Positive Definite Curve:} A perfect, safe bowl shape (a true local minimum). No matter which way you step, the ground slopes upward.
+    \item \textbf{Negative Definite Curve:} An unstable dome shape (a local maximum).
+    \item \textbf{Indefinite Curve (Saddle Point):} A mountain pass or horse saddle. It curves upward along the left-to-right axis (looking like a safe valley floor), but drops off violently into an abyss along the front-to-back axis.
+\end{itemize}
+
+\subsection*{The First-Principles Logic}
+The Hessian matrix ($H$) organizes all the second-order partial derivatives of a function, mapping the acceleration and structural interactions of your slopes across space:
+$$H = \begin{bmatrix} \frac{\partial^2 L}{\partial w_1^2} & \frac{\partial^2 L}{\partial w_1 \partial w_2} \\ \frac{\partial^2 L}{\partial w_2 \partial w_1} & \frac{\partial^2 L}{\partial w_2^2} \end{bmatrix}$$
+Advanced optimization systems like XGBoost use the diagonal elements of the Hessian to calculate the precise curvature of the loss surface, scaling split updates dynamically to accelerate learning while safely skipping flat or deceptive saddle points.
+
+\end{document}

@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\geometry{a4paper, margin=1in}
+
+\title{Module 01: Probability and Statistics - The Science of Signal and Noise}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Machine Learning is essentially "Applied Statistics." While Calculus helps us learn, Statistics helps us understand what we have learned and how much we can trust our data. This note covers the journey from basic data summaries to the information theory used in modern loss functions.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Descriptive Statistics: The Shape of Data}
+Before modeling, you must "see" the data through numbers.
+
+\subsection{Central Tendency}
+\begin{itemize}
+    \item \textbf{Mean ($\mu$):} The center of gravity. Great for symmetric data.
+    \item \textbf{Median:} The middle value. Essential when you have extreme outliers (e.g., house prices).
+    \item \textbf{Mode:} The most frequent value. Critical for categorical data (e.g., "Most frequent city").
+\end{itemize}
+
+\subsection{Dispersion and Shape}
+\begin{itemize}
+    \item \textbf{Variance ($\sigma^2$)} and \textbf{Standard Deviation ($\sigma$):} Measure the "spread."
+    \item \textbf{Interquartile Range ($IQR$):} $Q3 - Q1$. Used to find outliers (values outside $1.5 \times IQR$).
+    \item \textbf{Skewness:} Measures asymmetry. If Skew $> 0$, data has a long right tail (common in income).
+    \item \textbf{Kurtosis:} Measures "tailedness." High kurtosis means more extreme outliers (fat tails).
+\end{itemize}
+
+\section{Probability Foundations: The Rules of the Game}
+\begin{itemize}
+    \item \textbf{Sample Space ($S$):} All possible outcomes.
+    \item \textbf{Mutually Exclusive:} Events that cannot happen at the same time (e.g., a sample cannot be both "Class A" and "Class B").
+    \item \textbf{Conditional Probability:} $P(A|B) = \frac{P(A \cap B)}{P(B)}$. The probability of $A$ given that $B$ happened.
+    \item \textbf{Independence:} Two features are independent if $P(A|B) = P(A)$. In ML, we often check this to remove redundant features.
+\end{itemize}
+
+\section{Bayes' Theorem: Updating Beliefs}
+\begin{equation}
+    P(A|B) = \frac{P(B|A)P(A)}{P(B)}
+\end{equation}
+\textit{Intuition:} Bayes' Theorem is how a model "learns" from new data. We start with a \textbf{Prior} $P(A)$ and update it to a \textbf{Posterior} $P(A|B)$ after seeing evidence $B$.
+\textbf{ML Connection:} This powers \textbf{Naive Bayes Classifiers}.
+
+\section{Random Variables and Distributions}
+
+\subsection{Discrete Distributions}
+\begin{itemize}
+    \item \textbf{Bernoulli:} A single coin flip (e.g., "Will this user click? Yes/No").
+    \item \textbf{Binomial:} Multiple Bernoulli trials (e.g., "How many of these 100 users will click?").
+    \item \textbf{Poisson:} Events occurring in a fixed interval (e.g., "How many customers arrive per hour?").
+\end{itemize}
+
+\subsection{Continuous Distributions}
+\begin{itemize}
+    \item \textbf{Gaussian (Normal):} The "Bell Curve." Defined by $\mu$ and $\sigma$. 
+    \item \textbf{Central Limit Theorem (CLT):} The most important theorem in stats. It states that the sum of many independent random variables tends toward a Normal distribution, no matter their original shape! This is why Normal distributions appear everywhere in ML.
+    \item \textbf{Z-Score:} $z = \frac{x - \mu}{\sigma}$. Standardizing data to compare different features.
+\end{itemize}
+
+\section{Joint Probability: How Variables Move Together}
+\begin{itemize}
+    \item \textbf{Covariance:} Direction of the relationship between two variables.
+    \item \textbf{Pearson Correlation ($r$):} Linear relationship strength (-1 to 1).
+    \item \textbf{Spearman Correlation:} Rank-based relationship. Use this for non-linear but monotonic data.
+\end{itemize}
+
+\section{Sampling and Estimation}
+\begin{itemize}
+    \item \textbf{Point Estimation:} Using a sample to guess a population parameter (e.g., using 1000 users to guess the click-rate of the whole world).
+    \item \textbf{Maximum Likelihood Estimation ($MLE$):} The method of finding the parameters that make the observed data "most likely." 
+    \textit{ML Connection:} When you train a model, you are often implicitly doing MLE to find the weights.
+\end{itemize}
+
+\section{Hypothesis Testing: Validating Your Results}
+\begin{itemize}
+    \item \textbf{Null Hypothesis ($H_0$):} Assumption of no effect (e.g., "Feature X does not help the model").
+    \item \textbf{p-value:} The probability of seeing your result if $H_0$ is true. If $p < 0.05$, we reject $H_0$.
+    \item \textbf{Type I Error:} "False Positive" (Finding an effect that isn't there).
+    \item \textbf{Type II Error:} "False Negative" (Missing an effect that is there).
+\end{itemize}
+
+\section{Information Theory: The Language of Loss}
+\begin{itemize}
+    \item \textbf{Entropy ($H$):} Measure of uncertainty or "chaos" in a distribution.
+    \item \textbf{Cross-Entropy Loss:} Measures the difference between two distributions (Actual labels vs. Model predictions). 
+    \textit{ML Connection:} This is the default loss function for classification models like Logistic Regression and XGBoost.
+    \item \textbf{KL-Divergence:} A measure of how much information is lost when we use one distribution to approximate another.
+\end{itemize}
+
+\section{Practice Problems}
+\textbf{P1:} A feature has a high Mean but a low Median. What does this tell you about the distribution? \\
+\textit{Answer: The distribution is \textbf{Right-Skewed} (positively skewed) with extreme high-value outliers pulling the mean up.}
+
+\textbf{P2:} Why is Cross-Entropy preferred over Accuracy as a loss function for training? \\
+\textit{Answer: Accuracy is discrete (0 or 1) and has no gradient. Cross-Entropy is continuous and differentiable, providing a "direction" for the model to improve via Calculus.}
+
+\textbf{P3:} If two features have a Pearson Correlation of 0.99, what should you do? \\
+\textit{Answer: Remove one. They are highly redundant, and keeping both can lead to instability (multicollinearity) in models like Linear Regression.}
+
+\end{document}

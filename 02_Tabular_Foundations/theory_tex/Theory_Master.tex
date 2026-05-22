@@ -1,0 +1,341 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\title{Module 02 Master Handbook: Tabular Foundations and High-Speed Data Manipulation}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The biggest separator between a beginner and a pro in a datathon is \textbf{execution speed} and \textbf{data integrity}. When you are dealing with millions of rows, using the wrong data manipulation techniques will crash your kernel or take hours to run. This handbook is a comprehensive guide to mastering the "Loop Ban," high-speed filtering, relational merging, and diagnostic data cleaning.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ==========================================
+% SECTION 1: VECTORIZATION
+% ==========================================
+\section{Vectorization vs. Iteration: The Loop Ban}
+
+\subsection{Why Iteration is the Enemy}
+In standard Python, we are used to using \texttt{for} loops to process items in a list. However, in Data Science, using \texttt{for} loops to iterate over rows in a DataFrame (like using \texttt{.iterrows()}) is a \textbf{fatal mistake}.
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=The Performance Gap]
+Pandas and NumPy are built on top of \textbf{C}. When you use a vectorized operation, the calculation happens in parallel across entire columns at the hardware level. When you use a \texttt{for} loop, Python has to constantly switch context between its high-level interpreter and the low-level memory, creating a massive bottleneck.
+\end{tcolorbox}
+
+\textit{Example:} If you have 1 million rows and you want to double a column value:
+\begin{itemize}
+    \item \textbf{Loop (\texttt{iterrows}):} Takes $\sim$15-20 seconds.
+    \item \textbf{Vectorized:} Takes $\sim$2-5 \textbf{milliseconds}.
+\end{itemize}
+
+\subsection{Direct Vectorized Operations}
+The simplest form of vectorization is performing math directly on columns. Pandas handles the alignment and parallel execution for you.
+
+\begin{lstlisting}[language=Python]
+# BAD (The Loop approach)
+for i, row in df.iterrows():
+    df.at[i, 'Total'] = row['Price'] * row['Quantity']
+
+# GOOD (The Vectorized approach)
+df['Total'] = df['Price'] * df['Quantity']
+\end{lstlisting}
+
+This applies to addition, subtraction, division, and even complex powers.
+
+\subsection{Advanced Vectorization: The Power Tools}
+
+\subsubsection{Column-to-Column Logic with \texttt{np.where}}
+What if you need an \texttt{if-else} statement across a million rows? Use \texttt{numpy.where}. It works like the \texttt{IF} function in Excel but at lightning speed.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+# Logic: If Age > 18, set Status to 'Adult', else 'Minor'
+df['Status'] = np.where(df['Age'] > 18, 'Adult', 'Minor')
+\end{lstlisting}
+
+\subsubsection{Logical Mappings with \texttt{.map()}}
+If you have a fixed dictionary of values to replace (e.g., converting "Male/Female" to 0/1), use \texttt{.map()}.
+
+\begin{lstlisting}[language=Python]
+gender_map = {'Male': 0, 'Female': 1}
+df['Gender'] = df['Gender'].map(gender_map)
+\end{lstlisting}
+
+\subsubsection{Row-wise Flexibility with \texttt{.apply()} and Lambda}
+When you have complex logic that cannot be easily expressed as a simple math operation, use \texttt{.apply()}.
+\textit{Warning:} \texttt{.apply(axis=1)} is still slower than pure vectorization but significantly cleaner and faster than a raw \texttt{for} loop.
+
+\begin{lstlisting}[language=Python]
+# Applying complex logic to every row
+df['Category'] = df['Income'].apply(lambda x: 'High' if x > 100000 else 'Medium' if x > 50000 else 'Low')
+\end{lstlisting}
+
+\subsection{Summary of Performance Hierarchy}
+To win the datathon, follow this priority list when writing code:
+\begin{enumerate}
+    \item \textbf{Direct Vectorization:} \texttt{df['A'] + df['B']} (Fastest)
+    \item \textbf{NumPy Functions:} \texttt{np.where(), np.log(), np.exp()}
+    \item \textbf{Pandas Built-ins:} \texttt{.map(), .replace(), .isin()}
+    \item \textbf{Apply with Lambda:} \texttt{.apply(axis=1)} (Use only if step 1-3 are impossible)
+    \item \textbf{Iteration:} \texttt{.iterrows()} (\textbf{Banned})
+\end{enumerate}
+
+\newpage
+
+% ==========================================
+% SECTION 2: INDEXING & FILTERING
+% ==========================================
+\section{Advanced Filtering, Slicing, and Conditional Assignment}
+
+\subsection{Boolean Indexing: Filtering at Scale}
+Boolean indexing allows you to filter rows based on a "mask" of True/False values. When you use multiple conditions, you must use \textbf{bitwise operators} instead of the standard Python \texttt{and/or}.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=The Bitwise Rule]
+In Pandas, always use:
+\begin{itemize}
+    \item \texttt{\&} for \textbf{AND}
+    \item \texttt{|} for \textbf{OR}
+    \item \texttt{\textasciitilde} for \textbf{NOT}
+\end{itemize}
+\textbf{Note:} You MUST wrap each condition in parentheses \texttt{()} or the code will fail due to operator precedence.
+\end{tcolorbox}
+
+\begin{lstlisting}[language=Python]
+# Filter rows where Age > 25 AND City is 'Dhaka'
+mask = (df['Age'] > 25) & (df['City'] == 'Dhaka')
+filtered_df = df[mask]
+\end{lstlisting}
+
+\subsection{The Slicing Duo: \texttt{.loc} vs \texttt{.iloc}}
+Understanding the difference between these two is non-negotiable.
+
+\subsubsection{\texttt{.loc[]} (Label-based)}
+Uses column names and row index labels. 
+\textit{Use Case:} Accessing data when you know the "name" of the row or column.
+\begin{lstlisting}[language=Python]
+# Syntax: df.loc[row_labels, column_labels]
+df.loc[0:5, 'Income']  # Rows labeled 0 to 5, column 'Income'
+\end{lstlisting}
+
+\subsubsection{\texttt{.iloc[]} (Integer-based)}
+Uses zero-based integer positions (like a standard Python list).
+\textit{Use Case:} Accessing data by its "geometric position" in the matrix.
+\begin{lstlisting}[language=Python]
+# Syntax: df.iloc[row_position, column_position]
+df.iloc[0:5, 2]  # First 5 rows, 3rd column
+\end{lstlisting}
+
+\subsection{Conditional Assignment and the \texttt{SettingWithCopyWarning}}
+One of the most common bugs in Pandas is trying to assign values to a slice of a DataFrame. 
+\textbf{Bad Code:} \texttt{df[df['A'] > 5]['B'] = 10} $\to$ This often fails silently or triggers a warning because you are modifying a "copy" of the data, not the original.
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,title=The Gold Standard]
+Always use \texttt{.loc} for conditional assignment. It guarantees you are modifying the original DataFrame.
+\begin{center}
+\texttt{df.loc[condition, 'target\_column'] = new\_value}
+\end{center}
+\end{tcolorbox}
+
+\begin{lstlisting}[language=Python]
+# Set 'Risk' to High for all rows where 'Debt' > 10000
+df.loc[df['Debt'] > 10000, 'Risk'] = 'High'
+\end{lstlisting}
+
+\subsection{Advanced Filtering Tools}
+
+\subsubsection{The \texttt{.isin()} Method}
+If you want to filter based on a list of many possible values, don't use 20 \texttt{|} (OR) statements. Use \texttt{.isin()}.
+\begin{lstlisting}[language=Python]
+top_cities = ['Dhaka', 'Chittagong', 'Sylhet']
+df_top = df[df['City'].isin(top_cities)]
+\end{lstlisting}
+
+\subsubsection{The \texttt{.query()} Method}
+For clean, readable code (especially with many variables), use \texttt{.query()}. It allows you to write filters as strings.
+\begin{lstlisting}[language=Python]
+min_age = 18
+df_adults = df.query("Age >= @min_age and Status == 'Active'")
+\end{lstlisting}
+
+\newpage
+
+% ==========================================
+% SECTION 3: RELATIONAL OPERATIONS
+% ==========================================
+\section{Relational Operations: Grouping, Aggregating, and Merging}
+
+\subsection{Data Aggregation: The Split-Apply-Combine Paradigm}
+Aggregation is the process of turning many rows into a single summary statistic. In Pandas, this follows a three-step logic:
+\begin{enumerate}
+    \item \textbf{Split:} Group the data based on a categorical variable (e.g., "City").
+    \item \textbf{Apply:} Calculate a metric for each group (e.g., "Mean Income").
+    \item \textbf{Combine:} Stick the results back into a new table.
+\end{enumerate}
+
+\subsubsection{Basic Grouping with \texttt{.groupby()}}
+The most efficient way to summarize data is using the \texttt{.agg()}.
+\begin{lstlisting}[language=Python]
+# Calculate the mean and max age per city
+city_stats = df.groupby('City')['Age'].agg(['mean', 'max'])
+\end{lstlisting}
+
+\subsubsection{Advanced Aggregation: Dictionary Mapping}
+If you need different statistics for different columns, pass a dictionary to \texttt{.agg()}.
+\begin{lstlisting}[language=Python]
+summary = df.groupby('Category').agg({
+    'Price': 'mean',
+    'Quantity': 'sum',
+    'Customer_ID': 'count'
+})
+\end{lstlisting}
+
+\subsection{Merging Datasets: Database-Style Joins}
+When you have two tables (e.g., \texttt{df\_users} and \texttt{df\_transactions}), you use \texttt{.merge()} to link them.
+
+\subsubsection{The Four Join Types}
+The \texttt{how} parameter is the most critical part of a merge:
+\begin{itemize}
+    \item \textbf{\texttt{inner}:} Keeps only keys that exist in \textbf{both} tables (Lossy but clean).
+    \item \textbf{\texttt{left}:} Keeps all keys from the left table and adds data from the right where available (Standard for adding features).
+    \item \textbf{\texttt{right}:} Keeps all keys from the right table.
+    \item \textbf{\texttt{outer}:} Keeps all keys from both tables, filling missing values with \texttt{NaN}.
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+# Adding user info to transaction data
+final_df = transactions.merge(users, on='user_id', how='left')
+\end{lstlisting}
+
+\subsection{Structural Combinations: \texttt{.concat()}}
+If you have multiple files with the \textbf{exact same columns}, use \texttt{pd.concat()}.
+\begin{lstlisting}[language=Python]
+# Stacking multiple DataFrames vertically
+all_data = pd.concat([df_jan, df_feb, df_mar], axis=0)
+\end{lstlisting}
+
+\newpage
+
+% ==========================================
+% SECTION 4: DATA CLEANING
+% ==========================================
+\section{Diagnostic Data Cleaning and Missingness}
+
+\subsection{The Diagnostic Phase: Seeing the Gaps}
+Before cleaning, you must quantify the mess. The first step is calculating the percentage of missing values per column.
+
+\begin{lstlisting}[language=Python]
+# Identifying the percentage of missing data
+missing_pct = df.isna().sum() / len(df) * 100
+print(missing_pct.sort_values(ascending=False))
+\end{lstlisting}
+
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black,title=The 40\% Rule]
+In many datathons, if a column has more than 40-50\% missing data, it may be better to drop the column entirely rather than trying to guess (impute) half the data, as you risk introducing massive bias.
+\end{tcolorbox}
+
+\subsection{Type-Based Cleaning: \texttt{select\_dtypes()}}
+You cannot clean a "City" column the same way you clean a "Salary" column.
+
+\begin{lstlisting}[language=Python]
+# Separating numeric and categorical features
+numeric_cols = df.select_dtypes(include=['number']).columns
+categorical_cols = df.select_dtypes(include=['object', 'category']).columns
+\end{lstlisting}
+
+\subsection{The "Indicator" Strategy: Binary Missingness Flags}
+One of the most powerful tricks in competitive ML is creating an indicator column. 
+\textit{Why?} Because the fact that data is missing is often a signal itself.
+
+\begin{lstlisting}[language=Python]
+# Create a flag before filling the data
+df['age_was_missing'] = df['age'].isna().astype(int)
+
+# Now fill the actual data
+df['age'] = df['age'].fillna(df['age'].median())
+\end{lstlisting}
+
+\subsection{Essential Cleaning Commands}
+
+\subsubsection{\texttt{.fillna()} and \texttt{.replace()}}
+\begin{itemize}
+    \item \textbf{Imputation:} Fill missing values with a statistic.
+    \begin{lstlisting}[language=Python]
+    df['Score'] = df['Score'].fillna(df['Score'].mean())
+    \end{lstlisting}
+    \item \textbf{Handling Junk Values:} Handling strings like '?' or 'None'.
+    \begin{lstlisting}[language=Python]
+    df['Workclass'] = df['Workclass'].replace('?', np.nan)
+    \end{lstlisting}
+\end{itemize}
+
+\subsubsection{\texttt{.dropna()}}
+Use this only if missing rows are a very small percentage ($< 1\%$).
+
+\newpage
+
+% ==========================================
+% SECTION 5: PRACTICE PROBLEMS
+% ==========================================
+\section{Summary Practice Problems}
+
+\subsection{Problem 1: Indexing Awareness}
+What is the difference between \texttt{df.loc[0]} and \texttt{df.iloc[0]}? \\
+\textbf{Answer:} \texttt{.loc[0]} looks for the row with the \textbf{label} 0 in the index. \texttt{.iloc[0]} always returns the \textbf{absolute first row} in the current table layout.
+
+\subsection{Problem 2: Performance Choice}
+You have 10 million rows. You want to create a new column \texttt{Is\_Expensive} that is 1 if \texttt{Price > 100} and 0 otherwise. Which method is faster: a \texttt{for} loop or \texttt{np.where}? \\
+\textbf{Answer:} \texttt{np.where} is significantly faster (milliseconds vs. minutes) because it is a vectorized C-based operation.
+
+\subsection{Problem 3: Relational Logic}
+You have a "Students" table and a "Results" table. Some students missed the exam and are not in "Results". If you want to keep ALL students in your final table, which join type should you use? \\
+\textbf{Answer:} \texttt{left} join (with Students as the left table) or an \texttt{outer} join.
+
+\subsection{Problem 4: Imputation Logic}
+Why should you usually use the \textbf{Median} instead of the \textbf{Mean} to fill missing values in a skewed column? \\
+\textbf{Answer:} The Median is robust to outliers, whereas the Mean is heavily shifted by them.
+
+\subsection{Problem 5: Categorical Gaps}
+You have a categorical column "Color" with values ['Red', 'Blue', NaN]. What is a safe way to fill the missing values without guessing? \\
+\textbf{Answer:} Fill with a new category like 'Unknown' or 'Missing' using \texttt{df['Color'].fillna('Unknown')}.
+
+\end{document}

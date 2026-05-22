@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\geometry{a4paper, margin=1in}
+
+\title{Module 01: Advanced Calculus - The Engine of Learning}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Calculus provides the rules for optimization. In Machine Learning, we don't just want to represent data; we want to \textbf{improve} our representation. This note covers the journey from basic rates of change to the complex multi-dimensional curvature analysis required for deep learning.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Functions, Limits, and Continuity}
+Before we can calculate change, we must understand the "path" we are on.
+
+\subsection{Functions in ML}
+A function $f(x)$ is a mapping from input features to an output (a prediction). In ML, our "Master Function" is the \textbf{Loss Function} $L(\mathbf{w})$, which maps model weights to an error score.
+
+\subsection{Limits and Continuity}
+A limit $\lim_{x \to a} f(x)$ asks: "As we get infinitely close to $a$, what value does the function approach?"
+\textit{Intuition:} For Gradient Descent to work, our loss function must be \textbf{Continuous}. If the function has "jumps" or "holes," the model might find itself at the edge of a cliff with no way to calculate which way is down.
+
+\section{The Derivative: The Instantaneous Rate of Change}
+The derivative $f'(x)$ tells you how much $f(x)$ changes for a tiny change in $x$.
+\textit{The Directional Secret:}
+\begin{itemize}
+    \item $f'(x) > 0$: The function is \textbf{Increasing}. To decrease the value, move \textbf{Backward}.
+    \item $f'(x) < 0$: The function is \textbf{Decreasing}. To decrease the value, move \textbf{Forward}.
+\end{itemize}
+\textbf{ML Example:} If $x$ is the price of a product and $f(x)$ is the loss, a negative derivative means that increasing the price will reduce your loss.
+
+\section{Partial Derivatives: Multi-Dimensional Navigation}
+In a real model, we have many inputs $x_1, x_2, \dots, x_n$. 
+A \textbf{Partial Derivative} $\frac{\partial f}{\partial x_i}$ is the derivative with respect to \textit{one} variable while treating all others as constant numbers.
+\textit{Intuition:} If you are on a hill, the partial derivative with respect to "North" tells you the slope in the North-South direction, ignoring East-West.
+
+\section{The Gradient ($\nabla$): The Compass of Steepest Ascent}
+The gradient $\nabla f$ is a vector of all partial derivatives.
+\begin{equation}
+    \nabla f(\mathbf{x}) = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{bmatrix}
+\end{equation}
+\textit{Crucial ML Rule:} The gradient always points to the \textbf{steepest increase}. Since we want to \textbf{minimize} error, we always update weights by moving in the \textbf{opposite} direction: $\mathbf{w} \leftarrow \mathbf{w} - \eta \nabla L$.
+
+\section{The Chain Rule: The Logic of Composition}
+If $y = f(g(x))$, then:
+\begin{equation}
+    \frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} \quad (\text{where } u = g(x))
+\end{equation}
+\textit{Intuition:} It's like a gear system. If Gear A turns Gear B, and Gear B turns Gear C, the Chain Rule tells you how the movement of Gear A ultimately affects Gear C.
+
+\section{Backpropagation: Chain Rule in Action}
+Deep Learning is just a chain of layers: Input $\to$ Layer 1 $\to$ Layer 2 $\to$ Loss.
+Backpropagation uses the Chain Rule to "pass the blame" backward. It calculates how much the weights in Layer 1 contributed to the final error by multiplying the derivatives of all layers in between.
+
+\section{Advanced Structures: Jacobian and Hessian}
+
+\subsection{The Jacobian Matrix ($\mathbf{J}$)}
+If you have a function that outputs a \textit{vector} (like a multi-output neural network), the Jacobian is the matrix of all first-order partial derivatives.
+\textit{Use Case:} It is used to understand how a small change in input affects \textbf{all} outputs simultaneously.
+
+\subsection{The Hessian Matrix ($\mathbf{H}$)}
+The Hessian is a square matrix of \textbf{second-order} partial derivatives.
+\begin{equation}
+    H_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}
+\end{equation}
+\textit{Intuition:} While the Gradient tells you the \textbf{slope}, the Hessian tells you the \textbf{curvature}.
+\begin{itemize}
+    \item \textbf{Positive Definite Hessian:} You are in a "Bowl" (a minimum).
+    \item \textbf{Negative Definite Hessian:} You are on a "Dome" (a maximum).
+    \item \textbf{Indefinite Hessian:} You are at a \textbf{Saddle Point} (looks like a minimum from one side but a maximum from another).
+\end{itemize}
+
+\section{Directional Derivatives}
+What if you want to know the slope in a direction that isn't exactly North or East? 
+The directional derivative in direction $\mathbf{v}$ is:
+\begin{equation}
+    D_{\mathbf{v}}f = \nabla f \cdot \mathbf{v}
+\end{equation}
+It is the \textbf{dot product} of the gradient and your direction vector. This tells you how fast the function changes if you move along $\mathbf{v}$.
+
+\section{Taylor Series Expansion: Approximating the Unknown}
+Many ML functions are too complex to solve exactly. We approximate them using Taylor Series:
+\begin{equation}
+    f(x) \approx f(a) + f'(a)(x-a) + \frac{1}{2}f''(a)(x-a)^2 + \dots
+\end{equation}
+\textit{Why it matters:} 
+\begin{itemize}
+    \item \textbf{First-order approximation} ($f(a) + f'(a)(x-a)$) is what simple Gradient Descent uses.
+    \item \textbf{Second-order approximation} (adding the $f''$ term) is what "Newton's Method" optimizers use. It helps the model take "smarter" steps by knowing the curvature of the space.
+\end{itemize}
+
+\section{Practice Problems}
+\textbf{P1:} Given $f(x, y) = x^2 + 3xy + y^2$. Find the gradient $\nabla f$ at point $(1, 2)$. \\
+\textit{Answer: $\frac{\partial f}{\partial x} = 2x + 3y$, $\frac{\partial f}{\partial y} = 3x + 2y$. At $(1, 2)$: $\nabla f = [8, 7]^T$.}
+
+\textbf{P2:} What does a "Saddle Point" look like to a first-order Gradient Descent algorithm? \\
+\textit{Answer: The gradient is zero, so the algorithm stops. However, it is not a true minimum. This is a major challenge in deep learning optimization.}
+
+\textbf{P3:} Why is the Hessian matrix expensive to calculate for large neural networks? \\
+\textit{Answer: If you have $N$ weights, the Hessian has $N^2$ elements. For a model with 1 million weights, the Hessian has 1 trillion elements!}
+
+\end{document}

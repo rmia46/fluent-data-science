@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\geometry{a4paper, margin=1in}
+
+\title{Module 06: Tree-Based Gradient Boosting Dominance - Part 1}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Gradient Boosted Decision Trees (GBDTs) represent the undisputed gold standard for predictive performance on tabular data. Among modern boosting frameworks, LightGBM stands out due to its training speed and low memory footprint. This note explores the core architectural mechanics of LightGBM, focusing on its leaf-wise growth strategy, structural hyperparameters, and regularizing properties.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The Paradigm Shift in Tree Generation}
+Traditional gradient boosting frameworks build trees symmetrically, using a level-by-level growth strategy. LightGBM alters this foundational tree-building process to optimize training efficiency and performance.
+
+\subsection{Level-Wise (Depth-Wise) Growth}
+Traditional tree algorithms—such as Random Forest or early iterations of XGBoost—grow trees level by level. When a split is evaluated, the algorithm forces an identical split depth across all nodes in that specific tier simultaneously. While highly parallelizable, this strategy is structurally inefficient because it forces compute resources to split nodes that contribute very little to minimizing global loss.
+
+\subsection{Leaf-Wise Growth Engine}
+LightGBM implements a **Leaf-Wise Growth** strategy. Instead of processing a full level at a time, the leaf-wise engine searches across all available leaf nodes in the entire tree and splits exclusively the single leaf that maximizes the reduction in global loss.
+
+\textit{The Mathematical Advantage:} By focusing growth on high-loss segments, leaf-wise execution cuts down training errors much faster than level-wise strategies. It inherently creates deep, asymmetric decision paths that excel at capturing complex, high-order feature interactions.
+
+\section{The Risk of Leaf-Wise Asymmetry}
+While leaf-wise splitting optimizes training loss quickly, it has a significant structural downside:
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!70!black,title=The Overfitting Threat]
+Because leaf-wise growth does not balance tree layers, it can construct extremely deep, narrow branches. If left unrestricted, these branches will overfit localized sample noise rather than generalizing to the broader distribution.
+\end{tcolorbox}
+
+To safely deploy LightGBM in a hackathon, you must implement strong regularizing constraints using structural hyperparameters.
+
+\section{Core Hyperparameters to Master}
+To keep your LightGBM models from overfitting your local validation splits, you must fine-tune three foundational parameters:
+
+\subsection{\texttt{num\_leaves}: Complexity Control}
+The \texttt{num\_leaves} parameter sets the absolute ceiling for the maximum number of leaves allowed in an individual tree.
+\begin{itemize}
+    \item **The Operational Rule:** This is your primary control for model complexity. In a standard level-wise tree, a depth of $d$ creates $2^d$ leaves. For a leaf-wise tree, you must set \texttt{num\_leaves} $\le 2^{\text{max\_depth}}$ to keep individual trees from becoming overly complex and overfitting the training data.
+\end{itemize}
+
+\subsection{\texttt{min\_data\_in\_leaf}: Noise Isolation Shield}
+This parameter determines the minimum number of training observations a leaf node must contain before it can be split further.
+\begin{itemize}
+    \item **The Operational Rule:** Setting this parameter high keeps the model from isolating small clusters of noise points. For highly volatile tabular features, increasing \texttt{min\_data\_in\_leaf} to values like $50$ or $100$ prevents the tree from creating hyper-specific branches that fail on your validation sets.
+\end{itemize}
+
+\subsection{\texttt{learning\_rate}: Gradient Shaking Parameter}
+The scaling factor applied to each tree's updates during the gradient boosting optimization loop.
+\begin{itemize}
+    \item **The Operational Rule:** The learning rate controls your step size down the loss gradient. In a competitive pipeline, you want to balance your learning rate with the total number of trees (\texttt{n\_estimators}). Shrinking the learning rate (e.g., from $0.1$ to $0.01$) requires increasing the tree count proportionately to ensure your model fully converges.
+\end{itemize}
+
+\newpage
+\section{Practice Problems}
+
+\textbf{P1:} A competitor sets the hyperparameter \texttt{max\_depth = 5} for a LightGBM model to match an existing XGBoost setup. However, they leave the \texttt{num\_leaves} parameter unset, allowing it to default to 31. Explain why this setup can lead to erratic tree structure under a leaf-wise growth engine.
+\\
+\textit{Answer: For a level-wise tree, a \texttt{max\_depth} of 5 strictly caps the maximum leaf count at $2^5 = 32$. In LightGBM's leaf-wise engine, if \texttt{num\_leaves} is left at its default of 31, the algorithm can satisfy this constraint by creating a single, highly asymmetric branch that extends down to a depth of 15 or 20 nodes, as long as the total leaf count remains under 31. This long, unbalanced branch can overfit localized noise, violating the team's intended structural complexity limit of 5 levels.}
+
+\newline
+\textbf{P2:} Prove mathematically why changing the parameter \texttt{min\_data\_in\_leaf} from 10 to 50 causes a LightGBM model to become more regularized and less prone to overfitting.
+\\
+\textit{Answer: Let $N_{\text{leaf}}$ represent the number of training samples inside a target node. A split is only valid if:
+\begin{equation*}
+    N_{\text{left\_child}} \ge \texttt{min\_data\_in\_leaf} \quad \text{and} \quad N_{\text{right\_child}} \ge \texttt{min\_data\_in\_leaf}
+\end{equation*}
+By raising this threshold from 10 to 50, you prevent the model from creating small splits that capture extreme outliers or unrepresentative samples. This restricts the tree's overall growth, forcing it to base its decision boundaries on broader, more stable patterns in the data.}
+
+\newline
+\textbf{P3:} You are optimizing a LightGBM pipeline. When using a learning rate of $0.1$ and $150$ estimators, your model achieves an out-of-fold log-loss of $0.341$. If you drop the learning rate to $0.01$ to capture more granular data details, explain why you must also adjust the \texttt{n\_estimators} parameter, and state the direction of that adjustment.
+\\
+\textit{Answer: You must significantly increase the \texttt{n\_estimators} parameter (typically by a factor of 5 to 10). Shrinking the learning rate down to $0.01$ means each individual tree contributes far less to the final prediction vector. If you leave the tree count at $150$, the optimization loop will stop long before reaching the minimum loss, leaving the model underfitted. Increasing the estimators to $1000$ or $1500$, combined with an early-stopping callback, ensures the model has enough iterations to fully converge.}
+
+\end{document}

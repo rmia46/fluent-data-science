@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybernauts 2026 - Datathon Master Training Plan</title>
+    <style>
+        :root {
+            --primary-color: #4a154b;
+            --secondary-color: #611f69;
+            --accent-color: #007a5a;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-card {
+            background: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent-color);
+            text-align: center;
+        }
+
+        .meta-card h3 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .meta-card p {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+
+        /* Day Card Styles */
+        .day-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .day-header {
+            background-color: #f1f3f5;
+            padding: 1rem 1.5rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-body {
+            padding: 1.5rem;
+        }
+
+        .session-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .session-box {
+            background: #fdfdfd;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 1.25rem;
+            position: relative;
+        }
+
+        .session-box h4 {
+            margin: 0 0 0.75rem 0;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .session-component {
+            margin-bottom: 0.75rem;
+        }
+
+        .session-component strong {
+            display: inline-block;
+            background: #e6f4ea;
+            color: #137333;
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .session-component.practice strong {
+            background: #fce8e6;
+            color: #c5221f;
+        }
+
+        .session-component p {
+            margin: 0.25rem 0 0 1.5rem;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+
+        /* Timeline Styles for Mock Day */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.45rem;
+            top: 0.25rem;
+            background: var(--accent-color);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 3px solid var(--card-bg);
+        }
+
+        .time-badge {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        .timeline-content h3 {
+            margin: 0.25rem 0;
+            color: var(--text-color);
+        }
+
+        .timeline-content p {
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        /* Alert / Rules Box */
+        .rules-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            color: #856404;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-top: 2rem;
+        }
+
+        .rules-box h3 {
+            margin-top: 0;
+        }
+
+        .rules-box ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .rules-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .session-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CYBERNAUTS 2026</h1>
+        <p>Datathon Master Training Plan & Campaign Handbook</p>
+    </header>
+
+    <div class="container">
+
+        <div class="meta-grid">
+            <div class="meta-card">
+                <h3>Campaign Span</h3>
+                <p>8 Days + 1 Mock Day</p>
+            </div>
+            <div class="meta-card">
+                <h3>Daily Rigor</h3>
+                <p>9 Hours Total</p>
+            </div>
+            <div class="meta-card">
+                <h3>Session Split</h3>
+                <p>1hr Read / 2hr Practice</p>
+            </div>
+            <div class="meta-card">
+                <h3>Target Framework</h3>
+                <p>End-to-End Tabular</p>
+            </div>
+        </div>
+
+        <h2>Section 1: The 8-Day Hyper-Drive Plan</h2>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 1: Mathematics for Machine Learning & Data Science</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: Linear Algebra Foundations</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Vectors, matrices, dot products, and matrix multiplication. Understanding dimensions and shapes in datasets.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Implement matrix operations using NumPy and solve a basic system of linear equations.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Calculus & Gradient Descent</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Derivatives, partial derivatives, and the chain rule. Intuition behind Gradient Descent optimization.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Write a simple gradient descent loop from scratch to minimize a basic cost function.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: Probability & Statistics</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Distributions (Normal, Binomial), expectation, variance, and Bayes' Theorem. Hypothesis testing intuition.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Simulate distributions, calculate z-scores, and write a function to apply Bayes' theorem to a medical dataset.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 2: Tabular Foundations & Fast Data Manipulation</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: Pandas Essentials & Vectorization</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Data loading, indexing, slicing, filtering, and avoiding slow loops using vectorized operations.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Generate a Kaggle/Colab notebook with 15 unique data manipulation and multi-index challenges.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Merging & Aggregations</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Mastering .groupby(), .merge(), .join(), and constructing dynamic summary tables.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Combine multiple relational tables and build custom cross-feature aggregate statistics.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: Data Cleaning & Imputation</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Imputation strategies (mean, median, mode) vs. tracking missing values with explicit Boolean indicator flags.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Take a heavily corrupted dataset, track missingness percentages, and build a clean processing function.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 3: Feature Engineering I — Basic Transformations</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: Categorical Encoding</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>One-Hot Encoding vs. Label Encoding vs. Frequency Encoding. Managing column cardinality.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Process high-cardinality values on a mock notebook without causing memory issues or data leakages.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Numerical Scaling & Distributions</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Handling skewness, log transforms, Standard Scaling ($z$-score), and MinMax Scaling choices.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Identify skewed numeric columns, apply transformations, and map distributions using Seaborn plots.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: Interaction & Binning Features</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Mathematical combinations of columns (ratios, products) and segmenting continuous metrics into ordinal bins.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Review the Titanic dataset. Write a function to construct 5 entirely new baseline interaction features.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 4: Feature Engineering II — Advanced "Golden" Features</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: Target Encoding & Smoothing</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Encoding categories based on historic target values. The massive risk of overfitting and how to apply smoothing weight formulas.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Manually build a Target Encoder with out-of-fold calculations to safeguard against leakage.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Group-Level Transform Features</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Utilizing .transform() in Pandas to create localized context metrics (e.g., individual value vs group mean).</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Build 10 contextual features on a messy transactional transaction dataset using group-level summaries.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: Feature Selection & Drifting</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Dropping collinear rows, variance thresholds, and evaluating initial baseline model feature importance scores.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Prune the bottom 50% of low-performing features from a massive wide dataset without losing baseline accuracy.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 5: Validation Architecture & Baselines</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: The Cross-Validation Framework</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>K-Fold vs. Stratified K-Fold vs. Time-Series Splits. Why chasing public leaderboards blindly is a catastrophic trap.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Write a highly robust, fully reusable Stratified 5-Fold cross-validation loop configuration from scratch.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Baseline Model Implementation</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Scikit-Learn API consistency. Training rapid reference baselines (Ridge, Logistic Regression, Random Forest).</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Plug a baseline classifier into your 5-fold architecture loop and generate an end-to-end output submission file.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: Leakage Prevention Auditing</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Common ways data leaks (e.g., scaling datasets globally before splitting, encoding features outside CV folds).</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Audit a broken notebook built by your AI. Locate the data leakage flaws and refactor them to fix errors.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 6: Tree-Based Gradient Boosting Dominance</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: Introduction to LightGBM</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Why LightGBM dominates tabular metrics. Leaf-wise growth, missing values handling, and exceptional compute speed.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Implement LightGBM inside your CV loop framework. Compare validation metrics directly against your baseline models.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Introduction to XGBoost</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Level-wise growth structures, L1/L2 regularization parameters, and handling structural weights.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Deploy XGBoost side-by-side on the exact same cross-validation splits to track variations in predictions.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: Tree Hyperparameter Deep-Dive</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Structural constraints (max_depth, num_leaves) vs. stochastic adjustments (subsample, colsample_bytree).</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Manually alternate model hyperparameters to visually analyze training vs. validation score deltas.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 7: Optimization & Advanced Ensembling</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: Automated Tuning with Optuna</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Introduction to Bayesian search optimization concepts. Constructing an Optuna objective evaluation function.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Set up an automated Optuna script sequence to study the parameters of your LightGBM algorithm for 50 trials.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Model Blending & Averaging</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Ensembling principles. Combining low-correlation model structures to smooth prediction errors.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Extract prediction metrics from your best LightGBM and XGBoost iterations, blending them mathematically ($0.6 \times \text{LGBM} + 0.4 \times \text{XGBoost}$).</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: Metric Optimization & Post-Processing</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Aligning target models directly with competition metrics. Finding the exact probability cutoff points instead of standard 0.5 rules.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Construct a custom threshold scanning loop (0.01 to 0.99) to extract the absolute maximum F1-score optimization coordinate.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span>Day 8: Production Pipelines & Collaborative Git Workflows</span>
+            </div>
+            <div class="day-body">
+                <div class="session-grid">
+                    <div class="session-box">
+                        <h4>Session 1: Modularizing Code into Scripts</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Migrating away from unorganized notebooks. Architecting standard clean file paths: data_prep.py, models.py, main.py.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Convert your week's functional features, preprocessing parameters, and loops into clean modular executable scripts.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 2: Git Collaboration Workflows</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Managing branching structures, pull requests, and dealing with fast merge conflicts under hackathon stress.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Simulate a live sprint: Team Member A pushes preprocessing modifications, Team Member B pulls and incorporates ensembling modules.</p></div>
+                    </div>
+                    <div class="session-box">
+                        <h4>Session 3: The "Secret Weapon" Master Template</h4>
+                        <div class="session-component"><strong>Lecture</strong><p>Consolidating your ultimate ready-to-run template notebook for instant deployment.</p></div>
+                        <div class="session-component practice"><strong>Practice</strong><p>Lock in a template that reads a tabular file, calculates missing values, applies K-Fold, and exports predictions in under 30 minutes.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Section 2: Day 9 — The 4-Hour Custom Mock Competition</h2>
+        <div class="day-card" style="border-top: 4px solid var(--secondary-color);">
+            <div class="day-body">
+                <p><strong>Rules of Engagement:</strong> Pick a historic, unread Kaggle tabular dataset. No external code lookups allowed. Use your Day 7 template pipeline, standard documentation, and team communications exclusively.</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time-badge">00:00 - 00:30</div>
+                        <div class="timeline-content">
+                            <h3>Phase 1: Exploration, EDA, & Strategy Assignment</h3>
+                            <p>Read the problem instructions, evaluate shapes, and delegate tasks (e.g., preprocessor setup vs baseline feature brainstorming).</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-badge">00:30 - 01:15</div>
+                        <div class="timeline-content">
+                            <h3>Phase 2: The Baseline Lock-In</h3>
+                            <p>Feed the raw CSV files straight into your pipeline template. Output and submit a clean, functional prediction track immediately to ensure execution path viability.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-badge">01:15 - 02:45</div>
+                        <div class="timeline-content">
+                            <h3>Phase 3: The Feature Sprint</h3>
+                            <p>Write mathematical, structural, and categorical transformations in parallel streams. Test features individually; drop them ruthlessly if local CV drops.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-badge">02:45 - 03:30</div>
+                        <div class="timeline-content">
+                            <h3>Phase 4: Optuna Hyperparameter Optimization</h3>
+                            <p>Fire up automated hyperparameter tuning processes for LightGBM and XGBoost tracking the final chosen features.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-badge">03:30 - 04:00</div>
+                        <div class="timeline-content">
+                            <h3>Phase 5: Ensemble blending & Submission Polish</h3>
+                            <p>Blend final probability sets. Check for structural alignment with sample format configurations. Lock in final sub files.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rules-box">
+            <h3>🔑 The Three Golden Rules for the Hackathon Leaderboard</h3>
+            <ul>
+                <li><strong>Trust Your Local CV:</strong> If your local Cross-Validation framework score improves but the public Kaggle leaderboard fluctuates downward, <strong>always trust your CV score</strong>. Public boards are prone to statistical noise.</li>
+                <li><strong>Submit Inside Hour One:</strong> Never leave submission tasks to the final hours. Lock a basic baseline file into the tracking systems immediately.</li>
+                <li><strong>No Optimization Without Validation:</strong> Delete features that sound "clever" but fail to register positive metric improvements in your 5-Fold split validation.</li>
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>

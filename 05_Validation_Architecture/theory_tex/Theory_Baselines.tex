@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\geometry{a4paper, margin=1in}
+
+\title{Module 05: Validation Architecture \& Baselines - Part 2}
+\author{Cybernauts 2026 Datathon Campaign}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The absolute worst mistake a data scientist can make in a competitive hackathon is sprinting toward complex gradient boosting architectures without a benchmark. This note outlines the engineering discipline required to establish a robust, end-to-end baseline model. We detail how to implement a modular pipeline that reads raw inputs, applies structural transformations, validates within a Cross-Validation loop, and safely outputs submission targets.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The Philosophy of the Baseline First}
+When a competition begins, the temptation to immediately write code for high-parameter tree ensembles or deep neural networks is intense. Resist this urge. Your immediate priority is to wire up a complete, working pipeline.
+
+\subsection{Why a Baseline Matters}
+A baseline model acts as your structural and statistical benchmark. It provides a line in the sand. For instance, if a simple, un-tuned Random Forest or a linear Logistic Regression model achieves a metric score of $0.82$ within your local CV loop, you have established a critical piece of knowledge:
+\begin{quote}
+Any advanced feature engineering technique, complex target encoding, or hyperparameter-tuned gradient boosting model must score strictly higher than $0.82$ to justify its added code complexity.
+\end{quote}
+If your fancy new model scores $0.815$, you don't keep it. The baseline protects you from complicating your pipeline for diminishing or negative returns.
+
+\subsection{Verification of the Execution Path}
+Beyond serving as a metric benchmark, an end-to-end baseline proves that your data loading, feature shapes, validation splits, and submission generation modules work perfectly together. It ensures that you have a viable submission file ready inside the first hour of the datathon.
+
+\section{Architecting with Scikit-Learn API Consistency}
+To ensure that your baseline can be easily swapped out for elite algorithms (like LightGBM, XGBoost, or CatBoost) later in the campaign, you must write modular code that leverages uniform software design patterns.
+
+\subsection{Uniform Predictor API}
+Scikit-Learn’s uniform estimator interface is built on predictable method calls. Your training and evaluation functions should treat the model as a modular black box utilizing:
+\begin{itemize}
+    \item \texttt{.fit(X\_train, y\_train)}: To train the parameters of the model.
+    \item \texttt{.predict(X\_val)}: For regression or hard-label classification tasks.
+    \item \texttt{.predict\_proba(X\_val)}: For classification tasks where optimization metrics require raw probability arrays rather than binary guesses.
+\end{itemize}
+
+By structuring your training loop around this consistent API, swapping a baseline Random Forest for a highly optimized Gradient Boosting model requires changing exactly one line of initialization code.
+
+\section{Integrating the Baseline into the CV Loop}
+A baseline model must never be evaluated outside of your Cross-Validation framework. It must be embedded directly inside your K-Fold loop to capture reliable out-of-fold predictions.
+
+\subsection{Algorithmic Flow of a Model-Agnostic CV Loop}
+For each individual fold in your validation architecture, the loop executes the following structural protocol:
+\begin{enumerate}
+    \item Separate the fold data into local training indices and validation indices.
+    \item Fit all feature transformations (e.g., encoders, scalers) \textit{strictly} on the training slice.
+    \item Transform both the training slice and validation slice using those fitted transformers.
+    \item Instantiate your baseline estimator and call \texttt{.fit()}.
+    \item Extract predictions using \texttt{.predict\_proba()} on the validation slice and store them in an out-of-fold array.
+    \item Extract predictions on the hidden competition test set to prepare for eventual averaging.
+\end{enumerate}
+
+\newpage
+\section{Practice Problems}
+
+\textbf{P1:} A competitor implements a baseline logistic regression model. For a binary classification contest evaluated by ROC-AUC, they extract predictions using the \texttt{model.predict()} method. Explain why this breaks the baseline's evaluation metrics.
+\\
+\textit{Answer: The \texttt{.predict()} method outputs hard class assignments ($0$ or $1$) based on a default threshold (typically $0.5$). The ROC-AUC metric, however, evaluates a model's ability to rank order risk across continuous probability distributions. Passing hard 0/1 integers collapses the probability curve into a single step function, stripping the evaluation metric of its granularity and resulting in an artificially low, incorrect baseline score.}
+
+\newline
+\textbf{P2:} Write down a concise Python pseudo-code structure representing a model-agnostic validation function that accepts any estimator following the Scikit-Learn API, demonstrating how it maintains modularity.
+\\
+\textit{Answer:}
+\begin{verbatim}
+def evaluate_baseline_model(estimator, X, y, cv_splitter):
+    oof_predictions = np.zeros(len(X))
+
+    for train_idx, val_idx in cv_splitter.split(X, y):
+        X_tr, X_val = X.iloc[train_idx], X.iloc[val_idx]
+        y_tr, y_val = y.iloc[train_idx], y.iloc[val_idx]
+
+        # Clone and train the modular model
+        model = clone(estimator)
+        model.fit(X_tr, y_tr)
+
+        # Extract probabilities for the validation slice
+        oof_predictions[val_idx] = model.predict_proba(X_val)[:, 1]
+
+    return oof_predictions
+\end{verbatim}
+
+\newline
+\textbf{P3:} You establish an end-to-end baseline using an un-tuned Random Forest and achieve a 5-Fold CV score of $0.784$. Later, you implement a highly custom feature selection script that takes 45 minutes to run and achieves a score of $0.785$. Applying the engineering philosophy of baselines, evaluate whether this new feature script should be kept in your final competition codebase.
+\\
+\textit{Answer: The new feature selection script should be dropped ruthlessly. A metric improvement of just $0.001$ over an un-tuned baseline is statistically insignificant and does not justify the massive penalty of a 45-minute execution path. In a fast-paced hackathon environment, keeping this script creates an engineering bottleneck that will cripplingly slow down your ability to run rapid iterations later.}
+
+\end{document}
