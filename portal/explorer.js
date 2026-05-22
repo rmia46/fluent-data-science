@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isModuleView) {
             const moduleNum = window.location.pathname.match(/module(\d+)/)[1];
-            // Find the directory starting with that number
             const targetDir = FILE_TREE.find(item => item.name.startsWith(moduleNum));
             dataToRender = targetDir ? [targetDir] : [];
         }
@@ -86,7 +85,10 @@ function renderTree(data, container, parentCheckbox = null) {
 
         } else {
             const fileItem = document.createElement('div');
-            fileItem.className = 'flex items-center py-2 text-sm file-item-row';
+            fileItem.className = 'flex items-center justify-between py-2 text-sm group/file';
+            
+            const leftPart = document.createElement('div');
+            leftPart.className = 'flex items-center';
             
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -95,22 +97,29 @@ function renderTree(data, container, parentCheckbox = null) {
             checkbox.checked = localStorage.getItem(storageKey) === 'true';
             
             const link = document.createElement('a');
-            const isSub = window.location.pathname.includes('/learn/');
-            const linkRoot = isSub ? '../' : '';
             link.href = 'https://github.com/rmia46/fluent-data-science/blob/main/' + item.path;
             link.target = '_blank';
             link.className = 'text-[#2e7d32] hover:underline';
             link.textContent = '📄 ' + item.name;
             
-            fileItem.appendChild(checkbox);
-            fileItem.appendChild(link);
+            leftPart.appendChild(checkbox);
+            leftPart.appendChild(link);
+            
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = 'https://github.com/rmia46/fluent-data-science/raw/main/' + item.path;
+            downloadBtn.className = 'ml-4 opacity-0 group-hover/file:opacity-100 bg-gray-100 hover:bg-primary hover:text-white px-2 py-1 text-[10px] font-bold uppercase tracking-widest transition-all';
+            downloadBtn.textContent = 'Download';
+            downloadBtn.setAttribute('download', '');
+
+            fileItem.appendChild(leftPart);
+            fileItem.appendChild(downloadBtn);
             nodeDiv.appendChild(fileItem);
             
             checkbox.onchange = () => {
                 localStorage.setItem(storageKey, checkbox.checked);
                 if (parentCheckbox) {
-                    const siblingCbs = container.querySelectorAll('input.file-check');
-                    const allChecked = Array.from(siblingCbs).every(cb => cb.checked);
+                    const allCbs = container.querySelectorAll('input.file-check');
+                    const allChecked = Array.from(allCbs).every(cb => cb.checked);
                     parentCheckbox.checked = allChecked;
                     localStorage.setItem(parentCheckbox.id, allChecked);
                 }

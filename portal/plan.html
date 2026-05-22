@@ -18,215 +18,258 @@
 </head>
 <body>
     <div class="page-container bg-white shadow-xl min-h-screen">
-        <header class="mb-12 text-center border-b-2 border-primary pb-6">
-            <h1 class="text-3xl font-bold text-dark mb-2 uppercase tracking-tighter">9-Module Mastery Plan</h1>
-            <p class="text-gray-600 italic text-sm">The end-to-end roadmap for winning data science contests.</p>
+        <header class="mb-10 text-center border-b-2 border-primary pb-6">
+            <h1 class="text-3xl font-bold text-dark mb-4 uppercase tracking-tighter">9-Module Mastery Plan</h1>
+            
+            <!-- Compact Meta Bar -->
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] uppercase tracking-widest text-dark font-bold">
+                <div class="flex items-center px-3 py-1.5 bg-light border border-primary/20">Duration: 9-10 Days</div>
+                <div class="flex items-center px-3 py-1.5 bg-light border border-primary/20">Rigor: 7-8 Hours</div>
+                <div class="flex items-center px-3 py-1.5 bg-light border border-primary/20">Split: 1hr Read / 2hr Lab</div>
+                <div class="flex items-center px-3 py-1.5 bg-light border border-primary/20">Target: Tabular ML</div>
+            </div>
         </header>
 
-        <!-- Tighter Meta Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8 text-[10px]">
-            <div class="bg-light p-3 border-l-4 border-primary">
-                <h5 class="uppercase text-gray-500 font-bold">Duration</h5>
-                <p class="font-bold text-dark">9-10 Days</p>
-            </div>
-            <div class="bg-light p-3 border-l-4 border-primary">
-                <h5 class="uppercase text-gray-500 font-bold">Daily Rigor</h5>
-                <p class="font-bold text-dark">7-8 Hours</p>
-            </div>
-            <div class="bg-light p-3 border-l-4 border-primary">
-                <h5 class="uppercase text-gray-500 font-bold">Session Split</h5>
-                <p class="font-bold text-dark italic">1hr Read / 2hr Practice</p>
-            </div>
-            <div class="bg-light p-3 border-l-4 border-primary">
-                <h5 class="uppercase text-gray-500 font-bold">Target</h5>
-                <p class="font-bold text-dark uppercase">Tabular ML</p>
-            </div>
-        </div>
-
-        <div class="space-y-6">
+        <div class="space-y-8">
             <!-- Module 1 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 01: Mathematics for ML</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. Linear Algebra Foundations</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Vectors, matrices, dot products, dimensions. Eigenvalues and PCA foundations.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Implement matrix operations using NumPy and solve linear systems.</p>
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 01: Mathematics for ML</span>
+                    <span class="text-[10px] text-primary font-bold">Foundations</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. Linear Algebra Foundations</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Vectors, matrices, dot products, dimensions. Eigenvalues and PCA foundations.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Implement matrix operations using NumPy and solve linear systems.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Calculus Optimization</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Derivatives, partials, chain rule. Gradient Descent intuition and optimization.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Write a gradient descent loop from scratch to minimize cost functions.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Calculus Optimization</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Derivatives, partials, chain rule. Gradient Descent intuition and optimization.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Write a gradient descent loop from scratch to minimize cost functions.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Probability & Statistics</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Distributions, Bayes' Theorem, Z-scores. Standardizing features for model stability.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Simulate distributions and write functions to apply Bayes' Theorem.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Probability & Statistics</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Distributions, Bayes' Theorem, Z-scores. Standardizing features for model stability.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Simulate distributions and write functions to apply Bayes' Theorem.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 2 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 02: Tabular Foundations</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. Pandas Vectorization</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Fast data loading, indexing, slicing, and avoiding slow loops using vectorized operations.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> 15 unique data manipulation and multi-index challenges.</p>
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 02: Tabular Foundations</span>
+                    <span class="text-[10px] text-primary font-bold">Data Wrangling</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. Pandas Vectorization</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Fast data loading, indexing, slicing, and avoiding slow loops using vectorized operations.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> 15 unique data manipulation and multi-index challenges.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Relational Operations</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Mastering .groupby(), .merge(), .join(), and constructing dynamic summary tables.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Combine multiple relational tables and build custom cross-feature statistics.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Relational Operations</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Mastering .groupby(), .merge(), .join(), and constructing dynamic summary tables.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Combine multiple relational tables and build custom cross-feature statistics.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Diagnostic Data Cleaning</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Imputation strategies (mean/median/mode) vs. tracking missingness with explicit indicator flags.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Build a robust processing function for heavily corrupted datasets.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Diagnostic Data Cleaning</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Imputation strategies vs. tracking missingness with explicit indicator flags.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Build a robust processing function for heavily corrupted datasets.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 3 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 03: Feature Engineering I</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. Categorical Encoding</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> OHE vs. Label vs. Frequency Encoding. Managing column cardinality and sparse matrices.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Process high-cardinality values without memory leaks or data leakage.</p>
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 03: Feature Engineering I</span>
+                    <span class="text-[10px] text-primary font-bold">Signal Creation</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. Categorical Encoding</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> OHE vs. Label vs. Frequency Encoding. Managing column cardinality and sparse matrices.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Process high-cardinality values without memory leaks or data leakage.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Numerical Scaling</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Handling skewness, log transforms, Standard Scaling, and MinMax Scaling choices.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Identify skewed columns and apply transformations to normalize distributions.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Numerical Scaling</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Handling skewness, log transforms, Standard Scaling, and MinMax Scaling choices.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Identify skewed columns and apply transformations to normalize distributions.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Interaction Features</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Mathematical combinations (ratios, products) and segmenting metrics into ordinal bins.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Write functions to construct high-impact interaction features on real data.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Interaction Features</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Mathematical combinations (ratios, products) and segmenting metrics into ordinal bins.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Write functions to construct high-impact interaction features on real data.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 4 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 04: Feature Engineering II</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. Smoothed Target Encoding</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Encoding categories based on target values. Managing risk with smoothing formulas.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Manually build a smoothed Target Encoder with out-of-fold protection.</p>
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 04: Feature Engineering II</span>
+                    <span class="text-[10px] text-primary font-bold">Advanced FE</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. Smoothed Target Encoding</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Encoding categories based on target values. Managing risk with smoothing formulas.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Manually build a smoothed Target Encoder with out-of-fold protection.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Contextual Group Transforms</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Utilizing .transform() in Pandas to create localized peer-group context metrics.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Build 10 contextual features on a messy transactional dataset.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Contextual Group Transforms</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Utilizing .transform() in Pandas to create localized peer-group context metrics.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Build 10 contextual features on a messy transactional dataset.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Automated Feature Selection</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Dropping collinear features, variance thresholds, and evaluating importance scores.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Prune low-performing features from a wide dataset ruthlessly.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Automated Feature Selection</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Dropping collinear features, variance thresholds, and evaluating importance scores.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Prune low-performing features from a wide dataset ruthlessly.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 5 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 05: Validation Architecture</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. CV Frameworks</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> K-Fold vs. Stratified vs. Time-Series Splits. Avoiding the public leaderboard trap.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Write a robust Stratified 5-Fold cross-validation loop from scratch.</p>
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 05: Validation Architecture</span>
+                    <span class="text-[10px] text-primary font-bold">Integrity</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. CV Frameworks</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> K-Fold vs. Stratified vs. Time-Series Splits. Avoiding the public leaderboard trap.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Write a robust Stratified 5-Fold cross-validation loop from scratch.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Baseline Models</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Scikit-Learn API consistency. Training rapid reference baselines (RF, Logistic).</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Plug a baseline classifier into your CV loop and generate an OOF track.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Baseline Models</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Scikit-Learn API consistency. Training rapid reference baselines (RF, Logistic).</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Plug a baseline classifier into your CV loop and generate an OOF track.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Data Leakage Auditing</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Common leakage traps: scaling before splitting and encoding outside folds.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Audit a broken notebook and refactor it to fix data leakage flaws.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Data Leakage Auditing</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Common leakage traps: scaling before splitting and encoding outside folds.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Audit a broken notebook and refactor it to fix data leakage flaws.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 6 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 06: Tree-Based Models</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. Gradient Boosting Mechanics</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> GBDT mechanics, leaf-wise vs level-wise growth, and speed optimizations.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Implement LGBM and XGBoost inside your CV framework side-by-side.</p>
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 06: Tree-Based Models</span>
+                    <span class="text-[10px] text-primary font-bold">Heavy Hitters</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. Gradient Boosting Mechanics</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> GBDT mechanics, leaf-wise vs level-wise growth, and speed optimizations.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Implement LGBM and XGBoost inside your CV framework side-by-side.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Overfitting Curves</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Structural constraints (depth, leaves) vs. stochastic adjustments (subsample).</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Iterate hyperparameters to visually analyze training vs. validation divergence.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Overfitting Curves</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Structural constraints (depth, leaves) vs. stochastic adjustments (subsample).</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Iterate hyperparameters to visually analyze training vs. validation divergence.</p>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Taming Decision Trees</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Regularization strategies (L1/L2) and categorical parameters.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Apply stochastic regularization to bring validation scores into optimal bounds.</p>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Taming Decision Trees</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Regularization strategies (L1/L2) and categorical parameters.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Apply stochastic regularization to bring validation scores into optimal bounds.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 7 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 07: Tuning & Ensembling</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 07: Tuning & Ensembling</span>
+                    <span class="text-[10px] text-primary font-bold">Final Polish</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
                     <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. Optuna Optimization</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Bayesian search optimization and constructing objective functions.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Set up an automated 50-trial Optuna study for your LightGBM model.</p>
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. Optuna Optimization</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Bayesian search optimization and constructing objective functions.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Set up an automated 50-trial Optuna study for your LightGBM model.</p>
                     </div>
                     <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Model Blending</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Ensembling principles and combining low-correlation model structures.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Extract OOF probabilities and compute a mathematically weighted blend.</p>
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Model Blending</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Ensembling principles and combining low-correlation model structures.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Extract OOF probabilities and compute a mathematically weighted blend.</p>
                     </div>
                     <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Metric Optimization</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Finding optimal cutoff boundaries instead of standard 0.5 rules for F1 optimization.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Construct a custom threshold scanner (0.01 to 0.99) for metric maximization.</p>
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Metric Optimization</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Finding optimal cutoff boundaries instead of standard 0.5 rules for F1 optimization.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Construct a custom threshold scanner (0.01 to 0.99) for metric maximization.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 8 -->
-            <div class="border-2 border-gray-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-primary mb-6 tracking-widest uppercase border-b border-gray-100 pb-2">Module 08: Production Pipelines</h3>
-                <div class="grid md:grid-cols-3 gap-8 text-[12px] leading-relaxed">
+            <div class="bg-gray-50 border-l-8 border-primary p-6 md:p-8 shadow-sm">
+                <h3 class="text-lg font-bold text-dark tracking-widest uppercase mb-6 flex justify-between items-center border-b border-gray-200 pb-2">
+                    <span>Module 08: Production Pipelines</span>
+                    <span class="text-[10px] text-primary font-bold">Engineering</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-6">
                     <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">1. Modular Script Architecture</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Architecting clean pipelines with modular Python scripts (Config, Prep, Model).</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Convert notebooks into clean, modular, and versioned executable scripts.</p>
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">1. Modular Script Architecture</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Architecting clean pipelines with modular Python scripts (Config, Prep, Model).</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Convert notebooks into clean, modular, and versioned executable scripts.</p>
                     </div>
                     <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">2. Collaborative Git Workflows</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Managing branches, PRs, and merge conflicts under competition stress.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Simulate a live sprint: Team Member A Prep; Team Member B Ensembles.</p>
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">2. Collaborative Git Workflows</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Managing branches, PRs, and merge conflicts under competition stress.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Simulate a live sprint: Team Member A Prep; Team Member B Ensembles.</p>
                     </div>
                     <div class="space-y-4">
-                        <h4 class="font-bold text-dark text-sm border-l-4 border-primary pl-2">3. Master Template Ingestion</h4>
-                        <p class="text-gray-700"><strong class="bg-green-100 text-green-800 px-1 border border-green-200">Learn:</strong> Consolidating your "Secret Weapon" ready-to-run template notebook.</p>
-                        <p class="text-gray-700"><strong class="bg-red-100 text-red-800 px-1 border border-red-200">Practice:</strong> Lock in a pipeline that reads CSVs and exports sub files in under 30 minutes.</p>
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-tight italic">3. Master Template Ingestion</h4>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-green-100 text-green-800 px-1.5 py-0.5 border border-green-200">Learn:</strong> Consolidating your "Secret Weapon" ready-to-run template notebook.</p>
+                        <p class="text-[12px] text-gray-700 leading-snug"><strong class="bg-red-100 text-red-800 px-1.5 py-0.5 border border-red-200">Practice:</strong> Lock in a pipeline that reads CSVs and exports sub files in under 30 minutes.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Module 9 -->
             <div class="bg-dark p-8 border-l-8 border-primary shadow-xl" style="background-color: #1b5e20;">
-                <h3 class="text-lg font-bold mb-4 uppercase tracking-widest" style="color: #ffffff !important;">Module 09: Mock Competition Challenge</h3>
-                <p class="text-[13px] mb-6 leading-relaxed font-medium" style="color: #ffffff !important;"><strong>The Final Mission:</strong> Apply every skill to a raw, messy dataset in a simulated contest. Pick a historic Kaggle problem, use your Day 7 template, and iterate your way to the top under pressure.</p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="learn.html" class="bg-primary px-8 py-3 font-bold text-[11px] hover:bg-green-600 transition text-center text-white">View Materials</a>
-                    <a href="https://github.com/rmia46/fluent-data-science/tree/main/09_Mock_Competition" class="bg-white text-dark px-8 py-3 font-bold text-[11px] hover:bg-gray-200 transition text-center" target="_blank">Access Data</a>
+                <h2 class="text-xl font-bold mb-6 tracking-widest uppercase border-b border-white/20 pb-2 text-white">Module 09: Mock Competition Challenge</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
+                    <div>
+                        <h4 class="font-bold text-accent text-sm uppercase tracking-tight mb-4 italic">The Mission</h4>
+                        <p class="text-[13px] leading-relaxed font-medium opacity-90 mb-6">Apply every skill to a raw, messy dataset in a simulated contest. Pick a historic Kaggle problem, use your Day 7 template, and iterate your way to the top under pressure.</p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="learn.html" class="bg-primary px-8 py-3 font-bold text-[11px] hover:bg-green-600 transition text-center text-white border border-primary/20 shadow-lg">View Materials</a>
+                            <a href="https://github.com/rmia46/fluent-data-science/tree/main/09_Mock_Competition" class="bg-white text-dark px-8 py-3 font-bold text-[11px] hover:bg-gray-200 transition text-center border border-white/20 shadow-lg" target="_blank">Access Data</a>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 border-l-2 border-white/10 pl-8">
+                        <h4 class="font-bold text-accent text-sm uppercase tracking-tight mb-4 italic">Contest Timeline</h4>
+                        <div class="space-y-6 text-[11px] font-bold tracking-tight">
+                            <div class="flex items-center gap-4">
+                                <span class="text-accent min-w-[80px]">00:00 - 00:30</span>
+                                <span class="opacity-80">Phase 1: Exploration & Strategy Assignment</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-accent min-w-[80px]">00:30 - 01:15</span>
+                                <span class="opacity-80">Phase 2: The Baseline Lock-In</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-accent min-w-[80px]">01:15 - 02:45</span>
+                                <span class="opacity-80">Phase 3: The Feature Sprint</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-accent min-w-[80px]">02:45 - 03:30</span>
+                                <span class="opacity-80">Phase 4: Hyperparameter Optimization</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-accent min-w-[80px]">03:30 - 04:00</span>
+                                <span class="opacity-80">Phase 5: Ensemble Blending & Submission</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
