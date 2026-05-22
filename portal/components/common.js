@@ -1,26 +1,55 @@
 /* portal/components/common.js */
 
-// 1. Detect Path Depth (to handle relative links for sub-folders like learn/)
+// 1. Inject Tailwind Config
+const configScript = document.createElement('script');
+configScript.innerHTML = `
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: { primary: '#2e7d32', dark: '#1b5e20', light: '#e8f5e9' },
+                fontFamily: { mono: ['ui-monospace', 'monospace'] }
+            }
+        }
+    }
+`;
+document.head.appendChild(configScript);
+
+// 2. Global Styles (Fixing the @apply bug in external CSS)
+const styleHTML = `
+<style type="text/tailwindcss">
+    @layer base {
+        * { border-radius: 0 !important; }
+        body { font-family: ui-monospace, monospace; background-color: #f3f4f6; }
+    }
+    .page-container { 
+        @apply max-w-5xl mx-auto px-6 md:px-16 py-10; 
+    }
+    .card-standard { @apply bg-white border-2 border-gray-200 shadow-md p-6; }
+</style>
+`;
+document.head.insertAdjacentHTML('beforeend', styleHTML);
+
+// 3. Detect Path Depth
 const isSubfolder = window.location.pathname.includes('/learn/');
 const root = isSubfolder ? '../' : '';
 
 const navHTML = `
-    <nav class="bg-[#2e7d32] p-2 sticky top-0 z-50 shadow-md">
-        <div class="container mx-auto flex justify-between items-center max-w-5xl px-4">
-            <a href="${root}index.html" class="text-white font-bold text-lg">Fluent Data Science</a>
-            <div class="hidden md:flex space-x-6">
+    <nav class="bg-[#2e7d32] py-1 sticky top-0 z-50 shadow-md">
+        <div class="max-w-5xl mx-auto flex justify-between items-center px-6 md:px-16">
+            <a href="${root}index.html" class="text-white font-bold text-base tracking-tight">Fluent Data Science</a>
+            <div class="hidden md:flex space-x-8 text-sm">
                 <a href="${root}index.html" class="text-white hover:text-green-100 transition">Home</a>
                 <a href="${root}plan.html" class="text-white hover:text-green-100 transition">Plan</a>
                 <a href="${root}learn.html" class="text-white hover:text-green-100 transition">Learn</a>
                 <a href="${root}materials.html" class="text-white hover:text-green-100 transition">Materials</a>
             </div>
             <button id="menu-btn" class="md:hidden text-white focus:outline-none">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-[#1b5e20] flex flex-col space-y-4 p-4 mt-2 border-t border-[#2e7d32]">
+        <div id="mobile-menu" class="hidden md:hidden bg-[#1b5e20] flex flex-col space-y-4 p-6 mt-1 border-t border-[#2e7d32]">
             <a href="${root}index.html" class="text-white">Home</a>
             <a href="${root}plan.html" class="text-white">Plan</a>
             <a href="${root}learn.html" class="text-white">Learn</a>
@@ -42,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     body.insertAdjacentHTML('afterbegin', navHTML);
     
     // Inject Footer into the main container (usually max-w-5xl)
-    const container = document.querySelector('.container') || body;
+    const container = document.querySelector('.page-container') || body;
     container.insertAdjacentHTML('beforeend', footerHTML);
 
     // Mobile Menu Logic
