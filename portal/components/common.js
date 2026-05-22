@@ -51,7 +51,7 @@ const styleHTML = `
     .data-matrix-bg {
         background-image: radial-gradient(#2e7d32 0.8px, transparent 0.8px);
         background-size: 30px 30px;
-        opacity: 0.46;
+        opacity: 0.38;
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         z-index: -1;
