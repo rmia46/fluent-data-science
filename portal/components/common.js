@@ -69,10 +69,33 @@ const footerHTML = `
 `;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Inject Nav
     document.body.insertAdjacentHTML('afterbegin', navHTML);
+    
+    // 2. Highlight Active Page
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('nav a, #mobile-menu a');
+    
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        
+        const cleanHref = href.replace('../', '');
+        const isHome = (currentPath.endsWith('index.html') || currentPath.endsWith('portal/')) && cleanHref === 'index.html';
+        const isMatch = currentPath.includes(cleanHref) && cleanHref !== 'index.html';
+        const isLearnSub = currentPath.includes('/learn/module') && cleanHref === 'learn.html';
+
+        if (isHome || isMatch || isLearnSub) {
+            link.classList.add('underline', 'underline-offset-8', 'font-bold', 'text-white');
+            link.classList.remove('hover:text-green-100');
+        }
+    });
+
+    // 3. Inject Footer
     const container = document.querySelector('.page-container') || document.body;
     container.insertAdjacentHTML('beforeend', footerHTML);
 
+    // 4. Mobile Menu Toggle
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     if (menuBtn && mobileMenu) {
